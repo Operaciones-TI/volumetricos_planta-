@@ -7,12 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DarkmodeComponent } from './components/darkmode/darkmode.component';
+import { LoadDataComponent } from './pages/load-data/load-data.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DarkmodeComponent
+    DarkmodeComponent,
+    LoadDataComponent,
   ],
   imports: [
     BrowserModule,

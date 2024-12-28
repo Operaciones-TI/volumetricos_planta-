@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-// import { DarkmodeComponent } from '../../components/darkmode/darkmode.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,13 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }
 
   handleSubmit(event: Event) {
     event.preventDefault();
-    console.log('submit');
+    this.router.navigate(['home']);
   }
 }

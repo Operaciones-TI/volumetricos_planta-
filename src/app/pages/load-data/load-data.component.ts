@@ -15,7 +15,6 @@ export class LoadDataComponent implements OnInit {
   constructor(private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.toastr.success('Hello world!', 'Toastr fun!');
   }
 
   excelNumberToDate(num: number) {

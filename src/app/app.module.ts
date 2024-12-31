@@ -1,28 +1,48 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+// Angular Material
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
-import { DarkmodeComponent } from './components/darkmode/darkmode.component';
+// import { DarkmodeComponent } from './components/darkmode/darkmode.component';
+import { SharedModule } from './shared/shared.module';
 import { LoadDataComponent } from './pages/load-data/load-data.component';
 import { JsonComponent } from './pages/json/json.component';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DarkmodeComponent,
     LoadDataComponent,
     JsonComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     CommonModule,
-    FormsModule
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    ReactiveFormsModule,
+    FormsModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

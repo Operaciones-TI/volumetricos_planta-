@@ -2,10 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
 
+
 @Component({
   selector: 'app-load-data',
   templateUrl: './load-data.component.html',
-  styleUrls: ['./load-data.component.scss']
+  styleUrls: ['./load-data.component.scss'],
 })
 export class LoadDataComponent implements OnInit {
   excelData: any;

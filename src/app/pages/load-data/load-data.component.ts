@@ -21,6 +21,7 @@ export class LoadDataComponent implements OnInit {
     let newDate = XLSX.SSF.parse_date_code(num);
     return `${newDate.y}-${String(newDate.m).padStart(2, '0')}-${String(newDate.d).padStart(2, '0')}`;
   }
+  
 
   // showToast(msg: string) {
   //   this.toast.setMessage(msg);
@@ -261,6 +262,11 @@ export class LoadDataComponent implements OnInit {
           });
           data.splice(0,2)
           data = data.map(d => addMissigKeysTanques(d));
+          data.map(d => {
+            if (typeof d.FechaEmisionCfdi === "number") {
+              d.FechaEmisionCfdi = this.excelNumberToDate(d.FechaEmisionCfdi)
+            }
+          });
           movTanques = data;
         } else if(workbook.SheetNames[s].includes('Movimientos Dispensarios')) {
           CurrentHeader = dispensHeads;
@@ -269,6 +275,15 @@ export class LoadDataComponent implements OnInit {
           });
           data.splice(0,2)
           data = data.map(d => addMissigKeysDisp(d));
+          data.map(d => {
+            if(typeof d.FechaVenta === "number") {
+              d.FechaVenta = this.excelNumberToDate(d.FechaVenta)
+            }
+
+            if (typeof d.FechaEmisionCfdi === "number") {
+              d.FechaEmisionCfdi = this.excelNumberToDate(d.FechaEmisionCfdi)
+            }
+          });
           movDisp = data;
         } else if (workbook.SheetNames[s].includes('Cierre Mensual')) {
           CurrentHeader = cierreHeads;
@@ -277,6 +292,15 @@ export class LoadDataComponent implements OnInit {
           });
           data.shift();
           data = data.map(d => addMissigKeysCierre(d));
+          data.map(d => {
+            if (typeof d.FechaInicio === "number") {
+              d.FechaInicio = this.excelNumberToDate(d.FechaInicio)
+            }
+
+            if (typeof d.FechaCierre === "number") {
+              d.FechaCierre = this.excelNumberToDate(d.FechaCierre)
+            }
+          });
           movCierre = data;
         }
       }

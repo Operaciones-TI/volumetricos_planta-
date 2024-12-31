@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Global } from "./global";
 
+const VM_HTTP_URL = 'https://api.example.com';
+
 // CABECERAS NECESARIAS PARA HACER LOS HTTP REQUEST A EL CONTROLADOR DEL APPI
 const VM_HTTP_OPTIONS = {
   headers: new HttpHeaders({ 'Authorization': 'bearer ' + localStorage.getItem('token') }),

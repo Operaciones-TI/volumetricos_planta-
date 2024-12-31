@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DarkmodeComponent } from './components/darkmode/darkmode.component';
 import { LoadDataComponent } from './pages/load-data/load-data.component';
+import { JsonComponent } from './pages/json/json.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { LoadDataComponent } from './pages/load-data/load-data.component';
     LoginComponent,
     DarkmodeComponent,
     LoadDataComponent,
+    JsonComponent,
   ],
   imports: [
     BrowserModule,

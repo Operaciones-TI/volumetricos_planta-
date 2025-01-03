@@ -29,11 +29,11 @@ export class JsonService {
     return this.httpClient.get(this.url + '?iFecha=' + iFecha + '&fFecha=' + fFecha, VM_HTTP_OPTIONS);
   }
 
-  ObtenerJSONMensual(iFecha: string, fFecha: string): Observable<any> {
+  ObtenerJSONMensual(iFecha: string, fFecha: string, rfcC: string): Observable<any> {
     console.log('Consultando Json Mensual!!');
     // return this.httpClient.get(this.url + '/mensual' + '?iFecha=' + iFecha + '&fFecha=' + fFecha, VM_HTTP_OPTIONS);
-    console.log(this.url + '/mensual' + '?iFecha=' + iFecha + '&fFecha=' + fFecha);
-    return this.httpClient.get(this.url + '/mensual' + '?iFecha=' + iFecha + '&fFecha=' + fFecha);
+    console.log(this.url + '/mensual' + '?iFecha=' + iFecha + '&fFecha=' + fFecha + '&rfcC=' + rfcC);
+    return this.httpClient.get(this.url + '/mensual' + '?iFecha=' + iFecha + '&fFecha=' + fFecha + '&rfcC=' + rfcC);
   }
 
   ObtenerJSONNombre(iFecha: string, fFecha: string): Observable<any> {

@@ -9,10 +9,31 @@ import { MatDatepicker, MatDatepickerInputEvent, MatDateRangeInput } from '@angu
 import * as moment from 'moment';
 import { Moment } from 'moment';
 
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
 @Component({
   selector: 'app-json',
   templateUrl: './json.component.html',
-  styleUrls: ['./json.component.scss']
+  styleUrls: ['./json.component.scss'],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ],
 })
 export class JsonComponent implements OnInit {
 
@@ -28,6 +49,8 @@ export class JsonComponent implements OnInit {
     end: new FormControl(),
   });
 
+  public placeDetail: string = '';
+  public placeDetailLoaded: boolean = false;
   public singleDate: any = '';
   public dateInit: any = '';
   public dateEnd: any = '';
@@ -48,7 +71,9 @@ export class JsonComponent implements OnInit {
       console.log('Json Diario!! ');
       this.jsonService.ObtenerJSONDiario(this.dateInit, this.dateEnd).subscribe({
         next: (r) => {
+          this.placeDetail = r;
           this.loading = false;
+          this.placeDetailLoaded = true;
         },
         error: (e) => {
           this.esError = true;
@@ -63,7 +88,9 @@ export class JsonComponent implements OnInit {
       console.log('Json Mensual!!');
       this.jsonService.ObtenerJSONMensual(this.dateInit, this.dateEnd).subscribe({
         next: (r) => {
+          this.placeDetail = r;
           this.loading = false;
+          this.placeDetailLoaded = true;
           console.log(r)
         },
         error: (e) => {
@@ -142,5 +169,45 @@ export class JsonComponent implements OnInit {
     const ctrlValue = this.date.value;
     console.log('Mes/Año: ', ctrlValue._d);
     this.onGetDateStartAndEnd(ctrlValue._d);
+  }
+
+  generarZipJSON() {
+    const dataINFO = {
+      json: JSON.stringify(this.placeDetail)
+    };
+
+    this.jsonService.ObtenerJSONNombre(this.dateInit, this.dateEnd).subscribe({
+      next: (r) => {
+        console.log('resp: ', r);
+        const zipName = r.NombreArchivo;
+
+        this.jsonService.ObtenerZipJSONInfo(this.dateInit, this.dateEnd, zipName, dataINFO).then((data: any) => {
+          console.log(data);
+        });
+      },
+      error: (error) => {
+        this.esError = true;
+        console.log(JSON.stringify(error));
+
+        if (error.status == 409) {
+          let errorsM: [];
+          errorsM = error.error;
+          console.log(errorsM);
+          this.esErrors = true;
+          errorsM.forEach((errorMessage: string) => {
+            if (errorMessage.includes('empty')) {
+              let temp = errorMessage.split(':', 2);
+              let newString = `El campo: "${temp[0]}" es requerido!`;
+              this.mensajes.push(newString);
+            } else {
+              let temp = errorMessage.split(':', 2);
+              this.mensajes.push(temp[1]);
+            }
+          });
+        } else
+          this.esErrors = false;
+        this.mensaje = 'No se ha podido contactar el servidor';
+      }
+    });
   }
 }

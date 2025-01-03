@@ -12,7 +12,7 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
       state('exit', style({ opacity: 0, transform: 'translateX(-100%)' })),
       transition('enter => exit', animate('0.8s ease-in-out')),
       transition('exit => enter', animate('0.8s ease-in-out'))
-    ])
+    ]),
   ]
 })
 

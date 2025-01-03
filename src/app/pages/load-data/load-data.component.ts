@@ -1,6 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { LoadDataService } from '../../services/load-data.service';
 import * as XLSX from 'xlsx';
+import { Tanque } from 'src/app/interfaces/Tanque.interface';
+import { Dispensario } from 'src/app/interfaces/Dispensario.interface';
+import { MedidorDispensarios } from 'src/app/interfaces/MedidorDispensario.interface';
+import { MedidorTanque } from 'src/app/interfaces/MedidorTanque.interface';
+import { MangueraDispensario } from 'src/app/interfaces/MangueraDispensario.interface';
 
 
 @Component({
@@ -13,7 +19,13 @@ export class LoadDataComponent implements OnInit {
   excelAlmacenes: any;
   excelMovimientos: any;
   saving: boolean = false;
-  constructor(private toastr: ToastrService) { }
+  almacenesSaved: boolean = false;
+  movimientosSaved: boolean = false;
+
+  constructor(
+    private toastr: ToastrService,
+    private loadDataService: LoadDataService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -22,25 +34,10 @@ export class LoadDataComponent implements OnInit {
     let newDate = XLSX.SSF.parse_date_code(num);
     return `${newDate.y}-${String(newDate.m).padStart(2, '0')}-${String(newDate.d).padStart(2, '0')}`;
   }
-  
 
-  // showToast(msg: string) {
-  //   this.toast.setMessage(msg);
-  //   this.toast.isShow = true;
-
-  //   setTimeout(() => {
-  //     this.toast.close();
-  //   }, 5000);
-  // }
-
-
-  getData() {
+  saveData() {
     this.almacenesFile();
     this.movimientosFile();
-
-    setTimeout(() => {
-      this.saving = false;
-    }, 2000);
   }
 
   formatExcelData(excelData: any, cols: string[]): any {
@@ -54,24 +51,102 @@ export class LoadDataComponent implements OnInit {
     return excelData;
   }
 
+  // ----------------------------------------------------------------------------------------
+  // Format Object functions with missing keys
+  // ----------------------------------------------------------------------------------------
+  async formatTanques(oldKeys: any): Promise<Tanque> {
+    return new Promise((resolve, reject) => {
+      resolve({
+        ClaveIdentificacionTanque: oldKeys.A,
+        DescripcionLocalizacion: oldKeys.B,
+        VigenciaCalibracionTanque: oldKeys.C,
+        CapacidadTotalTanque: oldKeys.D,
+        CapacidadOperativaTanque: oldKeys.E,
+        CapacidadUtilTanque: oldKeys.F,
+        CapacidadFondajeTanque: oldKeys.G,
+        VolumenMinimoOperacion: oldKeys.H,
+        EstadoTanque: null
+      }),
+      reject((e: Error) => {
+        console.error('Error formatting tanques', e);
+      });
+    });
+  }
+
+  async formatDispensarios(oldKeys: any): Promise<Dispensario> {
+    return new Promise((resolve, reject) => {
+      resolve({
+        ClaveDispensario: oldKeys.A,
+      }),
+      reject((e: Error) => {
+        console.error('Error formatting tanques', e);
+      });
+    });
+  }
+
+  async formatMedidoresDispensario(oldKeys: any): Promise<MedidorDispensarios> {
+    return new Promise((resolve, reject) => {
+      resolve({
+        ClaveDispensario: oldKeys.A,
+        SistemaMedicion: oldKeys.B,
+        DescripcionLocalizacion: oldKeys.C,
+        VigenciaCalibracion: oldKeys.D,
+        IncertidumbreMedicion: oldKeys.E,
+      }),
+      reject((e: Error) => {
+        console.error('Error formatting tanques', e);
+      });
+    });
+  }
+
+  async formatManguerasDispensario(oldKeys: any): Promise<MangueraDispensario> {
+    return new Promise((resolve, reject) => {
+      resolve({
+        ClaveDispensario: oldKeys.A,
+        ClaveManguera: oldKeys.B
+      }),
+      reject((e: Error) => {
+        console.error('Error formatting tanques', e);
+      });
+    });
+  }
+  
+  async formatMedidoresTanques(oldKeys: any): Promise<MedidorTanque> {
+    return new Promise((resolve, reject) => {
+      resolve({
+        ClaveTanque: oldKeys.A,
+        SistemaMedicionTanque: oldKeys.B,
+        DescripcionLocalizacion: oldKeys.C,
+        VigenciaCalibracion: oldKeys.D,
+        IncertidumbreMedicion: oldKeys.E
+      }),
+      reject((e: Error) => {
+        console.error('Error formatting tanques', e);
+      });
+    });
+  }
+
+
+  // ----------------------------------------------------------------------------------------
+  // Get files data from input and convert it to JSON
+  // ----------------------------------------------------------------------------------------
+
   almacenesFile() {
     this.saving = true;
     const inputElement = document.getElementById('almacenesFile') as HTMLInputElement;
     if (!inputElement || !inputElement.files || inputElement.files.length === 0) {
-      console.log('no file');
       this.saving = false;
       return;
     }
     const file = inputElement.files[0];
     if (!file) {
-      console.log('no file')
       this.saving = false;
       return;
     }
 
     const reader = new FileReader();
 
-    reader.onload = (e: ProgressEvent<FileReader>) => {
+    reader.onload = async (e: ProgressEvent<FileReader>) => {
       const data = new Uint8Array(e.target?.result as ArrayBuffer);
       const workbook = XLSX.read(data, { type: 'array' });
       
@@ -101,36 +176,45 @@ export class LoadDataComponent implements OnInit {
       medidoresDispensarios = this.excelData.slice(headsCells[3] + 2, headsCells[4]);
       manguerasDispensario = this.excelData.slice(headsCells[4] + 2, headsCells[5]);
 
-      for (let item of tanques) {
+      tanques = await Promise.all(tanques.map(async (item: any) => {
         item = this.formatExcelData(item, ["A", "B", "C", "D", "E", "F", "G", "H"]);
         if (typeof item.C === "number") {
           item.C = this.excelNumberToDate(item.C);
         }
-      }
-      
-      for (let item of dispensarios) {
+        item = await this.formatTanques(item);
+        return item;
+      }));
+
+      dispensarios = await Promise.all(dispensarios.map(async (item: any) => {
         item = this.formatExcelData(item, ["A"]);
-      }
+        item = await this.formatDispensarios(item);
+        return item;
+      }));
 
-      for (let item of medidoresTanques) {
-        item = this.formatExcelData(item, ["A", "B", "C", "D", "E", "F"]);
+      medidoresTanques = await Promise.all(medidoresTanques.map(async (item: any) => {
+        item = this.formatExcelData(item, ["A", "B", "C", "D", "E"]);
         if (typeof item.D === "number") {
           item.D = this.excelNumberToDate(item.D);
         }
-      }
+        item = await this.formatMedidoresTanques(item);
+        return item;
+      }));
 
-      for (let item of medidoresDispensarios) {
-        item = this.formatExcelData(item, ["A", "B", "C", "D", "E", "F"]);
+      medidoresDispensarios = await Promise.all(medidoresDispensarios.map(async (item: any) => {
+        item = this.formatExcelData(item, ["A", "B", "C", "D", "E"]);
         if (typeof item.D === "number") {
           item.D = this.excelNumberToDate(item.D);
         }
-      }
+        item = await this.formatMedidoresDispensario(item);
+        return item;
+      }));
 
-      for (let item of manguerasDispensario) {
+      manguerasDispensario = await Promise.all(manguerasDispensario.map(async (item: any) => {
         item = this.formatExcelData(item, ["A", "B"]);
-      }
+        item = await this.formatManguerasDispensario(item);
+        return item;
+      }));
 
-      // for ()
       let obj = {
         tanques: tanques,
         dispensarios: dispensarios,
@@ -140,28 +224,37 @@ export class LoadDataComponent implements OnInit {
       }
 
       this.excelAlmacenes = JSON.stringify(obj);
-      console.log(this.excelAlmacenes);
-      // this.toastr.success('Almacenes cargados correctamente', '', {
-      //   timeOut: 3000,
-      //   progressBar: true,
-      // });
       inputElement.value = '';
+
+      this.loadDataService.saveAlmacenesData(obj, 'token').then(response => {
+        this.toastr.success('Almacenes guardados correctamente', '', {
+            timeOut: 3000,
+            progressBar: true,
+          });
+        this.almacenesSaved = true;
+        this.saving = false;
+      }).catch(e => {
+        this.toastr.error('Algo fallo al guardar los almacenes', '', {
+          timeOut: 3000,
+          progressBar: true,
+        });
+        this.saving = false;
+      });
     };
 
     reader.readAsArrayBuffer(file);
+
   }
 
   movimientosFile() {
     this.saving = true;
     const inputElement = document.getElementById('movimientosFile') as HTMLInputElement;
     if (!inputElement || !inputElement.files || inputElement.files.length === 0) {
-      console.log('no movimientos file');
       this.saving = false;
       return;
     }
     const file = inputElement.files[0];
     if (!file) {
-      console.log('no movimientos file')
       this.saving = false;
       return;
     }
@@ -171,53 +264,52 @@ export class LoadDataComponent implements OnInit {
     reader.onload = (e: ProgressEvent<FileReader>) => {
       const data = new Uint8Array(e.target?.result as ArrayBuffer);
       const workbook = XLSX.read(data, { type: 'array' });
-      console.log(workbook.SheetNames)
 
       let tanqueHeads = [
-        'ClavenTanque',
+        'ClaveTanque',
         'TipoMovimiento',
-        'VolumenInicial',
-        'Volumenfinal',
-        'Volumen',
+        'VolumenInicialTanque',
+        'VolumenFinalTanque',
+        'VolumenEntregado',
         'Temperatura',
         'PresionAbsoluta',
-        'FechaHoraInicio',
-        'FechaHoraFinal',
+        'FechaHoraInicialEntrega',
+        'FechaHoraFinalEntrega',
         'Cantidad',
         'PermisoReceptor',
         'FechaHoraInicial',
-        'VolumenFactura',
+        'VolumenDocumentado',
         'Folio',
         'PrecioCompra',
-        'ImporteTotal',
+        'Valor',
         'Uuid',
-        'FechaEmisionCfdi',
+        'FechaYHoraTransaccion',
         'ClaveVehiculo',
         'PermisoTransporte',
-        'Proveedor',
-        'RfcProveedor',
+        'NombreClienteOProveedor',
+        'RfcClienteOProveedor',
         'PermisoAlmacenamientoDistribucion',
         'NombreTerminalDistribucion',
         'Aclaracion',
       ];
 
       let dispensHeads = [
-        'ClavenDispensario',
+        'ClaveDispensario',
         'ClaveManguera',
-        'TipoRegistro',
-        'VolEntregadoTotalAcumulado',
-        'VolEntregadoTotalInstantaneo',
+        'TipoDeRegistro',
+        'VolumenEntregadoTotalizadorAcum',
+        'VolumenEntregadoTotalizadorInsta',
         'PrecioVentaTotalizadorInstantaneo',
         'FechaHoraEntrega',
         'Permiso',
         'FechaVenta',
         'CantidadLitros',
-        'PrecioUnitario',
+        'PrecioVentaTotalizadorInsta',
         'Importe',
         'Uuid',
-        'FechaEmisionCfdi',
-        'RfcCliente',
-        'NombreCliente',
+        'FechaYHoraTransaccion',
+        'RfcClienteOProveedor',
+        'NombreClienteOProveedor',
         'Aclaracion',
       ];
 
@@ -313,11 +405,21 @@ export class LoadDataComponent implements OnInit {
       };
 
       this.excelMovimientos = JSON.stringify(movimientos);
-      console.log(this.excelMovimientos)
-      // this.toastr.success('Movimientos cargados correctamente', '', {
-      //   timeOut: 3000,
-      //   progressBar: true,
-      // });
+      this.loadDataService.saveMovimientosData(movimientos, 'token').then(response => {
+        this.toastr.success('Movimientos guardados correctamente', '', {
+          timeOut: 3000,
+          progressBar: true,
+        });
+        this.saving = false;
+      }).catch((e) => {
+        console.log(e);
+        this.toastr.error('Algo fallo al guardar los movimientos', '', {
+          timeOut: 3000,
+          progressBar: true,
+        });
+        this.saving = false;
+      });
+      
       inputElement.value = '';
     };
 

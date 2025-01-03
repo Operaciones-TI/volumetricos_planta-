@@ -1,0 +1,57 @@
+<div class="w-full 2xl:w-4/5 mx-auto p-4">
+  <h1 class="text-dark dark:text-white 2xl:text-5xl">JSON</h1>
+
+  <div class="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <section class="flex flex-col w-full gap-4">
+      <h2 class="text-dark dark:text-white 2xl:text-3xl"></h2>
+      <form class="form-inline">
+        <mat-form-field *ngIf="checkDay" appearance="fill">
+          <mat-label>Ingresa una fecha</mat-label>
+          <input matInput [matDatepicker]="oneDate" [(ngModel)]="singleDate" name="singleDate"
+            (dateChange)="dateChangeEvent()">
+          <mat-datepicker-toggle matSuffix [for]="oneDate"></mat-datepicker-toggle>
+          <mat-datepicker #oneDate></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="checkMonth" appearance="fill">
+          <mat-label>Ingresa un Mes y Año</mat-label>
+          <input matInput [matDatepicker]="dp" [formControl]="date">
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
+            (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
+          </mat-datepicker>
+        </mat-form-field>
+
+        <div *ngIf="checkDay || checkMonth" class="fomr-group pb-3"><button class="bg-primary text-white flex gap-4 items-center px-4 py-2 rounded-full hover:opacity-75 transition-all duration150 ease-linear"
+            (click)="obtenerJSON()">Buscar</button>
+        </div>
+
+        <section class="ml-4">
+          <mat-checkbox (change)="onCheckBoxChanged($event.checked, 'checkDay')" [(ngModel)]="checkDay"
+            name="checkDay" class="m-2">Diario</mat-checkbox>
+          <mat-checkbox (change)="onCheckBoxChanged($event.checked, 'checkMonth')" [(ngModel)]="checkMonth"
+            name="checkMonth" class="m-2">Mensual</mat-checkbox>
+        </section>
+      </form>
+    </section>
+
+    <!-- <section class="flex flex-col w-full gap-4">
+      <h2 class="text-dark dark:text-white 2xl:text-3xl">Permisos</h2>
+      <input type="file" class=" outline-none bg-light dark:bg-dark dark:text-white">
+    </section>
+
+    <section class="flex flex-col w-full gap-4">
+      <h2 class="text-dark dark:text-white 2xl:text-3xl">Facturas</h2>
+      <input type="file" class=" outline-none bg-light dark:bg-dark dark:text-white">
+    </section> -->
+  </div>
+
+  <!-- <div class="mt-20 flex flex-col gap-4">
+    <h2 class="text-dark dark:text-white 2xl:text-3xl">Resultados</h2>
+    <code>
+      <pre>{{ excelData | json }}</pre>
+    </code>
+  </div> -->
+
+  <!-- <button (click)="getData()">Process excel</button> -->
+</div>

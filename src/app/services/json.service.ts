@@ -32,7 +32,42 @@ export class JsonService {
   ObtenerJSONMensual(iFecha: string, fFecha: string): Observable<any> {
     console.log('Consultando Json Mensual!!');
     // return this.httpClient.get(this.url + '/mensual' + '?iFecha=' + iFecha + '&fFecha=' + fFecha, VM_HTTP_OPTIONS);
-    // console.log(this.url + '/mensual' + '?iFecha=' + iFecha + '&fFecha=' + fFecha);
+    console.log(this.url + '/mensual' + '?iFecha=' + iFecha + '&fFecha=' + fFecha);
     return this.httpClient.get(this.url + '/mensual' + '?iFecha=' + iFecha + '&fFecha=' + fFecha);
+  }
+
+  ObtenerJSONNombre(iFecha: string, fFecha: string): Observable<any> {
+    return this.httpClient.get(this.url + '/nombre' + '?iFecha=' + iFecha + '&fFecha=' + fFecha, VM_HTTP_OPTIONS);
+  }
+
+  async ObtenerZipJSONInfo(iFecha: string, fFecha: string, zipName: string, dataJSON: any) {
+    // Opciones por defecto estan marcadas con un *
+    const url = this.url+ '/descargar' + '?iFecha=' + iFecha + '&fFecha=' + fFecha;
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + localStorage.getItem('token')
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(dataJSON.json) // body data type must match "Content-Type" header
+    }).then((response) => response.blob())
+    .then((myBlob) => {
+      const element = document.createElement('a');
+      element.href = URL.createObjectURL(myBlob);
+      element.download = zipName + '.zip';
+      document.body.appendChild(element);
+      element.click();
+
+      let respSucces = {
+        message: 'Exito!!',
+      };
+      return respSucces;
+    });
   }
 }

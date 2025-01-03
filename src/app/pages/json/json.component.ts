@@ -45,7 +45,7 @@ export class JsonComponent implements OnInit {
   obtenerJSON() {
     this.loading = true;
     if (this.checkDay) {
-      console.log('Json Diario!!');
+      console.log('Json Diario!! ');
       this.jsonService.ObtenerJSONDiario(this.dateInit, this.dateEnd).subscribe({
         next: (r) => {
           this.loading = false;
@@ -64,6 +64,7 @@ export class JsonComponent implements OnInit {
       this.jsonService.ObtenerJSONMensual(this.dateInit, this.dateEnd).subscribe({
         next: (r) => {
           this.loading = false;
+          console.log(r)
         },
         error: (e) => {
           this.esError = true;

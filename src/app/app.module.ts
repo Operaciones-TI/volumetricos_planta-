@@ -25,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ToastrModule } from 'ngx-toastr';
 import { RazonSocialComponent } from './pages/razon-social/razon-social.component';
+import { RazonPlantaComponent } from './pages/razon-planta/razon-planta.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { RazonSocialComponent } from './pages/razon-social/razon-social.componen
     LoadDataComponent,
     JsonComponent,
     RazonSocialComponent,
+    RazonPlantaComponent,
   ],
   imports: [
     BrowserModule,

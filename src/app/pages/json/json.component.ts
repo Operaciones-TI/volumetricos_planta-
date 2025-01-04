@@ -55,6 +55,8 @@ export class JsonComponent implements OnInit {
   public dateInit: any = '';
   public dateEnd: any = '';
 
+  public rfcPrueba = 'GCN6105309I5'
+
   public checkDay: boolean = false;
   public checkMonth: boolean = false;
 
@@ -86,7 +88,7 @@ export class JsonComponent implements OnInit {
     }
     else {
       console.log('Json Mensual!!');
-      this.jsonService.ObtenerJSONMensual(this.dateInit, this.dateEnd).subscribe({
+      this.jsonService.ObtenerJSONMensual(this.dateInit, this.dateEnd, this.rfcPrueba).subscribe({
         next: (r) => {
           this.placeDetail = r;
           this.loading = false;

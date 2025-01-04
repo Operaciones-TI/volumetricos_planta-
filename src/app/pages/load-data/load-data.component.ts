@@ -8,6 +8,8 @@ import { MedidorDispensarios } from 'src/app/interfaces/MedidorDispensario.inter
 import { MedidorTanque } from 'src/app/interfaces/MedidorTanque.interface';
 import { MangueraDispensario } from 'src/app/interfaces/MangueraDispensario.interface';
 
+import { Router } from '@angular/router';
+import * as JSZip from 'jszip';
 
 @Component({
   selector: 'app-load-data',
@@ -24,10 +26,24 @@ export class LoadDataComponent implements OnInit {
 
   constructor(
     private toastr: ToastrService,
-    private loadDataService: LoadDataService
+    private loadDataService: LoadDataService,
+    private router: Router
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+  }
+
+  async descargarZip(data: any) {
+    // const data = JSON.stringify({ iFecha: '2024-12-30', fFecha: '2024-12-30' });
+    const zip = new JSZip();
+    zip.file('data.json', data);
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+
+    const url = document.createElement('a');
+    url.href = URL.createObjectURL(zipBlob);
+    url.download = 'data.zip';
+    document.body.appendChild(url);
+    url.click();
   }
 
   excelNumberToDate(num: number) {

@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 
+import { Usuario } from './model/usuario';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,5 +11,26 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'volumetricos_planta-';
 
-  constructor() {}
+  public usuario: Usuario;
+  public token: string = '';
+
+  constructor(
+    private route: Router,
+
+  ) {
+
+    this.usuario = new Usuario(0, '', '', '', '', '', new Date());
+    this.getLocaStorage();
+  }
+
+  getLocaStorage() {
+  let identity = localStorage.getItem('identity');
+  if (identity !== null) {
+    this.route.navigate(['/']);
+  }
+  else {
+    this.route.navigate(['/login']);
+  }
+}
+
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IRazonSocial } from '../interfaces/RazonSocial.interface';
+import { IPermisos } from '../interfaces/Permiso.interface';
 
 const VM_HTTP_URL = 'https://localhost:5001/api';
 
@@ -38,6 +39,21 @@ export class PermisoService {
       })
         .subscribe({
           next: (response: IRazonSocial[]) => {
+            resolve(response);
+          },
+          error: (error) => {
+            console.error(error);
+            reject(error);
+          }
+        });
+    });
+  }
+
+  getPermisos(IdRazonSocial: number): Promise<IPermisos[]> {
+    return new Promise((resolve, reject) => {
+      this.http.get<IPermisos[]>(`${VM_HTTP_URL}/Permiso?idRazonSocial=${IdRazonSocial}`)
+        .subscribe({
+          next: (response: IPermisos[]) => {
             resolve(response);
           },
           error: (error) => {

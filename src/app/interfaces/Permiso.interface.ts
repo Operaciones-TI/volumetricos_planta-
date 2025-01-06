@@ -6,3 +6,13 @@ export interface Permiso {
   ModalidadPermiso: string | null;
   NumPermiso: string | null;
 }
+
+export interface IPermisos {
+  id: number;
+  idRazonSocial: number;
+  rfcRepresentanteLegal: string;
+  rfcProveedor: string;
+  caracter: string;
+  modalidadPermiso: string;
+  numPermiso: string;
+}

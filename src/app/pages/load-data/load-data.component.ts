@@ -7,9 +7,12 @@ import { Dispensario } from 'src/app/interfaces/Dispensario.interface';
 import { MedidorDispensarios } from 'src/app/interfaces/MedidorDispensario.interface';
 import { MedidorTanque } from 'src/app/interfaces/MedidorTanque.interface';
 import { MangueraDispensario } from 'src/app/interfaces/MangueraDispensario.interface';
+import { IPermisos } from 'src/app/interfaces/Permiso.interface';
+import { PermisoService } from 'src/app/services/permiso.service';
 
 import { Router } from '@angular/router';
 import * as JSZip from 'jszip';
+import { IRazonSocial } from 'src/app/interfaces/RazonSocial.interface';
 
 @Component({
   selector: 'app-load-data',
@@ -23,14 +26,22 @@ export class LoadDataComponent implements OnInit {
   saving: boolean = false;
   almacenesSaved: boolean = false;
   movimientosSaved: boolean = false;
+  razonSelected: number = 0;
+  permisoSelected: number = 0;
+  
+  razonesSociales: IRazonSocial[] = [];
+  permisos: IPermisos[] = [];
 
   constructor(
     private toastr: ToastrService,
     private loadDataService: LoadDataService,
-    private router: Router
+    private router: Router,
+    private permisoService: PermisoService
   ) { }
 
   async ngOnInit() {
+    this.getRazonesSociales()
+    this.getPermisos(this.razonSelected);
   }
 
   async descargarZip(data: any) {
@@ -49,6 +60,28 @@ export class LoadDataComponent implements OnInit {
   excelNumberToDate(num: number) {
     let newDate = XLSX.SSF.parse_date_code(num);
     return `${newDate.y}-${String(newDate.m).padStart(2, '0')}-${String(newDate.d).padStart(2, '0')}`;
+  }
+
+  getPermisos(idRazonSocial: number) {
+    this.permisoService.getPermisos(idRazonSocial)
+    .then((permisos: IPermisos[]) => {
+      console.log(permisos);
+      this.permisos = permisos;
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  }
+
+  async getRazonesSociales() {
+    try {
+      const data = await this.permisoService.getRazonSocialData();
+      console.log(data);
+      this.razonesSociales = data;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   }
 
   saveData() {

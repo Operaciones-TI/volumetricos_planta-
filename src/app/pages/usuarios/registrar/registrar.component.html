@@ -1,0 +1,83 @@
+<div class="container">
+  <div *ngIf="esError && !esErrors" class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+    <strong>Algo salió mal.</strong> {{mensaje}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div *ngIf="esError && esErrors">
+    <div *ngFor="let message of mensajes" class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+      <strong>Algo salió mal.</strong> {{message}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="esSuccess" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+    <strong>Usuario registrado exitosamente!</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div *ngIf="esSuccess" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+    La contraseña del usuario {{ userDetail.login }} es: " <strong>{{ userDetail.password }}</strong> ", favor de guardarla antes de salir de esta pantalla.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <mat-card class="mt-4">
+    <mat-card-title>Registrar Usuario</mat-card-title>
+    <div class="container">
+      <div class="row">
+        <div class="col-10 offset-1">
+          <mat-card-content>
+            <div class="row">
+              <div class="col-5 offset-1">
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>Nombre</mat-label>
+                  <input matInput autocomplete="off" required type="text" name="login" [(ngModel)]="usuario.nombre">
+                </mat-form-field>
+              </div>
+              <div class="col-5">
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>Apellidos</mat-label>
+                  <input matInput autocomplete="off" required type="text" name="apellidos"
+                    [(ngModel)]="usuario.apellidos">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-5 offset-1">
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>Usuario</mat-label>
+                  <input matInput autocomplete="off" required type="text" name="login" [(ngModel)]="usuario.login">
+                </mat-form-field>
+              </div>
+              <div class="col-5">
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>Perfil</mat-label>
+                  <mat-select name="perfil" [(ngModel)]="usuario.perfil" >
+                    <mat-option value="Administrador">Administrador</mat-option>
+                    <mat-option value="Supervisor">Supervisor</mat-option>
+                    <mat-option value="Auditor">Auditor</mat-option>
+                    <mat-option value="Operador">Operador</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-2 offset-10">
+                <button class="btn btn-outline-info ml-3" type="submit" (click)="registrarUsuario()">Registrar</button>
+              </div>
+            </div>
+          </mat-card-content>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

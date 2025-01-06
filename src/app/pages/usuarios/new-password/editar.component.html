@@ -1,0 +1,29 @@
+<mat-dialog-content>
+  <div class="container">
+    <div *ngIf="esError && !esErrors" class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+      <strong>Algo salió mal.</strong> {{mensaje}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div *ngIf="esError && esErrors">
+      <div *ngFor="let message of mensajes" class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+        <strong>Algo salió mal.</strong> {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="esSuccess" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+      La nueva contraseña del usuario es: " <strong>{{ userDetail }}</strong> ", favor de guardarla antes de salir de esta pantalla.
+    </div>
+
+    <div class="row" mat-dialog-actions>
+      <div class="col-2 offset-10">
+        <button class="btn btn-outline-danger ml-3" type="submit" (click)="onNoClick()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>

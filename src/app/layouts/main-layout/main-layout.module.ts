@@ -14,9 +14,9 @@ import { SharedModule } from 'src/app/shared/shared.module'
   ],
   imports: [
     CommonModule,
-    FormsModule,
     RouterModule.forChild(MainLayoutRoutes),
-    SharedModule
+    SharedModule,
+    FormsModule,
   ]
 })
 export class MainLayoutModule { }

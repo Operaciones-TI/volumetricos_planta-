@@ -26,10 +26,10 @@ export class AppComponent {
   getLocaStorage() {
   let identity = localStorage.getItem('identity');
   if (identity !== null) {
-    this.route.navigate(['/login']);
+    this.route.navigate(['/']);
   }
   else {
-    this.route.navigate(['/home']);
+    this.route.navigate(['/login']);
   }
 }
 

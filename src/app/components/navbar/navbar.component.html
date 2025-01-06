@@ -1,15 +1,15 @@
-<nav class="h-[10vh] bg-dark dark:bg-light">
-  <div class="h-full w-4/5 mx-auto flex justify-between items-center px-4 py-2">
-    <div class="h-full flex items-center gap-8 ">
-      <a routerLink="/" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3>Cargar Datos</h3></a>
-      <a routerLink="/home/json" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3>JSON</h3></a>
-      <a routerLink="/home/razon-social" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3>Permisos</h3></a>
-      <a routerLink="/home/razon-planta" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3>Razon Social</h3></a>
+<nav class="h-[10vh] w-full bg-dark dark:bg-light">
+  <div class="h-full w-full lg:w-4/5 mx-auto flex justify-between items-center px-8 py-2">
+    <div class="h-full hidden lg:flex items-center gap-8 ">
+      <a routerLink="/" class="text-white h-full flex items-center dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3 class="mb-0">Cargar Datos</h3></a>
+      <a routerLink="/home/json" class="text-white h-full flex items-center dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3 class="mb-0">JSON</h3></a>
+      <a routerLink="/home/permisos" class="text-white h-full flex items-center dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3 class="mb-0">Permisos</h3></a>
+      <a routerLink="/home/razon-planta" class="text-white h-full flex items-center dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3 class="mb-0">Razon Social</h3></a>
     </div>
     <div>
       <button
         (click)="toggleMenu()"
-        class="flex md:hidden items-center justfy-center text-white dark:text-dark text-2xl"
+        class="flex lg:hidden items-center justfy-center text-white dark:text-dark text-2xl"
       >
         <i class="fa-solid fa-bars"></i>
       </button>
@@ -38,14 +38,22 @@
       </div>
 
       <div class="w-full flex flex-col items-center h-full justify-evenly text-center gap-8">
-        <div class="font-bold flex flex-col justify-center gap-10">
+        <div class="font-bold flex flex-col justify-center gap-6">
           <a routerLink="/" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"
-            (click)="handleLogout()">
+          >
             <h2>Cargar datos</h2>
           </a>
-          <a routerLink="/login" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"
-            (click)="handleLogout()">
+          <a routerLink="/home/login" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"
+            >
             <h2>JSON</h2>
+          </a>
+          <a routerLink="/home/permisos" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"
+            >
+            <h2>Permisos</h2>
+          </a>
+          <a routerLink="/home/razon-planta" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"
+          >
+            <h2>Razon Social</h2> 
           </a>
         </div>
 

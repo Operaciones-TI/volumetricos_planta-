@@ -12,7 +12,7 @@ export const MainLayoutRoutes: Routes = [
     children: [
       { path: '', component: LoadDataComponent },
       { path: 'json', component: JsonComponent},
-      { path: 'razon-social', component: RazonSocialComponent},
+      { path: 'permisos', component: RazonSocialComponent},
       { path: 'razon-planta', component: RazonPlantaComponent}
     ]
   }

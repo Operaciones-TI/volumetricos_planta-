@@ -1,30 +1,63 @@
-<div class="w-full 2xl:w-4/5 mx-auto p-4">
+<div class="w-full lg:w-4/5 mx-auto py-4 px-8">
   <h1 class="text-dark dark:text-white 2xl:text-5xl">Registro de Permiso</h1>
 
-  <div class="bg-slate-300 p-6 w-full rounded-lg"> <!-- QUMA470929 -->
-    <form action="" class="flex flex-col gap-y-10 h-full">
+  <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg"> <!-- QUMA470929 -->
+    <form (ngSubmit)="handleSubmit()" class="flex flex-col gap-y-10 h-full">
       <div class="flex flex-col w-full gap-4">
-        <label for="rfcContribuyente" class="after:content-['*'] after:text-red-500 after:pl-1">RFC Contribuyente</label>
-        <input required type="text" id="rfcContribuyente" placeholder="Ej: QUMA470929"
-          class="outline-none border-2 px-4 py-2 bg-transparent dark:text-white">
+        <label for="razonSocial" class="after:content-['*'] after:text-red-500 after:pl-1">Razon social</label>
+        <div class="flex w-full gap-4">
+          <select 
+            id="razonSocial" 
+            name="razonSocialN" 
+            [(ngModel)]="data.IdRazonSocial"
+            class="outline-none w-full border-2 px-4 py-2 hover:cursor-pointer bg-transparent"
+          >
+            <option *ngIf="razonesLoading" value="0" selected>Loading...</option>
+            <option *ngFor="let razon of razonesSociales" [value]="razon.id">{{razon.razonSocialName}}</option>
+          </select>
+          <button
+            class="text-lg hover:opacity-75 duration-200 transition-all ease-linear"
+            type="button"
+            (click)="getRazonesSociales()"
+          >
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+        </div>
       </div>
 
       <div class="flex flex-col w-full gap-4">
-        <label for="recRepresentante" class="after:content-['*'] after:text-red-500 after:pl-1">RFC Representante Legal</label>
-        <input required type="text" id="recRepresentante" placeholder="Ej: QUMA470929"
-          class="outline-none border-2 px-4 py-2 bg-transparent dark:text-white">
+        <label for="rfcRepresentante" class="after:content-['*'] after:text-red-500 after:pl-1">RFC Representante Legal</label>
+        <input 
+          required 
+          type="text" 
+          id="rfcRepresentante" 
+          name="rfcRepresentanteN" 
+          minlength="12" 
+          [(ngModel)]="data.RfcRepresentanteLegal" 
+          placeholder="Ej: PAL7202161U0"
+          class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
       </div>
 
       <div class="flex flex-col w-full gap-4">
-        <label for="recProveedor" class="after:content-['*'] after:text-red-500 after:pl-1">RFC Proveedor</label>
-        <input required type="text" id="recProveedor" placeholder="Ej: QUMA470929"
-          class="outline-none border-2 px-4 py-2 bg-transparent dark:text-white">
+        <label for="rfcProveedor" class="after:content-['*'] after:text-red-500 after:pl-1">RFC Proveedor</label>
+        <input 
+          required 
+          type="text" 
+          id="rfcProveedor" 
+          name="rfcProveedorN" 
+          [(ngModel)]="data.RfcProveedor" 
+          placeholder="Ej: PAL7202161U0"
+          class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
       </div>
 
       <div class="flex flex-col w-full gap-4">
         <label for="caracter" class="after:content-['*'] after:text-red-500 after:pl-1">Caracter</label>
-        <select id="caracter"
-          class="outline-none border-2 px-4 py-2 hover:cursor-pointer bg-transparent dark:text-white">
+        <select 
+          id="caracter" 
+          name="caracterN" 
+          [(ngModel)]="data.Caracter"
+          class="outline-none border-2 px-4 py-2 hover:cursor-pointer bg-transparent"
+        >
           <option value="contratista">Contratista</option>
           <option value="asignatario">Asignatario</option>
           <option value="permisionario">Permisionario</option>
@@ -34,18 +67,35 @@
 
       <div class="flex flex-col w-full gap-4">
         <label for="permiso" class="after:content-['*'] after:text-red-500 after:pl-1">Modalidad del permiso</label>
-        <input required type="text" id="permiso" placeholder="Ej: PER11"
-          class="outline-none border-2 px-4 py-2 bg-transparent dark:text-white">
+        <input 
+          required 
+          type="text" 
+          id="permiso" 
+          name="permisoN" 
+          [(ngModel)]="data.ModalidadPermiso" 
+          placeholder="Ej: PER11"
+          class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
       </div>
 
       <div class="flex flex-col w-full gap-4">
         <label for="numPermiso" class="after:content-['*'] after:text-red-500 after:pl-1">Numero de permiso</label>
-        <input required type="text" id="numPermiso" placeholder="Ej: PL/XXXXX/ALM/AAAA"
-          class="outline-none border-2 px-4 py-2 bg-transparent dark:text-white">
+        <input 
+          required 
+          type="text" 
+          id="numPermiso" 
+          name="numPermisoN" 
+          [(ngModel)]="data.NumPermiso" 
+          placeholder="Ej: PL/XXXXX/ALM/AAAA"
+          class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
       </div>
 
       <div class="flex justify-center gap-4">
-        <button class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+        <button
+          [disabled]="!isValidForm()"
+          class="bg-primary text-white py-2 px-8 hover:opacity-75 rounded-md disabled:opacity-50 transition-all ease-linear duration-200"
+        >
+          Registrar
+        </button>
       </div>
     </form>
   </div>

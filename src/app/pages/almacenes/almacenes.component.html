@@ -1,0 +1,252 @@
+<div class="w-full 2xl:w-4/5 mx-auto p-4">
+    <h1 class="text-dark dark:text-white 2xl:text-5xl">Almacenes</h1>
+    <section class="my-20 grid grid-cols-1 lg:grid-cols-2 gap-6 dark:text-white">
+        <div>
+            <label for="razonSocial" class="after:content-['*'] after:text-red-500 after:pl-1">Razon social</label>
+            <select 
+                name="razonSocial"
+                [(ngModel)]="razonSelected"
+                (change)="getPermisos(razonSelected)"
+                class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
+                <option value="0">Seleccione una razón social</option>
+                <option [value]="razon.id" *ngFor="let razon of razonesSociales">
+                    {{razon.razonSocialName}}
+                </option>
+            </select>
+        </div>
+        <div>
+            <label for="permiso">Permiso</label>
+            <select     
+                name="permiso"
+                [(ngModel)]="permisoSelected"
+                class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
+                <option value="0">Seleccione un permiso</option>
+                <option [value]="permiso.id" *ngFor="let permiso of permisos">
+                    {{permiso.numPermiso}}
+                </option>
+            </select>
+        </div>
+    </section>
+    <div class="grid grid-cols-1 lg:grid-cols-1 gap-6 dark:text-white">
+        <div>
+            <h1 class="text-dark dark:text-white 2xl:text-3xl">Tanques</h1>
+            <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="ClaveTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Tanque</label>
+                        <input required type="text" id="ClaveTanque" 
+                            name="ClaveTanque"
+                            [(ngModel)]="tanqueData.claveTanque"
+                            placeholder="Ej: TQS-ALM-0005"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+        
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="Descripcion" class="after:content-['*'] after:text-red-500 after:pl-1">Descripción</label>
+                        <input required type="text" id="Descripcion" 
+                            name="Descripcion"
+                            [(ngModel)]="tanqueData.descripcion"
+                            placeholder="Ej: Tanque 5"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+        
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="VigenciaCalibracion" class="after:content-['*'] after:text-red-500 after:pl-1">Vigencia Calibración de almacen</label>
+                        <input required type="date" id="VigenciaCalibracion" 
+                            name="VigenciaCalibracion"
+                            [(ngModel)]="tanqueData.vigenciaCalibracion"
+                            min="1753-01-01"
+                            max="9999-12-31"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+        
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="CapacidadTotal" class="after:content-['*'] after:text-red-500 after:pl-1">Capacidad Total</label>
+                        <input required type="number" id="CapacidadTotal" 
+                            name="CapacidadTotal"
+                            [(ngModel)]="tanqueData.capacidadTotal"
+                            placeholder="Ej: 1000"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+        
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="CapacidadOperativa" class="after:content-['*'] after:text-red-500 after:pl-1">Capacidad Operativa</label>
+                        <input required type="number" id="CapacidadOperativa" 
+                            name="CapacidadOperativa"
+                            [(ngModel)]="tanqueData.capacidadOperativa"
+                            placeholder="Ej: 1000"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+        
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="CapacidadUtil" class="after:content-['*'] after:text-red-500 after:pl-1">Capacidad Util</label>
+                        <input required type="number" id="CapacidadUtil" 
+                            name="CapacidadUtil"
+                            [(ngModel)]="tanqueData.capacidadUtil"
+                            placeholder="Ej: 1000"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+        
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="CapacidadFondaje" class="after:content-['*'] after:text-red-500 after:pl-1">Capacidad Fondaje</label>
+                        <input required type="number" id="CapacidadFondaje" 
+                            name="CapacidadFondaje"
+                            [(ngModel)]="tanqueData.capacidadFondaje"
+                            placeholder="Ej: 1000"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+        
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="VolumenMinimoOperacion" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Minimo Operacion</label>
+                        <input required type="number" id="VolumenMinimoOperacion" 
+                            name="VolumenMinimoOperacion"
+                            [(ngModel)]="tanqueData.volumenMinimoOperacion"
+                            placeholder="Ej: 1000"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+                </div>
+        
+                <div class="flex justify-center gap-4 mt-6">
+                    <button (click)="registrarTanque()" type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                </div>
+            </div>
+        </div>
+    
+        <div>
+            <h1 class="text-dark dark:text-white 2xl:text-3xl">Dispensarios</h1>
+            <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg space-y-4">
+                <div class="flex flex-col w-full gap-4">
+                    <label for="ClaveDispensario" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Dispensario</label>
+                    <input required type="text" id="ClaveDispensario" 
+                        name="ClaveDispensario"
+                        placeholder="Ej: DISP-0001"
+                        class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                </div>
+
+                <div class="flex justify-center gap-4">
+                    <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h1 class="text-dark dark:text-white 2xl:text-3xl">Medidores de tanques</h1>
+            <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="ClaveTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Tanque</label>
+                        <input required type="text" id="ClaveTanque" 
+                            name="ClaveTanque"
+                            placeholder="Ej: TQS-ALM-0005"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+    
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="claveMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del sistema medicion</label>
+                        <input required type="text" id="claveMedicion" 
+                            name="claveMedicion"
+                            placeholder="Ej: SME-TQS-ALM-0001"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="DescripcionLocalizacion" class="after:content-['*'] after:text-red-500 after:pl-1">Descripción o localización</label>
+                        <input required type="text" id="DescripcionLocalizacion" 
+                            name="DescripcionLocalizacion"
+                            placeholder="Ej: Medidor 1"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="VigenciaCalibracion" class="after:content-['*'] after:text-red-500 after:pl-1">Vigencia Calibración de almacen</label>
+                        <input required type="date" id="VigenciaCalibracion" 
+                            name="VigenciaCalibracion"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="IncertidumbreMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Incertidumbre de la medición</label>
+                        <input required type="number" id="IncertidumbreMedicion" 
+                            name="IncertidumbreMedicion"
+                            placeholder="Ej: 1000"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+                </div>
+                <div class="flex justify-center gap-4">
+                    <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h1 class="text-dark dark:text-white 2xl:text-3xl">Medidores de dispensarios</h1>
+            <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="ClaveDispensario" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Dispensario</label>
+                        <input required type="text" id="ClaveDispensario" 
+                            name="ClaveDispensario"
+                            placeholder="Ej: DISP-0001"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="claveMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del sistema medicion</label>
+                        <input required type="text" id="claveMedicion" 
+                            name="claveMedicion"
+                            placeholder="Ej: SME-TQS-ALM-0001"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="DescripcionLocalizacion" class="after:content-['*'] after:text-red-500 after:pl-1">Descripción o localización</label>
+                        <input required type="text" id="DescripcionLocalizacion" 
+                            name="DescripcionLocalizacion"
+                            placeholder="Ej: Medidor 1"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="VigenciaCalibracion" class="after:content-['*'] after:text-red-500 after:pl-1">Vigencia Calibración de almacen</label>
+                        <input required type="date" id="VigenciaCalibracion" 
+                            name="VigenciaCalibracion"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="IncertidumbreMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Incertidumbre de la medición</label>
+                        <input required type="number" id="IncertidumbreMedicion" 
+                            name="IncertidumbreMedicion"
+                            placeholder="Ej: 1000"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+                </div>
+
+                <div class="flex justify-center gap-4">
+                    <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h1 class="text-dark dark:text-white 2xl:text-3xl">Mangueras dispensario</h1>
+            <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="ClaveDispensario" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Dispensario</label>
+                        <input required type="text" id="ClaveDispensario" 
+                            name="ClaveDispensario"
+                            placeholder="Ej: SME-DISP-0001"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+                    <div class="flex flex-col w-full gap-4">
+                        <label for="claveManguera" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del manguera</label>
+                        <input required type="text" id="claveManguera" 
+                            name="claveManguera"
+                            placeholder="Ej: DISP-0001-MGA-0001"
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                    </div>
+                </div>
+    
+                <div class="flex justify-center gap-4">
+                    <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                </div>
+    
+            </div>
+        </div>
+
+    </div>
+</div>

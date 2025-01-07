@@ -21,6 +21,7 @@ import { NuevoPasswordUsuarioComponent } from './pages/usuarios/new-password/edi
 import { ToastrModule } from 'ngx-toastr';
 import { RazonSocialComponent } from './pages/razon-social/razon-social.component';
 import { RazonPlantaComponent } from './pages/razon-planta/razon-planta.component';
+import {AlmacenesComponent } from './pages/almacenes/almacenes.component';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { UsuarioService } from './services/user.service';
@@ -33,6 +34,7 @@ import { UsuarioService } from './services/user.service';
     JsonComponent,
     RazonSocialComponent,
     RazonPlantaComponent,
+    AlmacenesComponent,
     ListaUsuariosComponent,
     EditarUsuariosComponent,
     RegistrarUsuariosComponent,

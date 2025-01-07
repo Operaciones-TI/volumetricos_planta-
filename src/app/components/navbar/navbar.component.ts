@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { trigger, transition, style, animate, state } from '@angular/animations';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -20,11 +21,18 @@ export class NavbarComponent implements OnInit {
   isMenuOpen: boolean = false;
   animationState: string = 'enter';
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private usrServ: AuthService,
+  ) { }
 
   ngOnInit(): void {
   }
 
+  userLogout() {
+    this.usrServ.Logout();
+    this.router.navigate(['login']);
+  }
   handleLogout() {
     this.router.navigate(['/login']);
   }

@@ -18,7 +18,7 @@
     <div class="h-full flex items-center gap-4">
       <app-darkmode class="text-light dark:text-dark"></app-darkmode>
       <button
-        (click)="handleLogout()"
+        (click)="userLogout()"
         class="py-2 px-4 font-bold bg-primary rounded-lg hover:opacity-75 transition-all ease-linear duration-150 text-white flex items-center gap-4"
       >
         Salir
@@ -65,7 +65,7 @@
         <div class="flex flex-col items-center gap-4">
           <app-darkmode class="text-light dark:text-dark scale-125"></app-darkmode>
           <button
-            (click)="handleLogout()"
+            (click)="userLogout()"
             class="py-2 px-4 text-2xl font-bold bg-primary rounded-lg hover:opacity-75 transition-all ease-linear duration-150 text-white flex items-center gap-4"
           >
             Salir

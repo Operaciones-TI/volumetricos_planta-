@@ -65,6 +65,7 @@
                         <input required type="number" id="CapacidadTotal" 
                             name="CapacidadTotal"
                             [(ngModel)]="tanqueData.capacidadTotal"
+                            min="0"
                             placeholder="Ej: 1000"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
@@ -75,6 +76,7 @@
                             name="CapacidadOperativa"
                             [(ngModel)]="tanqueData.capacidadOperativa"
                             placeholder="Ej: 1000"
+                            min="0"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
         
@@ -84,6 +86,7 @@
                             name="CapacidadUtil"
                             [(ngModel)]="tanqueData.capacidadUtil"
                             placeholder="Ej: 1000"
+                            min="0"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
         
@@ -93,6 +96,7 @@
                             name="CapacidadFondaje"
                             [(ngModel)]="tanqueData.capacidadFondaje"
                             placeholder="Ej: 1000"
+                            min="0"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
         
@@ -102,6 +106,7 @@
                             name="VolumenMinimoOperacion"
                             [(ngModel)]="tanqueData.volumenMinimoOperacion"
                             placeholder="Ej: 1000"
+                            min="0"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
                 </div>
@@ -119,12 +124,14 @@
                     <label for="ClaveDispensario" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Dispensario</label>
                     <input required type="text" id="ClaveDispensario" 
                         name="ClaveDispensario"
+                        [(ngModel)]="dispensarioData.claveDispensario"
                         placeholder="Ej: DISP-0001"
                         class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                 </div>
 
                 <div class="flex justify-center gap-4">
-                    <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                    <button (click)="registrarDispensario()"
+                    type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
                 </div>
             </div>
         </div>
@@ -137,21 +144,24 @@
                         <label for="ClaveTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Tanque</label>
                         <input required type="text" id="ClaveTanque" 
                             name="ClaveTanque"
+                            [(ngModel)]="medidorTanqueData.claveTanque"
                             placeholder="Ej: TQS-ALM-0005"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
-    
+                
                     <div class="flex flex-col w-full gap-4">
-                        <label for="claveMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del sistema medicion</label>
-                        <input required type="text" id="claveMedicion" 
-                            name="claveMedicion"
-                            placeholder="Ej: SME-TQS-ALM-0001"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                        <label for="SistemaMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del sistema medicion</label>
+                        <input required type="text" id="SistemaMedicion" 
+                        name="SistemaMedicion"
+                        [(ngModel)]="medidorTanqueData.SistemaMedicionTanque"
+                        placeholder="Ej: SME-TQS-ALM-0001"
+                        class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
                     <div class="flex flex-col w-full gap-4">
                         <label for="DescripcionLocalizacion" class="after:content-['*'] after:text-red-500 after:pl-1">Descripción o localización</label>
                         <input required type="text" id="DescripcionLocalizacion" 
                             name="DescripcionLocalizacion"
+                            [(ngModel)]="medidorTanqueData.descripcionLocalizacion"
                             placeholder="Ej: Medidor 1"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
@@ -159,18 +169,23 @@
                         <label for="VigenciaCalibracion" class="after:content-['*'] after:text-red-500 after:pl-1">Vigencia Calibración de almacen</label>
                         <input required type="date" id="VigenciaCalibracion" 
                             name="VigenciaCalibracion"
+                            [(ngModel)]="medidorTanqueData.vigenciaCalibracion"
+                            min="1753-01-01"
+                            max="9999-12-31"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
                     <div class="flex flex-col w-full gap-4">
                         <label for="IncertidumbreMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Incertidumbre de la medición</label>
                         <input required type="number" id="IncertidumbreMedicion" 
                             name="IncertidumbreMedicion"
+                            [(ngModel)]="medidorTanqueData.incertidumbreMedicion"
                             placeholder="Ej: 1000"
+                            min="0"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
                 </div>
                 <div class="flex justify-center gap-4">
-                    <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                    <button (click)="registrarMedidorTanque()" type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
                 </div>
             </div>
         </div>
@@ -183,13 +198,15 @@
                         <label for="ClaveDispensario" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Dispensario</label>
                         <input required type="text" id="ClaveDispensario" 
                             name="ClaveDispensario"
+                            [(ngModel)]="medidorDispensarioData.claveDispensario"
                             placeholder="Ej: DISP-0001"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
                     <div class="flex flex-col w-full gap-4">
-                        <label for="claveMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del sistema medicion</label>
-                        <input required type="text" id="claveMedicion" 
-                            name="claveMedicion"
+                        <label for="SistemaMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del sistema medicion</label>
+                        <input required type="text" id="SistemaMedicion" 
+                            name="SistemaMedicion"
+                            [(ngModel)]="medidorDispensarioData.SistemaMedicion"
                             placeholder="Ej: SME-TQS-ALM-0001"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
@@ -197,6 +214,7 @@
                         <label for="DescripcionLocalizacion" class="after:content-['*'] after:text-red-500 after:pl-1">Descripción o localización</label>
                         <input required type="text" id="DescripcionLocalizacion" 
                             name="DescripcionLocalizacion"
+                            [(ngModel)]="medidorDispensarioData.descripcionLocalizacion"
                             placeholder="Ej: Medidor 1"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
@@ -204,19 +222,24 @@
                         <label for="VigenciaCalibracion" class="after:content-['*'] after:text-red-500 after:pl-1">Vigencia Calibración de almacen</label>
                         <input required type="date" id="VigenciaCalibracion" 
                             name="VigenciaCalibracion"
+                            [(ngModel)]="medidorDispensarioData.vigenciaCalibracion"
+                            min="1753-01-01"
+                            max="9999-12-31"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
                     <div class="flex flex-col w-full gap-4">
                         <label for="IncertidumbreMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Incertidumbre de la medición</label>
                         <input required type="number" id="IncertidumbreMedicion" 
                             name="IncertidumbreMedicion"
+                            [(ngModel)]="medidorDispensarioData.incertidumbreMedicion"
                             placeholder="Ej: 1000"
+                            min="0"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
                 </div>
-
+                
                 <div class="flex justify-center gap-4">
-                    <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                    <button (click)="registrarMedidorDispensario()" type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
                 </div>
             </div>
         </div>
@@ -229,20 +252,22 @@
                         <label for="ClaveDispensario" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Dispensario</label>
                         <input required type="text" id="ClaveDispensario" 
                             name="ClaveDispensario"
-                            placeholder="Ej: SME-DISP-0001"
+                            [(ngModel)]="mangueraData.claveDispensario"
+                            placeholder="Ej: DISP-0002"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
                     <div class="flex flex-col w-full gap-4">
                         <label for="claveManguera" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del manguera</label>
                         <input required type="text" id="claveManguera" 
                             name="claveManguera"
+                            [(ngModel)]="mangueraData.claveManguera"
                             placeholder="Ej: DISP-0001-MGA-0001"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
                 </div>
-    
+                
                 <div class="flex justify-center gap-4">
-                    <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                    <button (click)="registrarManguera()" type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
                 </div>
     
             </div>

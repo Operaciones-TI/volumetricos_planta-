@@ -22,9 +22,12 @@ import { ToastrModule } from 'ngx-toastr';
 import { RazonSocialComponent } from './pages/razon-social/razon-social.component';
 import { RazonPlantaComponent } from './pages/razon-planta/razon-planta.component';
 import {AlmacenesComponent } from './pages/almacenes/almacenes.component';
+import { MovimientosComponent } from './pages/movimientos/movimientos.component';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { UsuarioService } from './services/user.service';
+
+
 
 @NgModule({
   declarations: [
@@ -35,6 +38,7 @@ import { UsuarioService } from './services/user.service';
     RazonSocialComponent,
     RazonPlantaComponent,
     AlmacenesComponent,
+    MovimientosComponent,
     ListaUsuariosComponent,
     EditarUsuariosComponent,
     RegistrarUsuariosComponent,

@@ -1,0 +1,423 @@
+<div class="w-full 2xl:w-4/5 mx-auto p-4">
+    <h1 class="text-dark dark:text-white 2xl:text-5xl">Movimientos</h1>
+    <section class="my-20 grid grid-cols-1 lg:grid-cols-2 gap-6 dark:text-white">
+        <div>
+            <label for="razonSocial" class="after:content-['*'] after:text-red-500 after:pl-1">Razón social</label>
+            <select 
+                name="razonSocial"
+                class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
+                <option value="0">Seleccione una razón social</option>
+            </select>
+        </div>
+        <div>
+            <label for="permiso">Permiso</label>
+            <select     
+                name="permiso"
+                class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
+                <option value="0">Seleccione un permiso</option>
+            </select>
+        </div>
+    </section>
+    <div class="w-full mx-auto p-4">
+        <!-- Título principal y toggle -->
+        <h1 class="text-dark dark:text-white 2xl:text-5xl">Movimientos</h1>
+        <div class="flex items-center w-full my-4">
+            <label class="flex items-center cursor-pointer">
+                <div class="relative">
+                    <input type="checkbox" class="hidden" [(ngModel)]="isDispensarios">
+                    <div class="w-14 h-7 bg-gray-300 rounded-full shadow-inner"></div>
+                    <div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow inset-y-0 left-0 transition-transform"
+                        [ngClass]="{'transform translate-x-7': isDispensarios}">
+                    </div>
+                </div>
+                <div class="ml-3 text-dark dark:text-white">
+                    {{ isDispensarios ? 'Dispensarios' : 'Tanques' }}
+                </div>
+            </label>
+        </div>
+        
+        <!-- Formulario de Tanques -->
+        <div *ngIf="!isDispensarios">
+                        <div class="grid grid-cols-1 lg:grid-cols-1 gap-6 dark:text-white">
+                            <div>
+                                <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="ClaveTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Tanque</label>
+                                            <input required type="text" id="ClaveTanque" 
+                                                name="ClaveTanque"
+                                                placeholder="Ej: TQS-ALM-0005"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="TipoMovimiento" class="after:content-['*'] after:text-red-500 after:pl-1">Tipo Movimiento</label>
+                                            <select required type="text" id="TipoMovimiento" 
+                                                name="TipoMovimiento"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                                <option value="entrega">Entrega</option>
+                                                <option value="recepcion">Recepción</option>
+                    
+                                            </select>
+                                        </div>
+                            
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="VolumenInicialTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Inicial Tanque</label>
+                                            <input required type="number" id="VolumenInicialTanque" 
+                                                name="VolumenInicialTanque"
+                                                placeholder="Ej: 1000"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                            
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="VolumenFinalTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Final Tanque</label>
+                                            <input required type="number" id="VolumenFinalTanque" 
+                                                name="VolumenFinalTanque"
+                                                placeholder="Ej: 1000"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                            
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="Volumen" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen</label>
+                                            <input required type="number" id="Volumen" 
+                                                name="Volumen"
+                                                placeholder="Ej: 1000"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                            
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="Temperatura" class="after:content-['*'] after:text-red-500 after:pl-1">Temperatura</label>
+                                            <input required type="number" id="Temperatura" 
+                                                name="Temperatura"
+                                                placeholder="De -170 hasta 100"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                            
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="PresionAbsoluta" class="after:content-['*'] after:text-red-500 after:pl-1">Presión Absoluta</label>
+                                            <input required type="number" id="PresionAbsoluta" 
+                                                name="PresionAbsoluta"
+                                                placeholder="De 0 hasta 200"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                            
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="FechaHoraInicialEntrega" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha Hora de Inicio</label>
+                                            <input required type="datetime-local" id="FechaHoraInicialEntrega" 
+                                                name="FechaHoraInicialEntrega"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="FechaHoraFinalEntrega" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha y Hora Final</label>
+                                            <input required type="datetime-local" id="FechaHoraFinalEntrega" 
+                                                name="FechaHoraFinalEntrega"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="Cantidad" class="after:content-['*'] after:text-red-500 after:pl-1">Cantidad</label>
+                                            <input required type="number" id="Cantidad" 
+                                                name="Cantidad"
+                                                placeholder="Ej: 1000"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="PermisoReceptor" class="after:content-['*'] after:text-red-500 after:pl-1">Permiso Receptor</label>
+                                            <input required type="text" id="PermisoReceptor" 
+                                                name="PermisoReceptor"
+                                                placeholder="Ej: ALM-0001"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="FechaHoraInicial" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha y Hora Inicial</label>
+                                            <input required type="datetime-local" id="FechaHoraInicial"
+                                                name="FechaHoraInicial"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="VolumenFactura" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Factura</label>
+                                            <input required type="number" id="VolumenFactura" 
+                                                name="VolumenFactura"
+                                                placeholder="Ej: 1000"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                                        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="Folio" class="after:content-['*'] after:text-red-500 after:pl-1">Folio</label>
+                                            <input required type="number" id="Folio" 
+                                                name="Folio"
+                                                placeholder="Ej: 0001"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                                        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="PrecioCompra">Precio Compra</label>
+                                            <input required type="number" id="PrecioCompra" 
+                                                name="PrecioCompra"
+                                                placeholder="Ej: 12.15"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                                        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="ImporteTotal">Importe Total</label>
+                                            <input required type="number" id="ImporteTotal" 
+                                                name="ImporteTotal"
+                                                placeholder="Ej: 1000"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="UUID">UUID</label>
+                                            <input required type="text" id="UUID" 
+                                                name="UUID"
+                                                placeholder="Ej: okas-asd213faswdf35-213"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="FechaEmisionCFDI">Fecha de Emisión de CFDI</label>
+                                            <input required type="datetime-local" id="FechaEmisionCFDI" 
+                                                name="FechaEmisionCFDI"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="ClaveVehiculo">Clave Vehiculo</label>
+                                            <input required type="text" id="ClaveVehiculo" 
+                                                name="ClaveVehiculo"
+                                                placeholder="Ej: VEH-0001"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="PermisoTransporte">Permiso Transporte</label>
+                                            <input required type="text" id="PermisoTransporte" 
+                                                name="PermisoTransporte"
+                                                placeholder="Ej: HFFE/8967"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="Proveedor">Proveedor</label>
+                                            <input required type="text" id="Proveedor" 
+                                                name="Proveedor"
+                                                placeholder="Ej: Pedro Martínez"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="RfcProveedor">RFC Proveedor</label>
+                                            <input required type="text" id="RfcProveedor" 
+                                                name="RfcProveedor"
+                                                placeholder="Ej: PAL7202161U0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="PermisoAlmacenamientoDistribucion">Permiso de Almacenamiento del Cliente</label>
+                                            <input required type="text" id="PermisoAlmacenamientoDistribucion" 
+                                                name="PermisoAlmacenamientoDistribucion"
+                                                placeholder="Ej: PERM/123"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="NombreTerminalDistribucion">Nombre de Terminal de Distribución</label>
+                                            <input required type="text" id="NombreTerminalDistribucion" 
+                                                name="NombreTerminalDistribucion"
+                                                placeholder="Ej: Terminal 1"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="Aclaracion">Aclaración</label>
+                                            <input required type="text" id="Aclaracion" 
+                                                name="Aclaracion"
+                                                placeholder="Ej: Gas"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                                    </div>
+                    
+                                    <div class="flex justify-center gap-4 mt-8">
+                                        <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        </div>
+    
+        <!-- Formulario de Dispensarios -->
+        <div *ngIf="isDispensarios">
+                        <div class="grid grid-cols-1 lg:grid-cols-1 gap-6 dark:text-white">
+                            <div>
+
+                                <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="ClaveDispensario" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Dispensario</label>
+                                            <input required type="text" id="ClaveDispensario" 
+                                                name="ClaveDispensario"
+                                                placeholder="Ej: DISP-0001"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                    
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="ClaveManguera" class="after:content-['*'] after:text-red-500 after:pl-1">Clave de Manguera</label>
+                                            <input required type="text" id="ClaveManguera" 
+                                                name="ClaveManguera"
+                                                placeholder="Ej: DISP-0001-MGA-0001"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="TipoRegistro" class="after:content-['*'] after:text-red-500 after:pl-1">Tipo Registro</label>
+                                            <select required type="text" id="TipoRegistro" 
+                                                name="TipoRegistro"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                                <option value="D">D</option>
+                                                <option value="E">E</option>
+                                                <option value="J">J</option>
+                                                <option value="A">A</option>
+                                                <option value="N">N</option>
+                                                <option value="C">C</option>
+                                            </select>
+                                        </div>
+                            
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="VolumenTotalizadorAcumulado" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Entregado Totalizador Acumulado</label>
+                                            <input required type="number" id="VolumenTotalizadorAcumulado" 
+                                                name="VolumenTotalizadorAcumulado"
+                                                placeholder="Ej: 1000"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="VolumenTotalizadorInstantaneo" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Entregado Totalizador Instantaneo</label>
+                                            <input required type="number" id="VolumenTotalizadorInstantaneo" 
+                                                name="VolumenTotalizadorInstantaneo"
+                                                placeholder="Ej: 1000"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="PrecioVentaTotalizadorInstantaneo" class="after:content-['*'] after:text-red-500 after:pl-1">Precio de Venta Totalizador Instantaneo</label>
+                                            <input required type="number" id="PrecioVentaTotalizadorInstantaneo" 
+                                                name="PrecioVentaTotalizadorInstantaneo"
+                                                placeholder="Ej: 700"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                            
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="FechaHoraEntrega" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha y Hora de Entrega</label>
+                                            <input required type="datetime-local" id="FechaHoraEntrega" 
+                                                name="FechaHoraEntrega"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="Permiso" class="after:content-['*'] after:text-red-500 after:pl-1">Permiso</label>
+                                            <input required type="text" id="Permiso" 
+                                                name="Permiso"
+                                                placeholder="Ej: HTF/8012"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="FechaHoraVenta" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha y Hora de Venta</label>
+                                            <input required type="datetime-local" id="FechaHoraVenta" 
+                                                name="FechaHoraVenta"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="CantidadLitros" class="after:content-['*'] after:text-red-500 after:pl-1">Cantidad de Litros</label>
+                                            <input required type="number" id="CantidadLitros" 
+                                                name="CantidadLitros"
+                                                placeholder="Ej: 300"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                                        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="PrecioUnitario" class="after:content-['*'] after:text-red-500 after:pl-1">Precio Unitario</label>
+                                            <input required type="number" id="PrecioUnitario" 
+                                                name="PrecioUnitario"
+                                                placeholder="Ej: 9.87"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="Importe">Importe</label>
+                                            <input required type="number" id="Importe" 
+                                                name="Importe"
+                                                placeholder="Ej: 1600"
+                                                min="0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="UUID">UUID</label>
+                                            <input required type="text" id="UUID" 
+                                                name="UUID"
+                                                placeholder="Ej: okas-asd213faswdf35-213"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="FechaEmisionCFDI">Fecha de Emisión de CFDI</label>
+                                            <input required type="datetime-local" id="FechaEmisionCFDI" 
+                                                name="FechaEmisionCFDI"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="RfcCliente">RFC del Cliente</label>
+                                            <input required type="text" id="RfcCliente" 
+                                                name="RfcCliente"
+                                                placeholder="Ej: PAL7202161U0"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="NombreCliente">Nombre del Cliente</label>
+                                            <input required type="text" id="NombreCliente" 
+                                                name="NombreCliente"
+                                                placeholder="Ej: Pedro Martínez"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+        
+                                        <div class="flex flex-col w-full gap-4">
+                                            <label for="Aclaracion">Aclaración</label>
+                                            <input required type="text" id="Aclaracion" 
+                                                name="Aclaracion"
+                                                placeholder="Ej: Gas"
+                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                        </div>
+                                        
+                                    </div>
+                    
+                                    <div class="flex justify-center gap-4 mt-8">
+                                        <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        </div>
+    </div>
+</div>

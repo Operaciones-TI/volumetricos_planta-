@@ -5,16 +5,25 @@
             <label for="razonSocial" class="after:content-['*'] after:text-red-500 after:pl-1">Razón social</label>
             <select 
                 name="razonSocial"
+                [(ngModel)]="razonSelected"
+                (change)="getPermisos(razonSelected)"
                 class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
                 <option value="0">Seleccione una razón social</option>
+                <option [value]="razon.Id" *ngFor="let razon of razonesSociales">
+                    {{razon.RazonSocialName}}
+                </option>
             </select>
         </div>
         <div>
             <label for="permiso">Permiso</label>
             <select     
                 name="permiso"
+                [(ngModel)]="permisoSelected"
                 class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
                 <option value="0">Seleccione un permiso</option>
+                <option [value]="permiso.Id" *ngFor="let permiso of permisos">
+                    {{permiso.NumPermiso}}
+                </option>
             </select>
         </div>
     </section>
@@ -35,7 +44,7 @@
                 </div>
             </label>
         </div>
-        
+
         <!-- Formulario de Tanques -->
         <div *ngIf="!isDispensarios">
                         <div class="grid grid-cols-1 lg:grid-cols-1 gap-6 dark:text-white">

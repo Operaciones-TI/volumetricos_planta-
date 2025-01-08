@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Tanque } from '../interfaces/Tanque.interface';
-import { Content } from '@angular/compiler/src/render3/r3_ast';
 const VM_HTTP_URL = 'https://localhost:5001/api'; 
 
 @Injectable({
@@ -13,26 +12,27 @@ export class LoadDataService {
 
   // * Principals methods
 
-  saveAlmacenesData(data: any, token: string): Promise<boolean> {
+  saveAlmacenesData(data: any, idPermiso: number, idRazonSocial: number, token: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
+      console.log('permiso: ', idPermiso, 'razon: ', idRazonSocial);
       try {
-        data.tanques.length > 0 ? this.saveTanksData(data.tanques, token) : null;
-        data.dispensarios.length > 0 ? this.saveDispensariosData(data.dispensarios, token) : null;
-        data.medidoresTanques.length > 0 ? this.saveMedidoresTankData(data.medidoresTanques, token) : null;
-        data.medidoresDispensarios.length > 0 ? this.saveDispensariosMedidoresData(data.medidoresDispensarios, token) : null;
-        data.manguerasDispensario.length > 0 ? this.saveManguerasDispensariosData(data.manguerasDispensario, token) : null;
+        data.tanques.length > 0 ? this.saveTanksData(data.tanques, idPermiso, idRazonSocial, token) : null;
+        data.dispensarios.length > 0 ? this.saveDispensariosData(data.dispensarios, idPermiso, idRazonSocial, token) : null;
+        data.medidoresTanques.length > 0 ? this.saveMedidoresTankData(data.medidoresTanques, idPermiso, idRazonSocial, token) : null;
+        data.medidoresDispensarios.length > 0 ? this.saveDispensariosMedidoresData(data.medidoresDispensarios, idPermiso, idRazonSocial, token) : null;
+        data.manguerasDispensario.length > 0 ? this.saveManguerasDispensariosData(data.manguerasDispensario, idPermiso, idRazonSocial, token) : null;
         resolve(true);
       } catch (e) {
-        reject(e);
+        reject(e)
       }
     });
   }
 
-  saveMovimientosData(data: any, token: string): Promise<boolean> {
+  saveMovimientosData(data: any, idPermiso: number, idRazonSocial: number, token: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
-        data.tanques.length > 0 ? this.saveArriveTankData(data.tanques, token) : null;
-        data.dispensarios.length > 0 ? this.saveArriveDispData(data.dispensarios, token) : null;
+        data.tanques.length > 0 ? this.saveArriveTankData(data.tanques, idPermiso, idRazonSocial, token) : null;
+        data.dispensarios.length > 0 ? this.saveArriveDispData(data.dispensarios, idPermiso, idRazonSocial, token) : null;
         resolve(true);
       } catch (e) {
         reject(e);
@@ -43,9 +43,9 @@ export class LoadDataService {
 
   // Secondary methods
   
-  saveTanksData(data: any, token: string): Promise<number> {
+  saveTanksData(data: any, idPermiso: number, idRazonSocial: number, token: string): Promise<number> {
     return new Promise((resolve, reject) => {
-      this.http.post<number>(`${VM_HTTP_URL}/Tanque`, data, 
+      this.http.post<number>(`${VM_HTTP_URL}/Tanque?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`, data, 
         { headers: { 'Content-Type': 'application/json' } }
       ).subscribe(
         response => {
@@ -59,9 +59,9 @@ export class LoadDataService {
     });
   }
 
-  saveDispensariosData(data: any, token: string): Promise<number> {
+  saveDispensariosData(data: any, idPermiso: number, idRazonSocial: number, token: string): Promise<number> {
     return new Promise((resolve, reject) => {
-      this.http.post<number>(`${VM_HTTP_URL}/Dispensarios`, data, 
+      this.http.post<number>(`${VM_HTTP_URL}/Dispensarios?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`, data, 
         { headers: { 'Content-Type': 'application/json' } }
       ).subscribe(
         response => {
@@ -76,9 +76,9 @@ export class LoadDataService {
     });
   }
 
-  saveDispensariosMedidoresData(data: any, token: string): Promise<number> {
+  saveDispensariosMedidoresData(data: any, idPermiso: number, idRazonSocial: number, token: string): Promise<number> {
     return new Promise((resolve, reject) => {
-      this.http.post<number>(`${VM_HTTP_URL}/EntregaDispensarios/Medidores`, data, 
+      this.http.post<number>(`${VM_HTTP_URL}/EntregaDispensarios/Medidores?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`, data, 
         { headers: { 'Content-Type': 'application/json' } }
       ).subscribe(
         response => {
@@ -92,9 +92,9 @@ export class LoadDataService {
     });
   }
 
-  saveManguerasDispensariosData(data: any, token: string): Promise<number> {
+  saveManguerasDispensariosData(data: any, idPermiso: number, idRazonSocial: number, token: string): Promise<number> {
     return new Promise((resolve, reject) => {
-      this.http.post<number>(`${VM_HTTP_URL}/EntregaDispensarios/Mangueras`, data, 
+      this.http.post<number>(`${VM_HTTP_URL}/EntregaDispensarios/Mangueras?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`, data, 
         { headers: { 'Content-Type': 'application/json' } }
       ).subscribe(
         response => {
@@ -108,9 +108,9 @@ export class LoadDataService {
     });
   }
 
-  saveMedidoresTankData(data: any, token: string): Promise<number> {
+  saveMedidoresTankData(data: any, idPermiso: number, idRazonSocial: number, token: string): Promise<number> {
     return new Promise((resolve, reject) => {
-      this.http.post<number>(`${VM_HTTP_URL}/EntregaTanque/Medidores`, data, 
+      this.http.post<number>(`${VM_HTTP_URL}/EntregaTanque/Medidores?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`, data, 
         { headers: { 'Content-Type': 'application/json' } }
       ).subscribe(
         response => {
@@ -126,9 +126,9 @@ export class LoadDataService {
 
 
   // Entregas
-  saveArriveTankData(data: any, token: string): Promise<number> {
+  saveArriveTankData(data: any, idPermiso: number, idRazonSocial: number, token: string): Promise<number> {
     return new Promise((resolve, reject) => {
-      this.http.post<number>(`${VM_HTTP_URL}/EntregaTanque/Entrega`, data, 
+      this.http.post<number>(`${VM_HTTP_URL}/EntregaTanque/Entrega?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`, data, 
         { headers: { 'Content-Type': 'application/json' } }
       ).subscribe(
         response => {
@@ -142,7 +142,7 @@ export class LoadDataService {
     });
   }
 
-  saveArriveDispData(data: any, token: string): Promise<number> {
+  saveArriveDispData(data: any, idPermiso: number, idRazonSocial: number, token: string): Promise<number> {
     return new Promise((resolve, reject) => {
       this.http.post<number>(`${VM_HTTP_URL}/EntregaDispensarios`, data, 
         { headers: { 'Content-Type': 'application/json' } }

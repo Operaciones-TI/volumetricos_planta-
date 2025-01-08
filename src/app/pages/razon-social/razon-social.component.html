@@ -13,7 +13,7 @@
             class="outline-none w-full border-2 px-4 py-2 hover:cursor-pointer bg-transparent"
           >
             <option *ngIf="razonesLoading" value="0" selected>Loading...</option>
-            <option *ngFor="let razon of razonesSociales" [value]="razon.id">{{razon.razonSocialName}}</option>
+            <option *ngFor="let razon of razonesSociales" [value]="razon.Id">{{razon.RazonSocialName}}</option>
           </select>
           <button
             class="text-lg hover:opacity-75 duration-200 transition-all ease-linear"

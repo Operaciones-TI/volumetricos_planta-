@@ -9,8 +9,8 @@
                 (change)="getPermisos(razonSelected)"
                 class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
                 <option value="0">Seleccione una razón social</option>
-                <option [value]="razon.id" *ngFor="let razon of razonesSociales">
-                    {{razon.razonSocialName}}
+                <option [value]="razon.Id" *ngFor="let razon of razonesSociales">
+                    {{razon.RazonSocialName}}
                 </option>
             </select>
         </div>
@@ -21,8 +21,8 @@
                 [(ngModel)]="permisoSelected"
                 class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
                 <option value="0">Seleccione un permiso</option>
-                <option [value]="permiso.id" *ngFor="let permiso of permisos">
-                    {{permiso.numPermiso}}
+                <option [value]="permiso.Id" *ngFor="let permiso of permisos">
+                    {{permiso.NumPermiso}}
                 </option>
             </select>
         </div>

@@ -7,7 +7,7 @@ import { Dispensario } from 'src/app/interfaces/Dispensario.interface';
 import { MedidorDispensarios } from 'src/app/interfaces/MedidorDispensario.interface';
 import { MedidorTanque } from 'src/app/interfaces/MedidorTanque.interface';
 import { MangueraDispensario } from 'src/app/interfaces/MangueraDispensario.interface';
-import { IPermisos } from 'src/app/interfaces/Permiso.interface';
+import { IPermisos, Permiso } from 'src/app/interfaces/Permiso.interface';
 import { PermisoService } from 'src/app/services/permiso.service';
 
 import { Router } from '@angular/router';
@@ -30,7 +30,7 @@ export class LoadDataComponent implements OnInit {
   permisoSelected: number = 0;
   
   razonesSociales: IRazonSocial[] = [];
-  permisos: IPermisos[] = [];
+  permisos: Permiso[] = [];
 
   constructor(
     private toastr: ToastrService,
@@ -57,6 +57,10 @@ export class LoadDataComponent implements OnInit {
     url.click();
   }
 
+  logPermSelected() {
+    console.log('Seleccionado permiso: ', this.permisoSelected);
+  }
+
   excelNumberToDate(num: number) {
     let newDate = XLSX.SSF.parse_date_code(num);
     return `${newDate.y}-${String(newDate.m).padStart(2, '0')}-${String(newDate.d).padStart(2, '0')}`;
@@ -64,8 +68,8 @@ export class LoadDataComponent implements OnInit {
 
   getPermisos(idRazonSocial: number) {
     this.permisoService.getPermisos(idRazonSocial)
-    .then((permisos: IPermisos[]) => {
-      console.log(permisos);
+    .then((permisos: Permiso[]) => {
+      console.log('permisos: ', permisos);
       this.permisos = permisos;
     })
     .catch(e => {
@@ -76,7 +80,6 @@ export class LoadDataComponent implements OnInit {
   async getRazonesSociales() {
     try {
       const data = await this.permisoService.getRazonSocialData();
-      console.log(data);
       this.razonesSociales = data;
     } catch (e) {
       console.log(e);
@@ -275,7 +278,7 @@ export class LoadDataComponent implements OnInit {
       this.excelAlmacenes = JSON.stringify(obj);
       inputElement.value = '';
 
-      this.loadDataService.saveAlmacenesData(obj, 'token').then(response => {
+      this.loadDataService.saveAlmacenesData(obj, this.permisoSelected, this.razonSelected, 'token').then(response => {
         this.toastr.success('Almacenes guardados correctamente', '', {
             timeOut: 3000,
             progressBar: true,
@@ -454,7 +457,7 @@ export class LoadDataComponent implements OnInit {
       };
 
       this.excelMovimientos = JSON.stringify(movimientos);
-      this.loadDataService.saveMovimientosData(movimientos, 'token').then(response => {
+      this.loadDataService.saveMovimientosData(movimientos, this.permisoSelected, this.razonSelected, 'token').then(response => {
         this.toastr.success('Movimientos guardados correctamente', '', {
           timeOut: 3000,
           progressBar: true,

@@ -10,6 +10,7 @@ import { IRazonSocial } from 'src/app/interfaces/RazonSocial.interface';
 })
 export class RazonSocialComponent implements OnInit {
   data: Permiso = {
+    Id: 0,
     IdRazonSocial: 0,
     RfcRepresentanteLegal: null,
     RfcProveedor: null,
@@ -34,7 +35,7 @@ export class RazonSocialComponent implements OnInit {
     this.permisoService.getRazonSocialData()
     .then(data => {
       this.razonesSociales = data;
-      this.data.IdRazonSocial = this.razonesSociales[0].id;
+      this.data.IdRazonSocial = this.razonesSociales[0].Id;
       this.razonesLoading = false;
     })
     .catch(error => {
@@ -49,6 +50,7 @@ export class RazonSocialComponent implements OnInit {
 
   clearForm() {
     this.data = {
+      Id: 0,
       IdRazonSocial: null,
       RfcRepresentanteLegal: null,
       RfcProveedor: null,

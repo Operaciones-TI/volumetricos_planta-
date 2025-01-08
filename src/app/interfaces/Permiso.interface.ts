@@ -1,4 +1,5 @@
 export interface Permiso {
+  Id: number;
   IdRazonSocial: number | null; 
   RfcRepresentanteLegal: string | null;
   RfcProveedor: string | null;

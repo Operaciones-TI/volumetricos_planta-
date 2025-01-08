@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IRazonSocial } from '../interfaces/RazonSocial.interface';
-import { IPermisos } from '../interfaces/Permiso.interface';
+import { Permiso } from '../interfaces/Permiso.interface';
 
 const VM_HTTP_URL = 'https://localhost:5001/api';
 
@@ -49,11 +49,11 @@ export class PermisoService {
     });
   }
 
-  getPermisos(IdRazonSocial: number): Promise<IPermisos[]> {
+  getPermisos(IdRazonSocial: number): Promise<Permiso[]> {
     return new Promise((resolve, reject) => {
-      this.http.get<IPermisos[]>(`${VM_HTTP_URL}/Permiso?idRazonSocial=${IdRazonSocial}`)
+      this.http.get<Permiso[]>(`${VM_HTTP_URL}/Permiso?idRazonSocial=${IdRazonSocial}`)
         .subscribe({
-          next: (response: IPermisos[]) => {
+          next: (response: Permiso[]) => {
             resolve(response);
           },
           error: (error) => {

@@ -1,6 +1,6 @@
 export interface IRazonSocial {
-  id: number;
-  plantaName: string;
-  rfcContribuyente: string;
-  razonSocialName: string;
+  Id: number;
+  PlantaName: string;
+  RfcContribuyente: string;
+  RazonSocialName: string;
 }

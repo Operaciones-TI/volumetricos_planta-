@@ -11,18 +11,31 @@
         (change)="getPermisos(razonSelected)"
         class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent"
       >
-        <option *ngFor="let razon of razonesSociales" value="{{razon.id}}">{{razon.razonSocialName}}</option>
+        <option 
+          *ngFor="let razon of razonesSociales" 
+          value="{{razon.Id}}"
+          class="dark:bg-primary"
+        >
+          {{razon.RazonSocialName}}
+        </option>
       </select>
     </div>
     <div>
-      <label for="permiso">Permiso</label>
+      <label for="permiso" class="after:content-['*'] after:text-red-500 after:pl-1">Permiso</label>
       <select 
         name="permiso" 
         id=""
         [(ngModel)]="permisoSelected"
+        (change)="logPermSelected()"
         class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent"
       >
-        <option *ngFor="let permiso of permisos" value="{{permiso.id}}">{{permiso.numPermiso}}</option>
+        <option 
+          *ngFor="let permiso of permisos" 
+          value="{{permiso.Id}}"
+          class="dark:bg-primary"
+        >
+          {{permiso.NumPermiso}}
+        </option>
       </select>
     </div>
   </section>

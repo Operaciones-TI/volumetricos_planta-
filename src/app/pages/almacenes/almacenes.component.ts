@@ -4,7 +4,7 @@ import { LoadDataService } from '../../services/load-data.service';
 import { ToastrService } from 'ngx-toastr';
 import { PermisoService } from 'src/app/services/permiso.service';
 import { IRazonSocial } from 'src/app/interfaces/RazonSocial.interface';
-import { IPermisos } from 'src/app/interfaces/Permiso.interface';
+import { IPermisos, Permiso } from 'src/app/interfaces/Permiso.interface';
 
 @Component({
   selector: 'app-almacenes',
@@ -16,7 +16,7 @@ export class AlmacenesComponent {
   razonSelected: number = 0;
   permisoSelected: number = 0;
   razonesSociales: IRazonSocial[] = [];
-  permisos: IPermisos[] = [];
+  permisos: Permiso[] = [];
 
   tanqueData = {
     claveTanque: '',
@@ -66,7 +66,7 @@ export class AlmacenesComponent {
   }
   getPermisos(idRazonSocial: number) {
     this.permisoService.getPermisos(idRazonSocial)
-    .then((permisos: IPermisos[]) => {
+    .then((permisos: Permiso[]) => {
       console.log(permisos);
       this.permisos = permisos;
     })
@@ -111,27 +111,27 @@ export class AlmacenesComponent {
       EstadoTanque: null
     };
   
-    this.loadDataService.saveTanksData([tanqueFormateado], '').then(
-      response => {
-        console.log('Tanque registrado exitosamente', response);
-        this.toastr.success('Tanque registrado con éxito');
-        // Limpiar formulario
-        this.tanqueData = {
-          claveTanque: '',
-          descripcion: '',
-          vigenciaCalibracion: '',
-          capacidadTotal: 0,
-          capacidadOperativa: 0,
-          capacidadUtil: 0,
-          capacidadFondaje: 0,
-          volumenMinimoOperacion: 0
-        };
-      },
-      error => {
-        console.error('Error al registrar tanque', error);
-        this.toastr.error('Error al registrar el tanque: ' + error.message);
-      }
-    );
+    // this.loadDataService.saveTanksData([tanqueFormateado], '').then(
+    //   response => {
+    //     console.log('Tanque registrado exitosamente', response);
+    //     this.toastr.success('Tanque registrado con éxito');
+    //     // Limpiar formulario
+    //     this.tanqueData = {
+    //       claveTanque: '',
+    //       descripcion: '',
+    //       vigenciaCalibracion: '',
+    //       capacidadTotal: 0,
+    //       capacidadOperativa: 0,
+    //       capacidadUtil: 0,
+    //       capacidadFondaje: 0,
+    //       volumenMinimoOperacion: 0
+    //     };
+    //   },
+    //   error => {
+    //     console.error('Error al registrar tanque', error);
+    //     this.toastr.error('Error al registrar el tanque: ' + error.message);
+    //   }
+    // );
   }
 
   // Método para registrar dispensario
@@ -148,20 +148,20 @@ export class AlmacenesComponent {
       EstadoDispensario: null
     };
   
-    this.loadDataService.saveDispensariosData([dispensarioFormateado], '').then(
-      response => {
-        console.log('Dispensario registrado exitosamente', response);
-        this.toastr.success('Dispensario registrado con éxito');
-        // Limpiar formulario
-        this.dispensarioData = {
-          claveDispensario: ''
-        };
-      },
-      error => {
-        console.error('Error al registrar dispensario', error);
-        this.toastr.error('Error al registrar el dispensario: ' + error.message);
-      }
-    );
+    // this.loadDataService.saveDispensariosData([dispensarioFormateado], '').then(
+    //   response => {
+    //     console.log('Dispensario registrado exitosamente', response);
+    //     this.toastr.success('Dispensario registrado con éxito');
+    //     // Limpiar formulario
+    //     this.dispensarioData = {
+    //       claveDispensario: ''
+    //     };
+    //   },
+    //   error => {
+    //     console.error('Error al registrar dispensario', error);
+    //     this.toastr.error('Error al registrar el dispensario: ' + error.message);
+    //   }
+    // );
   }
 
   // Método para registrar medidor de tanque
@@ -196,24 +196,24 @@ export class AlmacenesComponent {
 
     console.log('Datos a enviar:', medidorFormateado); 
 
-    this.loadDataService.saveMedidoresTankData([medidorFormateado], '').then(
-        response => {
-            console.log('Medidor de tanque registrado exitosamente', response);
-            this.toastr.success('Medidor de tanque registrado con éxito');
-            // Limpiar formulario
-            this.medidorTanqueData = {
-                claveTanque: '',
-                SistemaMedicionTanque: '',
-                descripcionLocalizacion: '',
-                vigenciaCalibracion: '',
-                incertidumbreMedicion: 0
-            };
-        },
-        error => {
-            console.error('Error al registrar medidor de tanque', error);
-            this.toastr.error('Error al registrar el medidor de tanque: ' + error.message);
-        }
-    );
+    // this.loadDataService.saveMedidoresTankData([medidorFormateado], '').then(
+    //     response => {
+    //         console.log('Medidor de tanque registrado exitosamente', response);
+    //         this.toastr.success('Medidor de tanque registrado con éxito');
+    //         // Limpiar formulario
+    //         this.medidorTanqueData = {
+    //             claveTanque: '',
+    //             SistemaMedicionTanque: '',
+    //             descripcionLocalizacion: '',
+    //             vigenciaCalibracion: '',
+    //             incertidumbreMedicion: 0
+    //         };
+    //     },
+    //     error => {
+    //         console.error('Error al registrar medidor de tanque', error);
+    //         this.toastr.error('Error al registrar el medidor de tanque: ' + error.message);
+    //     }
+    // );
   }
 
   // Método para registrar medidor de dispensario
@@ -246,24 +246,24 @@ export class AlmacenesComponent {
         IncertidumbreMedicion: this.medidorDispensarioData.incertidumbreMedicion
     };
 
-    this.loadDataService.saveDispensariosMedidoresData([medidorFormateado], '').then(
-        response => {
-            console.log('Medidor de dispensario registrado exitosamente', response);
-            this.toastr.success('Medidor de dispensario registrado con éxito');
-            // Limpiar formulario
-            this.medidorDispensarioData = {
-                claveDispensario: '',
-                SistemaMedicion: '',
-                descripcionLocalizacion: '',
-                vigenciaCalibracion: '',
-                incertidumbreMedicion: 0
-            };
-        },
-        error => {
-            console.error('Error al registrar medidor de dispensario', error);
-            this.toastr.error('Error al registrar el medidor de dispensario: ' + error.message);
-        }
-    );
+    // this.loadDataService.saveDispensariosMedidoresData([medidorFormateado], '').then(
+    //     response => {
+    //         console.log('Medidor de dispensario registrado exitosamente', response);
+    //         this.toastr.success('Medidor de dispensario registrado con éxito');
+    //         // Limpiar formulario
+    //         this.medidorDispensarioData = {
+    //             claveDispensario: '',
+    //             SistemaMedicion: '',
+    //             descripcionLocalizacion: '',
+    //             vigenciaCalibracion: '',
+    //             incertidumbreMedicion: 0
+    //         };
+    //     },
+    //     error => {
+    //         console.error('Error al registrar medidor de dispensario', error);
+    //         this.toastr.error('Error al registrar el medidor de dispensario: ' + error.message);
+    //     }
+    // );
   }
 
   // Método para registrar manguera
@@ -282,20 +282,20 @@ export class AlmacenesComponent {
 
     console.log('Datos a enviar:', mangueraFormateada);
 
-    this.loadDataService.saveManguerasDispensariosData([mangueraFormateada], '').then(
-        response => {
-            console.log('Manguera registrada exitosamente', response);
-            this.toastr.success('Manguera registrada con éxito');
-            // Limpiar formulario
-            this.mangueraData = {
-                claveDispensario: '',
-                claveManguera: ''
-            };
-        },
-        error => {
-            console.error('Error al registrar manguera', error);
-            this.toastr.error('Error al registrar la manguera: ' + error.message);
-        }
-    );
+    // this.loadDataService.saveManguerasDispensariosData([mangueraFormateada], '').then(
+    //     response => {
+    //         console.log('Manguera registrada exitosamente', response);
+    //         this.toastr.success('Manguera registrada con éxito');
+    //         // Limpiar formulario
+    //         this.mangueraData = {
+    //             claveDispensario: '',
+    //             claveManguera: ''
+    //         };
+    //     },
+    //     error => {
+    //         console.error('Error al registrar manguera', error);
+    //         this.toastr.error('Error al registrar la manguera: ' + error.message);
+    //     }
+    // );
   }
 }

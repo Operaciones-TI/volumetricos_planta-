@@ -1,6 +1,34 @@
 <div class="w-full 2xl:w-4/5 mx-auto p-4">
   <h1 class="text-dark dark:text-white 2xl:text-5xl">JSON</h1>
 
+  <section class="my-20 grid grid-cols-1 lg:grid-cols-2 gap-4 dark:text-white">
+    <div>
+      <label for="razonSocial" class="after:content-['*'] after:text-red-500 after:pl-1">Razon social</label>
+      <select
+      name="razonSocial"
+      [(ngModel)]="razonSelected"
+      (change)="getPermisos(razonSelected)"
+      class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
+      <option value="0">Seleccione una razón social</option>
+      <option [value]="razon.Id" *ngFor="let razon of razonesSociales">
+          {{razon.RazonSocialName}}
+      </option>
+  </select>
+    </div>
+    <div>
+      <label for="permiso">Permiso</label>
+      <select
+      name="permiso"
+      [(ngModel)]="permisoSelected"
+      class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
+      <option value="0">Seleccione un permiso</option>
+      <option [value]="permiso.Id" *ngFor="let permiso of permisos">
+          {{permiso.NumPermiso}}
+      </option>
+  </select>
+</div>
+  </section>
+
     <section class="flex flex-col w-full gap-4">
       <h2 class="text-dark dark:text-white 2xl:text-3xl"></h2>
       <form class="form-inline">

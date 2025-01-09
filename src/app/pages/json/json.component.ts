@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { JsonService } from './../../services/json.service';
+import { PermisoService } from 'src/app/services/permiso.service';
 
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, } from '@angular/material/core';
 import { MatDatepicker, MatDatepickerInputEvent, MatDateRangeInput } from '@angular/material/datepicker';
+
+import { IRazonSocial } from 'src/app/interfaces/RazonSocial.interface';
+import { IPermisos , Permiso} from 'src/app/interfaces/Permiso.interface';
 
 import * as moment from 'moment';
 import { Moment } from 'moment';
@@ -44,6 +48,11 @@ export class JsonComponent implements OnInit {
   public mensaje: string = '';
   public mensajes: Array<string> = [];
 
+  public razonSelected: number = 0;
+  public permisoSelected: number = 0;
+  razonesSociales: IRazonSocial[] = [];
+  permisos: Permiso[] = [];
+
   rangePicker = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
@@ -62,9 +71,38 @@ export class JsonComponent implements OnInit {
 
   public date = new FormControl(moment());
 
-  constructor(private jsonService: JsonService) { }
+  constructor(
+    private jsonService: JsonService,
+    private permisoService: PermisoService
+  ) { }
 
   ngOnInit(): void {
+    this.getRazonesSociales()
+    if (this.razonSelected != 0){
+      this.getPermisos(this.razonSelected);
+    }
+  }
+
+  getPermisos(idRazonSocial: number) {
+    this.permisoService.getPermisos(idRazonSocial)
+    .then((permisos: Permiso[]) => {
+      console.log(permisos);
+      this.permisos = permisos;
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  }
+
+  async getRazonesSociales() {
+    try {
+      const data = await this.permisoService.getRazonSocialData();
+      console.log(data);
+      this.razonesSociales = data;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   }
 
   obtenerJSON() {
@@ -88,7 +126,7 @@ export class JsonComponent implements OnInit {
     }
     else {
       console.log('Json Mensual!!');
-      this.jsonService.ObtenerJSONMensual(this.dateInit, this.dateEnd, this.rfcPrueba).subscribe({
+      this.jsonService.ObtenerJSONMensual(this.dateInit, this.dateEnd, this.razonSelected, this.permisoSelected).subscribe({
         next: (r) => {
           this.placeDetail = r;
           this.loading = false;
@@ -182,7 +220,7 @@ export class JsonComponent implements OnInit {
       next: (r) => {
         console.log('resp: ', r);
         const zipName = r.NombreArchivo;
-
+        console.log('json', dataINFO);
         this.jsonService.ObtenerZipJSONInfo(this.dateInit, this.dateEnd, zipName, dataINFO).then((data: any) => {
           console.log(data);
         });

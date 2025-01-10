@@ -6,6 +6,7 @@
       <label for="razonSocial" class="after:content-['*'] after:text-red-500 after:pl-1">Razon social</label>
       <select name="razonSocial" id="" [(ngModel)]="razonSelected" (change)="getPermisos(razonSelected)"
         class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
+        <option value="0" class="dark:bg-primary">Seleccione una razón social</option>
         <option *ngFor="let razon of razonesSociales" value="{{razon.Id}}" class="dark:bg-primary">
           {{razon.RazonSocialName}}
         </option>
@@ -13,8 +14,9 @@
     </div>
     <div>
       <label for="permiso" class="after:content-['*'] after:text-red-500 after:pl-1">Permiso</label>
-      <select name="permiso" id="" [(ngModel)]="permisoSelected" (change)="logPermSelected()"
+      <select name="permiso" id="" [(ngModel)]="permisoSelected"
         class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
+        <option value="0" class="dark:bg-primary">Seleccione un permiso</option>
         <option *ngFor="let permiso of permisos" value="{{permiso.Id}}" class="dark:bg-primary">
           {{permiso.NumPermiso}}
         </option>
@@ -51,7 +53,7 @@
   </div> -->
 
   <button (click)="saveData()"
-    class="bg-primary text-white flex gap-4 items-center px-4 py-2 rounded-full hover:opacity-75 transition-all duration150 ease-linear">
+    class="bg-secondary text-white flex gap-4 items-center px-4 py-2 rounded-lg hover:opacity-75 transition-all duration150 ease-linear">
     Guardar datos
     <i *ngIf="!saving" class="fa-solid fa-upload"></i>
     <i *ngIf="saving" class="fa-solid fa-circle-notch animate-spin"></i>

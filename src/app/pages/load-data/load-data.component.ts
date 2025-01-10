@@ -57,10 +57,6 @@ export class LoadDataComponent implements OnInit {
     url.click();
   }
 
-  logPermSelected() {
-    console.log('Seleccionado permiso: ', this.permisoSelected);
-  }
-
   excelNumberToDate(num: number) {
     let newDate = XLSX.SSF.parse_date_code(num);
     return `${newDate.y}-${String(newDate.m).padStart(2, '0')}-${String(newDate.d).padStart(2, '0')}`;
@@ -69,7 +65,6 @@ export class LoadDataComponent implements OnInit {
   getPermisos(idRazonSocial: number) {
     this.permisoService.getPermisos(idRazonSocial)
     .then((permisos: Permiso[]) => {
-      console.log('permisos: ', permisos);
       this.permisos = permisos;
     })
     .catch(e => {
@@ -88,8 +83,13 @@ export class LoadDataComponent implements OnInit {
   }
 
   saveData() {
-    this.almacenesFile();
-    this.movimientosFile();
+    if (this.razonSelected === 0 || this.permisoSelected === 0) {
+      this.toastr.warning('Por favor, seleccione una razón social y un permiso', 'Campos Requeridos');
+      return;
+    } else {
+      this.almacenesFile();
+      this.movimientosFile();
+    }
   }
 
   formatExcelData(excelData: any, cols: string[]): any {

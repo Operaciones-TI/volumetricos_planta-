@@ -71,7 +71,6 @@ export class AlmacenesComponent {
   getPermisos(idRazonSocial: number) {
     this.permisoService.getPermisos(idRazonSocial)
     .then((permisos: Permiso[]) => {
-      console.log(permisos);
       this.permisos = permisos;
     })
     .catch(e => {
@@ -82,7 +81,6 @@ export class AlmacenesComponent {
   async getRazonesSociales() {
     try {
       const data = await this.permisoService.getRazonSocialData();
-      console.log(data);
       this.razonesSociales = data;
     } catch (e) {
       console.log(e);
@@ -117,7 +115,7 @@ export class AlmacenesComponent {
       this.toastr.warning('Por favor, complete todos los campos', 'Campos Requeridos');
       return;
     } else {
-
+      // Validaciones antes de guardar
       const fecha = new Date(this.tanqueData.VigenciaCalibracionTanque);
       const minDate = new Date('1753-01-01');
       const maxDate = new Date('9999-12-31');
@@ -127,11 +125,15 @@ export class AlmacenesComponent {
         return;
       }
 
+      if (this.razonSelected === 0 || this.permisoSelected === 0) {
+        this.toastr.warning('Por favor, seleccione una razón social y un permiso', 'Campos Requeridos');
+        return;
+      }
+
       this.tanqueData.VigenciaCalibracionTanque = fecha.toISOString().split('T')[0];
     
       this.loadDataService.saveTanksData([this.tanqueData], this.permisoSelected, this.razonSelected, 'token').then(
         response => {
-          console.log('Tanque registrado exitosamente', response);
           for(let res of response) {
             if(res?.Result === 0 && res.IsCompleted) {
               this.toastr.warning('El tanque con esta clave y permiso ya existe.', '')
@@ -155,6 +157,11 @@ export class AlmacenesComponent {
     // Validar que la clave no esté vacía
     if (!this.dispensarioData.ClaveDispensario) {
       this.toastr.warning('La clave del dispensario es requerida', 'Campo vacío');
+      return;
+    }
+
+    if (this.razonSelected === 0 || this.permisoSelected === 0) {
+      this.toastr.warning('Por favor, seleccione una razón social y un permiso', 'Campos Requeridos');
       return;
     }
   
@@ -196,6 +203,11 @@ export class AlmacenesComponent {
     if (fecha < minDate || fecha > maxDate) {
         this.toastr.error('La fecha debe estar entre 01/01/1753 y 31/12/9999', 'Error');
         return;
+    }
+
+    if (this.razonSelected === 0 || this.permisoSelected === 0) {
+      this.toastr.warning('Por favor, seleccione una razón social y un permiso', 'Campos Requeridos');
+      return;
     }
 
     this.medidorTanqueData.VigenciaCalibracion = fecha.toISOString().split('T')[0];
@@ -240,6 +252,12 @@ export class AlmacenesComponent {
         this.toastr.error('La fecha debe estar entre 01/01/1753 y 31/12/9999', 'Error');
         return;
       }
+
+      if (this.razonSelected === 0 || this.permisoSelected === 0) {
+        this.toastr.warning('Por favor, seleccione una razón social y un permiso', 'Campos Requeridos');
+        return;
+      }
+
       this.medidorDispensarioData.VigenciaCalibracion = fecha.toISOString().split('T')[0];
 
       this.loadDataService.saveDispensariosMedidoresData([this.medidorDispensarioData], this.permisoSelected, this.razonSelected, 'token').then(
@@ -267,6 +285,11 @@ export class AlmacenesComponent {
     // Validaciones
     if (!this.mangueraData.ClaveDispensario || !this.mangueraData.ClaveManguera) {
       this.toastr.error('Todos los campos son requeridos', 'Error');
+      return;
+    }
+
+    if (this.razonSelected === 0 || this.permisoSelected === 0) {
+      this.toastr.warning('Por favor, seleccione una razón social y un permiso', 'Campos Requeridos');
       return;
     }
 

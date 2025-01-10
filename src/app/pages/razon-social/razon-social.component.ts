@@ -67,8 +67,6 @@ export class RazonSocialComponent implements OnInit {
       return;
     }
 
-    console.log(this.data);
-
     this.permisoService.savePermisoData(this.data, 'token').then(data => {
       this.toastr.success('Permiso guardado exitosamente', 'Éxito');
       this.clearForm();

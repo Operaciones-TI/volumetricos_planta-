@@ -26,6 +26,39 @@
         <i class="fa-solid fa-right-from-bracket"></i>
       </button>
     </div>
+
+    <div class="relative">
+      <button
+        (click)="toggleDropdown()"
+        class="p-2 bg-primary rounded-full hover:bg-gray-400 text-white focus:outline-none"
+      >
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
+      <div
+        *ngIf="isDropdownOpen"
+        class="absolute  left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-white rounded-lg shadow-lg z-50"
+      >
+        <a
+          routerLink="/home/usuario/registrar"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg"
+        >
+          Registrar
+        </a>
+        <a
+          routerLink="/home/usuario/lista"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg"
+        >
+          Usuarios
+        </a>
+        <!-- <a
+          routerLink="/opcion3"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg"
+        >
+          Opción 3
+        </a> -->
+      </div>
+    </div>
+
   </div>
 
   <div [@enterAnimation]="isMenuOpen ? 'enter' : 'exit'"  class="h-screen w-full absolute top-0 backdrop-brightness-75 overflow-hidden">
@@ -63,7 +96,7 @@
           </a>
           <a routerLink="/home/movimientos" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"
           >
-            <h2>Movimientos</h2>          
+            <h2>Movimientos</h2>
           </a>
         </div>
 

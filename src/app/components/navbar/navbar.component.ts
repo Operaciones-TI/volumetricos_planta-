@@ -20,6 +20,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class NavbarComponent implements OnInit {
   isMenuOpen: boolean = false;
   animationState: string = 'enter';
+  isDropdownOpen = false;
 
   constructor(
     private router: Router,
@@ -40,5 +41,9 @@ export class NavbarComponent implements OnInit {
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     this.animationState = this.animationState === 'enter' ? 'exit' : 'enter';
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 }

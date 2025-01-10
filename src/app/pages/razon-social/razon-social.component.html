@@ -8,8 +8,8 @@
         <div class="flex w-full gap-4">
           <select id="razonSocial" name="razonSocialN" [(ngModel)]="data.IdRazonSocial"
             class="outline-none w-full border-2 px-4 py-2 hover:cursor-pointer bg-transparent">
-            <option *ngIf="razonesLoading" value="0" selected>Loading...</option>
-            <option *ngFor="let razon of razonesSociales" [value]="razon.Id">{{razon.RazonSocialName}}</option>
+            <option *ngIf="razonesLoading" class="dark:bg-primary" value="0" selected>Loading...</option>
+            <option *ngFor="let razon of razonesSociales" class="dark:bg-primary" [value]="razon.Id">{{razon.RazonSocialName}}</option>
           </select>
           <button class="text-lg hover:opacity-75 duration-200 transition-all ease-linear" type="button"
             (click)="getRazonesSociales()">

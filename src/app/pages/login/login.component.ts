@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
 
   handleSubmit(event: Event) {
     event.preventDefault();
-    this.route.navigate(['home']);
+    this.route.navigate(['/']);
   }
 
   Login() {

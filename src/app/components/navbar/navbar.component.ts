@@ -34,8 +34,10 @@ export class NavbarComponent implements OnInit {
 
   getUserProfilePic() {
     const user: Identity = this.usrServ.ObtenerIdentity();
-    this.userName = user.nombre;
-    return `https://ui-avatars.com/api/?name=${user.nombre}+${user.apellidos}`;
+    this.userName = user.nombre ? user.nombre : 'Usuario';
+    return user 
+    ? `https://ui-avatars.com/api/?name=${user?.nombre}+${user?.apellidos}`
+    : 'https://ui-avatars.com/api/?name=Usuario';
   }
 
   showUserOptions() {

@@ -3,6 +3,6 @@ export interface MedidorTanque {
   SistemaMedicionTanque?: string;
   DescripcionLocalizacion?: string;
   VigenciaCalibracion?: string;
-  IncertidumbreMedicion?: string;
+  IncertidumbreMedicion?: number;
   IdTanque?: string;
 }

@@ -1,11 +1,11 @@
 export interface Tanque {
   ClaveIdentificacionTanque?: string;
   DescripcionLocalizacion?: string;
-  VigenciaCalibracionTanque?: string;
-  CapacidadTotalTanque?: string;
-  CapacidadOperativaTanque?: string;
-  CapacidadUtilTanque?: string;
-  CapacidadFondajeTanque?: string;
-  VolumenMinimoOperacion?: string;
+  VigenciaCalibracionTanque?: string | Date;
+  CapacidadTotalTanque?: number;
+  CapacidadOperativaTanque?: number;
+  CapacidadUtilTanque?: number;
+  CapacidadFondajeTanque?: number;
+  VolumenMinimoOperacion?: number;
   EstadoTanque?: string | null;
 }

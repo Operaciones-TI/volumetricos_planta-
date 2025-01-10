@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DarkmodeThemeService } from 'src/app/services/darkmode-theme.service';
 
 @Component({
@@ -8,6 +8,7 @@ import { DarkmodeThemeService } from 'src/app/services/darkmode-theme.service';
 })
 export class DarkmodeComponent implements OnInit {
   darkMode = false;
+  @Input() styleClass: string = '';
 
   constructor( private darkmodeThemeService: DarkmodeThemeService ) {
     this.darkmodeThemeService.isDarkMode.subscribe(isDarkMode => {

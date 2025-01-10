@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { trigger, transition, style, animate, state } from '@angular/animations';
 import { AuthService } from 'src/app/services/auth.service';
+import { Identity } from 'src/app/interfaces/Identity.interface';
 
 @Component({
   selector: 'app-navbar',
@@ -21,6 +22,8 @@ export class NavbarComponent implements OnInit {
   isMenuOpen: boolean = false;
   animationState: string = 'enter';
   isDropdownOpen = false;
+  userOptions: boolean = false;
+  userName: string = '';
 
   constructor(
     private router: Router,
@@ -28,6 +31,18 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+  }
+
+  getUserProfilePic() {
+    const user: Identity = this.usrServ.ObtenerIdentity();
+    this.userName = user.nombre ? user.nombre : 'Usuario';
+    return user
+    ? `https://ui-avatars.com/api/?name=${user?.nombre}+${user?.apellidos}`
+    : 'https://ui-avatars.com/api/?name=Usuario';
+  }
+
+  showUserOptions() {
+    this.userOptions = !this.userOptions;
   }
 
   userLogout() {

@@ -1,116 +1,125 @@
-<nav class="h-[10vh] w-full bg-dark dark:bg-light">
-  <div class="h-full w-full lg:w-4/5 mx-auto flex justify-between items-center px-8 py-2">
+<nav class="h-[10vh] w-full bg-dark-red">
+  <div class="h-full w-full 2xl:w-4/5 mx-auto flex justify-between items-center px-8 py-2">
     <div class="h-full hidden lg:flex items-center gap-8 ">
-      <a routerLink="/" class="text-white h-full flex items-center dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3 class="mb-0">Cargar Datos</h3></a>
-      <a routerLink="/home/json" class="text-white h-full flex items-center dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3 class="mb-0">JSON</h3></a>
-      <a routerLink="/home/permisos" class="text-white h-full flex items-center dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3 class="mb-0">Permisos</h3></a>
-      <a routerLink="/home/razon-planta" class="text-white h-full flex items-center dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3 class="mb-0">Razon Social</h3></a>
-      <a routerLink="/home/almacenes" class="text-white h-full flex items-center dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3 class="mb-0">Almacenes</h3></a>
-      <a routerLink="/home/movimientos" class="text-white h-full flex items-center dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"><h3 class="mb-0">Movimientos</h3></a>
+      <a routerLink="/"
+        class="text-white h-full flex items-center hover:opacity-75 hover:scale-[1.01] transition-all ease-linear duration-150">
+        <h3 class="mb-0">Cargar Datos</h3>
+      </a>
+      <a routerLink="/json"
+        class="text-white h-full flex items-center hover:opacity-75 hover:scale-[1.01] transition-all ease-linear duration-150">
+        <h3 class="mb-0">JSON</h3>
+      </a>
+      <a routerLink="/permisos"
+        class="text-white h-full flex items-center hover:opacity-75 hover:scale-[1.01] transition-all ease-linear duration-150">
+        <h3 class="mb-0">Permisos</h3>
+      </a>
+      <a routerLink="/razon-planta"
+        class="text-white h-full flex items-center hover:opacity-75 hover:scale-[1.01] transition-all ease-linear duration-150">
+        <h3 class="mb-0">Razon Social</h3>
+      </a>
+      <a routerLink="/almacenes"
+        class="text-white h-full flex items-center hover:opacity-75 hover:scale-[1.01] transition-all ease-linear duration-150">
+        <h3 class="mb-0">Almacenes</h3>
+      </a>
+      <a routerLink="/movimientos"
+        class="text-white h-full flex items-center hover:opacity-75 hover:scale-[1.01] transition-all ease-linear duration-150">
+        <h3 class="mb-0">Movimientos</h3>
+      </a>
     </div>
     <div>
-      <button
-        (click)="toggleMenu()"
-        class="flex lg:hidden items-center justfy-center text-white dark:text-dark text-2xl"
-      >
+      <button (click)="toggleMenu()"
+        class="flex lg:hidden items-center justfy-center text-white dark:text-dark text-2xl">
         <i class="fa-solid fa-bars"></i>
       </button>
     </div>
-    <div class="h-full flex items-center gap-4">
-      <app-darkmode class="text-light dark:text-dark"></app-darkmode>
-      <button
-        (click)="userLogout()"
-        class="py-2 px-4 font-bold bg-primary rounded-lg hover:opacity-75 transition-all ease-linear duration-150 text-white flex items-center gap-4"
-      >
+    <div class="h-full flex items-center gap-4 relative">
+      <app-darkmode [styleClass]="'text-dark dark:text-light'"></app-darkmode>
+      <!-- <button (click)="userLogout()"
+        class="py-2 px-4 font-bold bg-primary rounded-lg hover:opacity-75 transition-all ease-linear duration-150 text-white flex items-center gap-4">
         Salir
         <i class="fa-solid fa-right-from-bracket"></i>
-      </button>
-    </div>
-
-    <div class="relative">
+      </button> -->
       <button
-        (click)="toggleDropdown()"
-        class="p-2 bg-primary rounded-full hover:bg-gray-400 text-white focus:outline-none"
+        class="bg-slate-600 h-12 w-12 rounded-full grid place-items-center overflow-hidden"
+        (click)="showUserOptions()"
       >
-        <i class="fa-solid fa-ellipsis-vertical"></i>
+        <img [src]="getUserProfilePic()" alt="user-profile">
       </button>
-      <div
-        *ngIf="isDropdownOpen"
-        class="absolute  left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-white rounded-lg shadow-lg z-50"
-      >
-        <a
-          routerLink="/home/usuario/registrar"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg"
-        >
-          Registrar
-        </a>
-        <a
-          routerLink="/home/usuario/lista"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg"
-        >
-          Usuarios
-        </a>
-        <!-- <a
-          routerLink="/opcion3"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg"
-        >
-          Opción 3
-        </a> -->
+
+      <div *ngIf="userOptions" class="absolute portrait:hidden top-20 right-0 w-[150%] bg-slate-300 h-auto p-4 rounded-lg">
+        <ul class="text-center w-full h-full flex flex-col items-center justify-center gap-4 divide-y">
+          <li>
+            <p class="font-bold">{{ userName }}</p>
+          </li>
+          <li>
+            <a routerLink="/usuario/registrar"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              Registrar
+            </a>
+          </li>
+          <li>
+            <a routerLink="/usuario/lista"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              Usuarios
+            </a>
+          </li>
+          <li>
+            <button
+              (click)="userLogout()"
+              class="p-2 flex gap-4 items-center hover:opacity-75 transition-all ease-linear duration-150">
+                Salir <i class="fa-solid fa-right-from-bracket"></i>
+              </button>
+          </li>
+        </ul>
       </div>
     </div>
-
   </div>
 
-  <div [@enterAnimation]="isMenuOpen ? 'enter' : 'exit'"  class="h-screen w-full absolute top-0 backdrop-brightness-75 overflow-hidden">
+  <aside [@enterAnimation]="isMenuOpen ? 'enter' : 'exit'"
+    class="h-screen w-full absolute top-0 backdrop-brightness-75 overflow-hidden">
     <div class="bg-dark dark:bg-light w-4/5 h-full p-4 relative">
       <div class="w-full h-20 absolute top-0 left-0">
-        <button
-          (click)="toggleMenu()"
-          class="absolute text-light dark:text-dark top-10 right-10 text-3xl"
-        >
+        <button (click)="toggleMenu()" class="absolute text-light dark:text-dark top-10 right-10 text-3xl">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
       <div class="w-full flex flex-col items-center h-full justify-evenly text-center gap-8">
         <div class="font-bold flex flex-col justify-center gap-6">
-          <a routerLink="/" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"
-          >
+          <a routerLink="/" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150">
             <h2>Cargar datos</h2>
           </a>
-          <a routerLink="/home/login" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"
-            >
+          <a routerLink="/login"
+            class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150">
             <h2>JSON</h2>
           </a>
-          <a routerLink="/home/permisos" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"
-            >
+          <a routerLink="/permisos"
+            class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150">
             <h2>Permisos</h2>
           </a>
-          <a routerLink="/home/razon-planta" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"
-          >
+          <a routerLink="/razon-planta"
+            class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150">
             <h2>Razon Social</h2>
           </a>
-          <a routerLink="/home/almacenes" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"
-          >
+          <a routerLink="/almacenes"
+            class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150">
             <h2>Almacenes</h2>
           </a>
-          <a routerLink="/home/movimientos" class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150"
-          >
+          <a routerLink="/movimientos"
+            class="text-white dark:text-dark hover:opacity-75 transition-all ease-linear duration-150">
             <h2>Movimientos</h2>
           </a>
         </div>
 
         <div class="flex flex-col items-center gap-4">
           <app-darkmode class="text-light dark:text-dark scale-125"></app-darkmode>
-          <button
-            (click)="userLogout()"
-            class="py-2 px-4 text-2xl font-bold bg-primary rounded-lg hover:opacity-75 transition-all ease-linear duration-150 text-white flex items-center gap-4"
-          >
+          <button (click)="userLogout()"
+            class="py-2 px-4 text-2xl font-bold bg-primary rounded-lg hover:opacity-75 transition-all ease-linear duration-150 text-white flex items-center gap-4">
             Salir
             <i class="fa-solid fa-right-from-bracket"></i>
           </button>
         </div>
       </div>
     </div>
-  </div>
+  </aside>
 </nav>

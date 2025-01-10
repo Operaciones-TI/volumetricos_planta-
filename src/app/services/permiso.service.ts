@@ -3,40 +3,41 @@ import { HttpClient } from '@angular/common/http';
 import { IRazonSocial } from '../interfaces/RazonSocial.interface';
 import { Permiso } from '../interfaces/Permiso.interface';
 
-const VM_HTTP_URL = 'https://localhost:5001/api';
+const VM_HTTP_URL = 'http://volumetrics.site/api';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PermisoService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-  
   savePermisoData(data: any, token: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.http.post(`${VM_HTTP_URL}/Permiso`, data, { 
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      this.http
+        .post(`${VM_HTTP_URL}/Permiso`, data, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
         .subscribe({
           next: (response: any) => {
-            resolve(response)
+            resolve(response);
           },
           error: (error) => {
             reject(error);
-          }
+          },
         });
     });
-  } 
+  }
 
   getRazonSocialData(): Promise<IRazonSocial[]> {
     return new Promise((resolve, reject) => {
-      this.http.get<IRazonSocial[]>(`${VM_HTTP_URL}/RazonSocial`, { 
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      this.http
+        .get<IRazonSocial[]>(`${VM_HTTP_URL}/RazonSocial`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
         .subscribe({
           next: (response: IRazonSocial[]) => {
             resolve(response);
@@ -44,14 +45,15 @@ export class PermisoService {
           error: (error) => {
             console.error(error);
             reject(error);
-          }
+          },
         });
     });
   }
 
   getPermisos(IdRazonSocial: number): Promise<Permiso[]> {
     return new Promise((resolve, reject) => {
-      this.http.get<Permiso[]>(`${VM_HTTP_URL}/Permiso?idRazonSocial=${IdRazonSocial}`)
+      this.http
+        .get<Permiso[]>(`${VM_HTTP_URL}/Permiso?idRazonSocial=${IdRazonSocial}`)
         .subscribe({
           next: (response: Permiso[]) => {
             resolve(response);
@@ -59,7 +61,7 @@ export class PermisoService {
           error: (error) => {
             console.error(error);
             reject(error);
-          }
+          },
         });
     });
   }

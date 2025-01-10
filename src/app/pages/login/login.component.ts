@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
 
   handleSubmit(event: Event) {
     event.preventDefault();
-    this.route.navigate(['home']);
+    this.route.navigate(['/']);
   }
 
   Login() {
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('identity', JSON.stringify(r.usuario));
         localStorage.setItem('token', r.token);
 
-        this.route.navigate(['home'])
+        this.route.navigate(['/'])
           .then(() => {
             window.location.reload();
           });

@@ -9,7 +9,7 @@
                 (change)="getPermisos(razonSelected)"
                 class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
                 <option value="0">Seleccione una razón social</option>
-                <option [value]="razon.Id" *ngFor="let razon of razonesSociales">
+                <option [value]="razon.Id" *ngFor="let razon of razonesSociales" class="dark:bg-primary">
                     {{razon.RazonSocialName}}
                 </option>
             </select>
@@ -21,7 +21,7 @@
                 [(ngModel)]="permisoSelected"
                 class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
                 <option value="0">Seleccione un permiso</option>
-                <option [value]="permiso.Id" *ngFor="let permiso of permisos">
+                <option [value]="permiso.Id" *ngFor="let permiso of permisos" class="dark:bg-primary">
                     {{permiso.NumPermiso}}
                 </option>
             </select>
@@ -30,7 +30,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-1 gap-6">
         <div>
             <h1 class="text-dark dark:text-white 2xl:text-3xl">Tanques</h1>
-            <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg">
+            <div class="bg-slate-300 dark:bg-slate-600 text-black dark:text-white p-6 w-full rounded-lg">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="flex flex-col w-full gap-4">
                         <label for="ClaveTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Tanque</label>
@@ -38,7 +38,7 @@
                             name="ClaveTanque"
                             [(ngModel)]="tanqueData.ClaveIdentificacionTanque"
                             placeholder="Ej: TQS-ALM-0005"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
         
                     <div class="flex flex-col w-full gap-4">
@@ -47,7 +47,7 @@
                             name="Descripcion"
                             [(ngModel)]="tanqueData.DescripcionLocalizacion"
                             placeholder="Ej: Tanque 5"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
         
                     <div class="flex flex-col w-full gap-4">
@@ -57,7 +57,7 @@
                             [(ngModel)]="tanqueData.VigenciaCalibracionTanque"
                             min="1753-01-01"
                             max="9999-12-31"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
         
                     <div class="flex flex-col w-full gap-4">
@@ -67,7 +67,7 @@
                             [(ngModel)]="tanqueData.CapacidadTotalTanque"
                             min="0"
                             placeholder="Ej: 1000"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
         
                     <div class="flex flex-col w-full gap-4">
@@ -77,7 +77,7 @@
                             [(ngModel)]="tanqueData.CapacidadOperativaTanque"
                             placeholder="Ej: 1000"
                             min="0"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
         
                     <div class="flex flex-col w-full gap-4">
@@ -87,7 +87,7 @@
                             [(ngModel)]="tanqueData.CapacidadUtilTanque"
                             placeholder="Ej: 1000"
                             min="0"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
         
                     <div class="flex flex-col w-full gap-4">
@@ -97,7 +97,7 @@
                             [(ngModel)]="tanqueData.CapacidadFondajeTanque"
                             placeholder="Ej: 1000"
                             min="0"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
         
                     <div class="flex flex-col w-full gap-4">
@@ -107,38 +107,38 @@
                             [(ngModel)]="tanqueData.VolumenMinimoOperacion"
                             placeholder="Ej: 1000"
                             min="0"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
                 </div>
         
                 <div class="flex justify-center gap-4 mt-6">
-                    <button (click)="registrarTanque()" type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                    <button (click)="registrarTanque()" type="submit" class="bg-secondary hover:opacity-75 transition-all duration-150 ease-linear text-white py-2 px-4 rounded-md">Registrar</button>
                 </div>
             </div>
         </div>
     
         <div>
             <h1 class="text-dark dark:text-white 2xl:text-3xl">Dispensarios</h1>
-            <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg space-y-4">
+            <div class="bg-slate-300 dark:bg-slate-600 text-black dark:text-white p-6 w-full rounded-lg space-y-4">
                 <div class="flex flex-col w-full gap-4">
                     <label for="ClaveDispensario" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Dispensario</label>
                     <input required type="text" id="ClaveDispensario" 
                         name="ClaveDispensario"
                         [(ngModel)]="dispensarioData.ClaveDispensario"
                         placeholder="Ej: DISP-0001"
-                        class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                        class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                 </div>
 
                 <div class="flex justify-center gap-4">
                     <button (click)="registrarDispensario()"
-                    type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                    type="submit" class="bg-secondary hover:opacity-75 transition-all duration-150 ease-linear text-white py-2 px-4 rounded-md">Registrar</button>
                 </div>
             </div>
         </div>
 
         <div>
             <h1 class="text-dark dark:text-white 2xl:text-3xl">Medidores de tanques</h1>
-            <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg space-y-4">
+            <div class="bg-slate-300 dark:bg-slate-600 text-black dark:text-white p-6 w-full rounded-lg space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col w-full gap-4">
                         <label for="ClaveTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Tanque</label>
@@ -146,7 +146,7 @@
                             name="ClaveTanque"
                             [(ngModel)]="medidorTanqueData.ClaveTanque"
                             placeholder="Ej: TQS-ALM-0005"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
                 
                     <div class="flex flex-col w-full gap-4">
@@ -155,7 +155,7 @@
                         name="SistemaMedicion"
                         [(ngModel)]="medidorTanqueData.SistemaMedicionTanque"
                         placeholder="Ej: SME-TQS-ALM-0001"
-                        class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                        class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
                     <div class="flex flex-col w-full gap-4">
                         <label for="DescripcionLocalizacion" class="after:content-['*'] after:text-red-500 after:pl-1">Descripción o localización</label>
@@ -163,7 +163,7 @@
                             name="DescripcionLocalizacion"
                             [(ngModel)]="medidorTanqueData.DescripcionLocalizacion"
                             placeholder="Ej: Medidor 1"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
                     <div class="flex flex-col w-full gap-4">
                         <label for="VigenciaCalibracion" class="after:content-['*'] after:text-red-500 after:pl-1">Vigencia Calibración de almacen</label>
@@ -172,7 +172,7 @@
                             [(ngModel)]="medidorTanqueData.VigenciaCalibracion"
                             min="1753-01-01"
                             max="9999-12-31"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
                     <div class="flex flex-col w-full gap-4">
                         <label for="IncertidumbreMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Incertidumbre de la medición</label>
@@ -181,26 +181,26 @@
                             [(ngModel)]="medidorTanqueData.IncertidumbreMedicion"
                             placeholder="Ej: 1000"
                             min="0"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
                 </div>
                 <div class="flex justify-center gap-4">
-                    <button (click)="registrarMedidorTanque()" type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                    <button (click)="registrarMedidorTanque()" type="submit" class="bg-secondary hover:opacity-75 transition-all duration-150 ease-linear text-white py-2 px-4 rounded-md">Registrar</button>
                 </div>
             </div>
         </div>
 
         <div>
             <h1 class="text-dark dark:text-white 2xl:text-3xl">Medidores de dispensarios</h1>
-            <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg space-y-4">
+            <div class="bg-slate-300 dark:bg-slate-600 text-black dark:text-white p-6 w-full rounded-lg space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col w-full gap-4">
                         <label for="ClaveDispensario" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Dispensario</label>
                         <input required type="text" id="ClaveDispensario" 
                             name="ClaveDispensario"
-                            [(ngModel)]="medidorDispensarioData.claveDispensario"
+                            [(ngModel)]="medidorDispensarioData.ClaveDispensario"
                             placeholder="Ej: DISP-0001"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
                     <div class="flex flex-col w-full gap-4">
                         <label for="SistemaMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del sistema medicion</label>
@@ -208,66 +208,66 @@
                             name="SistemaMedicion"
                             [(ngModel)]="medidorDispensarioData.SistemaMedicion"
                             placeholder="Ej: SME-TQS-ALM-0001"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
                     <div class="flex flex-col w-full gap-4">
                         <label for="DescripcionLocalizacion" class="after:content-['*'] after:text-red-500 after:pl-1">Descripción o localización</label>
                         <input required type="text" id="DescripcionLocalizacion" 
                             name="DescripcionLocalizacion"
-                            [(ngModel)]="medidorDispensarioData.descripcionLocalizacion"
+                            [(ngModel)]="medidorDispensarioData.DescripcionLocalizacion"
                             placeholder="Ej: Medidor 1"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
                     <div class="flex flex-col w-full gap-4">
                         <label for="VigenciaCalibracion" class="after:content-['*'] after:text-red-500 after:pl-1">Vigencia Calibración de almacen</label>
                         <input required type="date" id="VigenciaCalibracion" 
                             name="VigenciaCalibracion"
-                            [(ngModel)]="medidorDispensarioData.vigenciaCalibracion"
+                            [(ngModel)]="medidorDispensarioData.VigenciaCalibracion"
                             min="1753-01-01"
                             max="9999-12-31"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
                     <div class="flex flex-col w-full gap-4">
                         <label for="IncertidumbreMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Incertidumbre de la medición</label>
                         <input required type="number" id="IncertidumbreMedicion" 
                             name="IncertidumbreMedicion"
-                            [(ngModel)]="medidorDispensarioData.incertidumbreMedicion"
+                            [(ngModel)]="medidorDispensarioData.IncertidumbreMedicion"
                             placeholder="Ej: 1000"
                             min="0"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
                 </div>
                 
                 <div class="flex justify-center gap-4">
-                    <button (click)="registrarMedidorDispensario()" type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                    <button (click)="registrarMedidorDispensario()" type="submit" class="bg-secondary hover:opacity-75 transition-all duration-150 ease-linear text-white py-2 px-4 rounded-md">Registrar</button>
                 </div>
             </div>
         </div>
 
         <div>
             <h1 class="text-dark dark:text-white 2xl:text-3xl">Mangueras dispensario</h1>
-            <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg space-y-4">
+            <div class="bg-slate-300 dark:bg-slate-600 text-black dark:text-white p-6 w-full rounded-lg space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col w-full gap-4">
                         <label for="ClaveDispensario" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Dispensario</label>
                         <input required type="text" id="ClaveDispensario" 
                             name="ClaveDispensario"
-                            [(ngModel)]="mangueraData.claveDispensario"
+                            [(ngModel)]="mangueraData.ClaveDispensario"
                             placeholder="Ej: DISP-0002"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
                     <div class="flex flex-col w-full gap-4">
                         <label for="claveManguera" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del manguera</label>
                         <input required type="text" id="claveManguera" 
                             name="claveManguera"
-                            [(ngModel)]="mangueraData.claveManguera"
+                            [(ngModel)]="mangueraData.ClaveManguera"
                             placeholder="Ej: DISP-0001-MGA-0001"
-                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-400">
                     </div>
                 </div>
                 
                 <div class="flex justify-center gap-4">
-                    <button (click)="registrarManguera()" type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
+                    <button (click)="registrarManguera()" type="submit" class="bg-secondary hover:opacity-75 transition-all duration-150 ease-linear text-white py-2 px-4 rounded-md">Registrar</button>
                 </div>
     
             </div>

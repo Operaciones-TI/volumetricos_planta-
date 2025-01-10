@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Tanque } from '../interfaces/Tanque.interface';
-const VM_HTTP_URL = 'https://localhost:5001/api';
+const VM_HTTP_URL = 'http://volumetrics.site/api';
 
 @Injectable({
   providedIn: 'root',
@@ -151,10 +151,10 @@ export class LoadDataService {
     idPermiso: number,
     idRazonSocial: number,
     token: string
-  ): Promise<number> {
+  ): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<number>(
+        .post<any[]>(
           `${VM_HTTP_URL}/EntregaDispensarios/Medidores?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
           data,
           { headers: { 'Content-Type': 'application/json' } }
@@ -176,10 +176,10 @@ export class LoadDataService {
     idPermiso: number,
     idRazonSocial: number,
     token: string
-  ): Promise<number> {
+  ): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<number>(
+        .post<any[]>(
           `${VM_HTTP_URL}/EntregaDispensarios/Mangueras?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
           data,
           { headers: { 'Content-Type': 'application/json' } }

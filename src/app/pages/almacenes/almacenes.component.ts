@@ -7,6 +7,8 @@ import { IRazonSocial } from 'src/app/interfaces/RazonSocial.interface';
 import { IPermisos, Permiso } from 'src/app/interfaces/Permiso.interface';
 import { Tanque } from 'src/app/interfaces/Tanque.interface';
 import { MedidorTanque } from 'src/app/interfaces/MedidorTanque.interface';
+import { MedidorDispensarios } from 'src/app/interfaces/MedidorDispensario.interface';
+import { MangueraDispensario } from 'src/app/interfaces/MangueraDispensario.interface';
 
 @Component({
   selector: 'app-almacenes',
@@ -43,17 +45,17 @@ export class AlmacenesComponent {
     IncertidumbreMedicion: 0
   };
 
-  medidorDispensarioData = {
-    claveDispensario: '',
+  medidorDispensarioData: MedidorDispensarios = {
+    ClaveDispensario: '',
     SistemaMedicion: '',
-    descripcionLocalizacion: '',
-    vigenciaCalibracion: '',
-    incertidumbreMedicion: 0
+    DescripcionLocalizacion: '',
+    VigenciaCalibracion: '',
+    IncertidumbreMedicion: 0
   };
 
-  mangueraData = {
-    claveDispensario: '',
-    claveManguera: ''
+  mangueraData: MangueraDispensario = {
+    ClaveDispensario: '',
+    ClaveManguera: ''
   };
 
   constructor(
@@ -102,9 +104,20 @@ export class AlmacenesComponent {
 
   // Método para registrar tanque
   registrarTanque() {
-    // console.log(this.clearObject(this.tanqueData));
-    // Validar fecha
-    if (this.tanqueData.VigenciaCalibracionTanque) {
+    if (
+      !this.tanqueData.ClaveIdentificacionTanque || 
+      !this.tanqueData.DescripcionLocalizacion || 
+      !this.tanqueData.VigenciaCalibracionTanque || 
+      !this.tanqueData.CapacidadTotalTanque || 
+      !this.tanqueData.CapacidadOperativaTanque || 
+      !this.tanqueData.CapacidadUtilTanque || 
+      !this.tanqueData.CapacidadFondajeTanque || 
+      !this.tanqueData.VolumenMinimoOperacion
+    ) {
+      this.toastr.warning('Por favor, complete todos los campos', 'Campos Requeridos');
+      return;
+    } else {
+
       const fecha = new Date(this.tanqueData.VigenciaCalibracionTanque);
       const minDate = new Date('1753-01-01');
       const maxDate = new Date('9999-12-31');
@@ -209,83 +222,70 @@ export class AlmacenesComponent {
   // Método para registrar medidor de dispensario
   registrarMedidorDispensario() {
     // Validaciones
-    if (!this.medidorDispensarioData.claveDispensario || 
+    if (!this.medidorDispensarioData.ClaveDispensario || 
         !this.medidorDispensarioData.SistemaMedicion || 
-        !this.medidorDispensarioData.descripcionLocalizacion || 
-        !this.medidorDispensarioData.vigenciaCalibracion) {
+        !this.medidorDispensarioData.DescripcionLocalizacion || 
+        !this.medidorDispensarioData.VigenciaCalibracion || 
+        !this.medidorDispensarioData.IncertidumbreMedicion
+      ) {
         this.toastr.error('Todos los campos son requeridos', 'Error');
         return;
-    }
+    } else {
+      // Validar fecha
+      const fecha = new Date(this.medidorDispensarioData.VigenciaCalibracion);
+      const minDate = new Date('1753-01-01');
+      const maxDate = new Date('9999-12-31');
 
-    // Validar fecha
-    const fecha = new Date(this.medidorDispensarioData.vigenciaCalibracion);
-    const minDate = new Date('1753-01-01');
-    const maxDate = new Date('9999-12-31');
-
-    if (fecha < minDate || fecha > maxDate) {
+      if (fecha < minDate || fecha > maxDate) {
         this.toastr.error('La fecha debe estar entre 01/01/1753 y 31/12/9999', 'Error');
         return;
+      }
+      this.medidorDispensarioData.VigenciaCalibracion = fecha.toISOString().split('T')[0];
+
+      this.loadDataService.saveDispensariosMedidoresData([this.medidorDispensarioData], this.permisoSelected, this.razonSelected, 'token').then(
+        response => {
+          for (let res of response) {
+            if (res?.Result === 0 && res.IsCompleted) {
+              this.toastr.warning('El medidor de dispensario con esta clave y permiso ya existe.', '')
+            } else if (res?.Result != 0 && res.IsCompleted) {
+              this.toastr.success('Medidor de dispensario registrado con éxito');
+              // Limpiar formulario
+              this.clearObject(this.medidorDispensarioData);
+            }
+          }
+        },
+        error => {
+          console.error('Error al registrar medidor de dispensario', error);
+          this.toastr.error('Error al registrar el medidor de dispensario: ' + error.message);
+        }
+      );
     }
-
-    // Crear objeto con el formato correcto
-    const medidorFormateado = {
-        ClaveDispensario: this.medidorDispensarioData.claveDispensario,
-        SistemaMedicion: this.medidorDispensarioData.SistemaMedicion, // Cambiado aquí
-        DescripcionLocalizacion: this.medidorDispensarioData.descripcionLocalizacion,
-        VigenciaCalibracion: fecha.toISOString().split('T')[0],
-        IncertidumbreMedicion: this.medidorDispensarioData.incertidumbreMedicion
-    };
-
-    // this.loadDataService.saveDispensariosMedidoresData([medidorFormateado], '').then(
-    //     response => {
-    //         console.log('Medidor de dispensario registrado exitosamente', response);
-    //         this.toastr.success('Medidor de dispensario registrado con éxito');
-    //         // Limpiar formulario
-    //         this.medidorDispensarioData = {
-    //             claveDispensario: '',
-    //             SistemaMedicion: '',
-    //             descripcionLocalizacion: '',
-    //             vigenciaCalibracion: '',
-    //             incertidumbreMedicion: 0
-    //         };
-    //     },
-    //     error => {
-    //         console.error('Error al registrar medidor de dispensario', error);
-    //         this.toastr.error('Error al registrar el medidor de dispensario: ' + error.message);
-    //     }
-    // );
   }
 
   // Método para registrar manguera
   registrarManguera() {
     // Validaciones
-    if (!this.mangueraData.claveDispensario || !this.mangueraData.claveManguera) {
-        this.toastr.error('Todos los campos son requeridos', 'Error');
-        return;
+    if (!this.mangueraData.ClaveDispensario || !this.mangueraData.ClaveManguera) {
+      this.toastr.error('Todos los campos son requeridos', 'Error');
+      return;
     }
 
-    // Crear objeto con el formato correcto
-    const mangueraFormateada = {
-        ClaveDispensario: this.mangueraData.claveDispensario,
-        ClaveManguera: this.mangueraData.claveManguera
-    };
-
-    console.log('Datos a enviar:', mangueraFormateada);
-
-    // this.loadDataService.saveManguerasDispensariosData([mangueraFormateada], '').then(
-    //     response => {
-    //         console.log('Manguera registrada exitosamente', response);
-    //         this.toastr.success('Manguera registrada con éxito');
-    //         // Limpiar formulario
-    //         this.mangueraData = {
-    //             claveDispensario: '',
-    //             claveManguera: ''
-    //         };
-    //     },
-    //     error => {
-    //         console.error('Error al registrar manguera', error);
-    //         this.toastr.error('Error al registrar la manguera: ' + error.message);
-    //     }
-    // );
+    this.loadDataService.saveManguerasDispensariosData([this.mangueraData], this.permisoSelected, this.razonSelected, 'token').then(
+        response => {
+          for (let res of response) {
+            if (res?.Result === 0 && res.IsCompleted) {
+              this.toastr.warning('La manguera con esta clave y permiso ya existe.', '')
+            } else if (res?.Result != 0 && res.IsCompleted) {
+              this.toastr.success('Manguera registrada con éxito');
+              // Limpiar formulario
+              this.clearObject(this.mangueraData);
+            }
+          }
+        },
+        error => {
+            console.error('Error al registrar manguera', error);
+            this.toastr.error('Error al registrar la manguera: ' + error.message);
+        }
+    );
   }
 }

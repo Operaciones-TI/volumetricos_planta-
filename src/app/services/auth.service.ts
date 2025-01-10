@@ -1,68 +1,63 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable, BehaviorSubject } from "rxjs";
-import { Global } from "./global";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { Global } from './global';
 
-const VM_HTTP_URL = 'https://localhost:5001/api/';
+const VM_HTTP_URL = 'http://volumetrics.site/api/';
 
 @Injectable()
 export class AuthService {
-    private url: string;
+  private url: string;
 
-    private isUsuarioLoggedIn$ = new BehaviorSubject<boolean>(false);
+  private isUsuarioLoggedIn$ = new BehaviorSubject<boolean>(false);
 
-    isLoggedIn() {
-        return this.isUsuarioLoggedIn$.asObservable();
-    }
+  isLoggedIn() {
+    return this.isUsuarioLoggedIn$.asObservable();
+  }
 
-    constructor(
-        private httpClient: HttpClient,
-    ) {
-        // this.url = `${Global.url}auth`
-        this.url = `${VM_HTTP_URL}auth`
-    }
+  constructor(private httpClient: HttpClient) {
+    // this.url = `${Global.url}auth`
+    this.url = `${VM_HTTP_URL}auth`;
+  }
 
-    ObtenerIdentity() {
-        let s = localStorage.getItem('identity');
-        if (s === null)
-            return null;
-        let identity = JSON.parse(s);
-        return identity;
-    }
+  ObtenerIdentity() {
+    let s = localStorage.getItem('identity');
+    if (s === null) return null;
+    let identity = JSON.parse(s);
+    return identity;
+  }
 
-    ObtenerTipoUsuario() {
-        let s = localStorage.getItem('identity');
-        if (s === null)
-            return null;
-        let identity = JSON.parse(s);
-        return identity.perfil;
-    }
+  ObtenerTipoUsuario() {
+    let s = localStorage.getItem('identity');
+    if (s === null) return null;
+    let identity = JSON.parse(s);
+    return identity.perfil;
+  }
 
-    ObtenerToken() {
-        return localStorage.getItem('token');
-    }
+  ObtenerToken() {
+    return localStorage.getItem('token');
+  }
 
-    DestruirToken() {
-        localStorage.removeItem('token');
-    }
+  DestruirToken() {
+    localStorage.removeItem('token');
+  }
 
-    Login(login: string, password: string): Observable<any> {
-        let formData = new FormData();
-        formData.append('login', login);
-        formData.append('password', password);
-        let urlLogin = this.httpClient.post(this.url, formData);
-        console.log(urlLogin);
-        return urlLogin;
-    }
+  Login(login: string, password: string): Observable<any> {
+    let formData = new FormData();
+    formData.append('login', login);
+    formData.append('password', password);
+    let urlLogin = this.httpClient.post(this.url, formData);
+    console.log(urlLogin);
+    return urlLogin;
+  }
 
-    Logout() {
-        localStorage.clear();
-        localStorage.removeItem('identity');
-        this.updateLogin(false);
-    }
+  Logout() {
+    localStorage.clear();
+    localStorage.removeItem('identity');
+    this.updateLogin(false);
+  }
 
-    updateLogin(state: boolean) {
-        this.isUsuarioLoggedIn$.next(state);
-    }
-
+  updateLogin(state: boolean) {
+    this.isUsuarioLoggedIn$.next(state);
+  }
 }

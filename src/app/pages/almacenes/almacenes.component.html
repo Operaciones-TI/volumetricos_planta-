@@ -27,7 +27,7 @@
             </select>
         </div>
     </section>
-    <div class="grid grid-cols-1 lg:grid-cols-1 gap-6 dark:text-white">
+    <div class="grid grid-cols-1 lg:grid-cols-1 gap-6">
         <div>
             <h1 class="text-dark dark:text-white 2xl:text-3xl">Tanques</h1>
             <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg">
@@ -36,7 +36,7 @@
                         <label for="ClaveTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Tanque</label>
                         <input required type="text" id="ClaveTanque" 
                             name="ClaveTanque"
-                            [(ngModel)]="tanqueData.claveTanque"
+                            [(ngModel)]="tanqueData.ClaveIdentificacionTanque"
                             placeholder="Ej: TQS-ALM-0005"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
@@ -45,7 +45,7 @@
                         <label for="Descripcion" class="after:content-['*'] after:text-red-500 after:pl-1">Descripción</label>
                         <input required type="text" id="Descripcion" 
                             name="Descripcion"
-                            [(ngModel)]="tanqueData.descripcion"
+                            [(ngModel)]="tanqueData.DescripcionLocalizacion"
                             placeholder="Ej: Tanque 5"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
@@ -54,7 +54,7 @@
                         <label for="VigenciaCalibracion" class="after:content-['*'] after:text-red-500 after:pl-1">Vigencia Calibración de almacen</label>
                         <input required type="date" id="VigenciaCalibracion" 
                             name="VigenciaCalibracion"
-                            [(ngModel)]="tanqueData.vigenciaCalibracion"
+                            [(ngModel)]="tanqueData.VigenciaCalibracionTanque"
                             min="1753-01-01"
                             max="9999-12-31"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
@@ -64,7 +64,7 @@
                         <label for="CapacidadTotal" class="after:content-['*'] after:text-red-500 after:pl-1">Capacidad Total</label>
                         <input required type="number" id="CapacidadTotal" 
                             name="CapacidadTotal"
-                            [(ngModel)]="tanqueData.capacidadTotal"
+                            [(ngModel)]="tanqueData.CapacidadTotalTanque"
                             min="0"
                             placeholder="Ej: 1000"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
@@ -74,7 +74,7 @@
                         <label for="CapacidadOperativa" class="after:content-['*'] after:text-red-500 after:pl-1">Capacidad Operativa</label>
                         <input required type="number" id="CapacidadOperativa" 
                             name="CapacidadOperativa"
-                            [(ngModel)]="tanqueData.capacidadOperativa"
+                            [(ngModel)]="tanqueData.CapacidadOperativaTanque"
                             placeholder="Ej: 1000"
                             min="0"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
@@ -84,7 +84,7 @@
                         <label for="CapacidadUtil" class="after:content-['*'] after:text-red-500 after:pl-1">Capacidad Util</label>
                         <input required type="number" id="CapacidadUtil" 
                             name="CapacidadUtil"
-                            [(ngModel)]="tanqueData.capacidadUtil"
+                            [(ngModel)]="tanqueData.CapacidadUtilTanque"
                             placeholder="Ej: 1000"
                             min="0"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
@@ -94,7 +94,7 @@
                         <label for="CapacidadFondaje" class="after:content-['*'] after:text-red-500 after:pl-1">Capacidad Fondaje</label>
                         <input required type="number" id="CapacidadFondaje" 
                             name="CapacidadFondaje"
-                            [(ngModel)]="tanqueData.capacidadFondaje"
+                            [(ngModel)]="tanqueData.CapacidadFondajeTanque"
                             placeholder="Ej: 1000"
                             min="0"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
@@ -104,7 +104,7 @@
                         <label for="VolumenMinimoOperacion" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Minimo Operacion</label>
                         <input required type="number" id="VolumenMinimoOperacion" 
                             name="VolumenMinimoOperacion"
-                            [(ngModel)]="tanqueData.volumenMinimoOperacion"
+                            [(ngModel)]="tanqueData.VolumenMinimoOperacion"
                             placeholder="Ej: 1000"
                             min="0"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
@@ -124,7 +124,7 @@
                     <label for="ClaveDispensario" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Dispensario</label>
                     <input required type="text" id="ClaveDispensario" 
                         name="ClaveDispensario"
-                        [(ngModel)]="dispensarioData.claveDispensario"
+                        [(ngModel)]="dispensarioData.ClaveDispensario"
                         placeholder="Ej: DISP-0001"
                         class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                 </div>
@@ -144,7 +144,7 @@
                         <label for="ClaveTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Tanque</label>
                         <input required type="text" id="ClaveTanque" 
                             name="ClaveTanque"
-                            [(ngModel)]="medidorTanqueData.claveTanque"
+                            [(ngModel)]="medidorTanqueData.ClaveTanque"
                             placeholder="Ej: TQS-ALM-0005"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
@@ -161,7 +161,7 @@
                         <label for="DescripcionLocalizacion" class="after:content-['*'] after:text-red-500 after:pl-1">Descripción o localización</label>
                         <input required type="text" id="DescripcionLocalizacion" 
                             name="DescripcionLocalizacion"
-                            [(ngModel)]="medidorTanqueData.descripcionLocalizacion"
+                            [(ngModel)]="medidorTanqueData.DescripcionLocalizacion"
                             placeholder="Ej: Medidor 1"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                     </div>
@@ -169,7 +169,7 @@
                         <label for="VigenciaCalibracion" class="after:content-['*'] after:text-red-500 after:pl-1">Vigencia Calibración de almacen</label>
                         <input required type="date" id="VigenciaCalibracion" 
                             name="VigenciaCalibracion"
-                            [(ngModel)]="medidorTanqueData.vigenciaCalibracion"
+                            [(ngModel)]="medidorTanqueData.VigenciaCalibracion"
                             min="1753-01-01"
                             max="9999-12-31"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
@@ -178,7 +178,7 @@
                         <label for="IncertidumbreMedicion" class="after:content-['*'] after:text-red-500 after:pl-1">Incertidumbre de la medición</label>
                         <input required type="number" id="IncertidumbreMedicion" 
                             name="IncertidumbreMedicion"
-                            [(ngModel)]="medidorTanqueData.incertidumbreMedicion"
+                            [(ngModel)]="medidorTanqueData.IncertidumbreMedicion"
                             placeholder="Ej: 1000"
                             min="0"
                             class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">

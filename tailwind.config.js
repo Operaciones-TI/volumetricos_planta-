@@ -10,14 +10,18 @@ module.exports = {
       },
       colors: {
         primary: "#406d96",
-        secondary: "#e2474b",
+        secondary: "#dd382f",
         accent: "#a8d0da",
-        light: "#d8e8e8",
-        dark: "#2f3a56",
+        light: "#f5f6fa",
+        dark: {
+          DEFAULT: "#201e2f",
+          red: "#dd382f"
+        },
         success: "#B7E5B4",
         info: "#79B8D1",
         danger: "#FF8A8A",
         warning: "#FFFC9B", 
+        muted: "#5f6168"
       }
     },
   },

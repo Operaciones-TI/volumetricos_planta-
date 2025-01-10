@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { PermisoService } from 'src/app/services/permiso.service';
 import { IRazonSocial } from 'src/app/interfaces/RazonSocial.interface';
 import { IPermisos, Permiso } from 'src/app/interfaces/Permiso.interface';
+import { Tanque } from 'src/app/interfaces/Tanque.interface';
+import { MedidorTanque } from 'src/app/interfaces/MedidorTanque.interface';
 
 @Component({
   selector: 'app-almacenes',
@@ -18,27 +20,27 @@ export class AlmacenesComponent {
   razonesSociales: IRazonSocial[] = [];
   permisos: Permiso[] = [];
 
-  tanqueData = {
-    claveTanque: '',
-    descripcion: '',
-    vigenciaCalibracion: '',
-    capacidadTotal: 0,
-    capacidadOperativa: 0,
-    capacidadUtil: 0,
-    capacidadFondaje: 0,
-    volumenMinimoOperacion: 0
+  tanqueData: Tanque = {
+    ClaveIdentificacionTanque: '',
+    DescripcionLocalizacion: '',
+    VigenciaCalibracionTanque: '',
+    CapacidadTotalTanque: 0,
+    CapacidadOperativaTanque: 0,
+    CapacidadUtilTanque: 0,
+    CapacidadFondajeTanque: 0,
+    VolumenMinimoOperacion: 0
   };
 
   dispensarioData = {
-    claveDispensario: ''
+    ClaveDispensario: ''
   };
 
-  medidorTanqueData = {
-    claveTanque: '',
+  medidorTanqueData: MedidorTanque = {
+    ClaveTanque: '',
     SistemaMedicionTanque: '',
-    descripcionLocalizacion: '',
-    vigenciaCalibracion: '',
-    incertidumbreMedicion: 0
+    DescripcionLocalizacion: '',
+    VigenciaCalibracion: '',
+    IncertidumbreMedicion: 0
   };
 
   medidorDispensarioData = {
@@ -86,97 +88,95 @@ export class AlmacenesComponent {
     }
   }
 
+  clearObject<T extends object>(obj: T): T {
+    const keys = Object.keys(obj) as Array<keyof T>;
+    for (const key of keys) {
+      if (typeof obj[key] === 'string') {
+        obj[key] = '' as any;
+      } else if (typeof obj[key] === 'number') {
+        obj[key] = 0 as any;
+      }
+    }
+    return obj;
+  }
+
   // Método para registrar tanque
   registrarTanque() {
+    // console.log(this.clearObject(this.tanqueData));
     // Validar fecha
-    const fecha = new Date(this.tanqueData.vigenciaCalibracion);
-    const minDate = new Date('1753-01-01');
-    const maxDate = new Date('9999-12-31');
-  
-    if (fecha < minDate || fecha > maxDate) {
-      this.toastr.error('La fecha debe estar entre 01/01/1753 y 31/12/9999', 'Error');
-      return;
+    if (this.tanqueData.VigenciaCalibracionTanque) {
+      const fecha = new Date(this.tanqueData.VigenciaCalibracionTanque);
+      const minDate = new Date('1753-01-01');
+      const maxDate = new Date('9999-12-31');
+    
+      if (fecha < minDate || fecha > maxDate) {
+        this.toastr.error('La fecha debe estar entre 01/01/1753 y 31/12/9999', 'Error');
+        return;
+      }
+
+      this.tanqueData.VigenciaCalibracionTanque = fecha.toISOString().split('T')[0];
+    
+      this.loadDataService.saveTanksData([this.tanqueData], this.permisoSelected, this.razonSelected, 'token').then(
+        response => {
+          console.log('Tanque registrado exitosamente', response);
+          for(let res of response) {
+            if(res?.Result === 0 && res.IsCompleted) {
+              this.toastr.warning('El tanque con esta clave y permiso ya existe.', '')
+            } else if(res?.Result != 0 && res.IsCompleted) {
+              this.toastr.success('Tanque registrado con éxito');
+              // Limpiar formulario
+              this.clearObject(this.tanqueData);
+            }
+          }
+        },
+        error => {
+          console.error('Error al registrar tanque', error);
+          this.toastr.error('Error al registrar el tanque: ' + error.message);
+        }
+      );
     }
-  
-    // Crear objeto con el formato correcto
-    const tanqueFormateado = {
-      ClaveIdentificacionTanque: this.tanqueData.claveTanque,
-      DescripcionLocalizacion: this.tanqueData.descripcion,
-      VigenciaCalibracionTanque: fecha.toISOString().split('T')[0],
-      CapacidadTotalTanque: this.tanqueData.capacidadTotal,
-      CapacidadOperativaTanque: this.tanqueData.capacidadOperativa,
-      CapacidadUtilTanque: this.tanqueData.capacidadUtil,
-      CapacidadFondajeTanque: this.tanqueData.capacidadFondaje,
-      VolumenMinimoOperacion: this.tanqueData.volumenMinimoOperacion,
-      EstadoTanque: null
-    };
-  
-    // this.loadDataService.saveTanksData([tanqueFormateado], '').then(
-    //   response => {
-    //     console.log('Tanque registrado exitosamente', response);
-    //     this.toastr.success('Tanque registrado con éxito');
-    //     // Limpiar formulario
-    //     this.tanqueData = {
-    //       claveTanque: '',
-    //       descripcion: '',
-    //       vigenciaCalibracion: '',
-    //       capacidadTotal: 0,
-    //       capacidadOperativa: 0,
-    //       capacidadUtil: 0,
-    //       capacidadFondaje: 0,
-    //       volumenMinimoOperacion: 0
-    //     };
-    //   },
-    //   error => {
-    //     console.error('Error al registrar tanque', error);
-    //     this.toastr.error('Error al registrar el tanque: ' + error.message);
-    //   }
-    // );
   }
 
   // Método para registrar dispensario
   registrarDispensario() {
     // Validar que la clave no esté vacía
-    if (!this.dispensarioData.claveDispensario) {
-      this.toastr.error('La clave del dispensario es requerida', 'Error');
+    if (!this.dispensarioData.ClaveDispensario) {
+      this.toastr.warning('La clave del dispensario es requerida', 'Campo vacío');
       return;
     }
   
-    // Crear objeto con el formato correcto
-    const dispensarioFormateado = {
-      ClaveDispensario: this.dispensarioData.claveDispensario,
-      EstadoDispensario: null
-    };
-  
-    // this.loadDataService.saveDispensariosData([dispensarioFormateado], '').then(
-    //   response => {
-    //     console.log('Dispensario registrado exitosamente', response);
-    //     this.toastr.success('Dispensario registrado con éxito');
-    //     // Limpiar formulario
-    //     this.dispensarioData = {
-    //       claveDispensario: ''
-    //     };
-    //   },
-    //   error => {
-    //     console.error('Error al registrar dispensario', error);
-    //     this.toastr.error('Error al registrar el dispensario: ' + error.message);
-    //   }
-    // );
+    this.loadDataService.saveDispensariosData([this.dispensarioData], this.permisoSelected, this.razonSelected, 'token').then(
+      response => {
+        for (let res of response) {
+          if (res?.Result === 0 && res.IsCompleted) {
+            this.toastr.warning('El dispensario con esta clave y permiso ya existe.', '')
+          } else if (res?.Result != 0 && res.IsCompleted) {
+            this.toastr.success('Dispensario registrado con éxito');
+            // Limpiar formulario
+            this.clearObject(this.dispensarioData);
+          }
+        }
+      },
+      error => {
+        console.error('Error al registrar dispensario', error);
+        this.toastr.error('Error al registrar el dispensario: ' + error.message);
+      }
+    );
   }
 
   // Método para registrar medidor de tanque
   registrarMedidorTanque() {
     // Validaciones
-    if (!this.medidorTanqueData.claveTanque || 
+    if (!this.medidorTanqueData.ClaveTanque || 
         !this.medidorTanqueData.SistemaMedicionTanque || 
-        !this.medidorTanqueData.descripcionLocalizacion || 
-        !this.medidorTanqueData.vigenciaCalibracion) {
-        this.toastr.error('Todos los campos son requeridos', 'Error');
+        !this.medidorTanqueData.DescripcionLocalizacion || 
+        !this.medidorTanqueData.VigenciaCalibracion) {
+        this.toastr.error('Todos los campos son requeridos para crear un medidor de tanque.', 'Error');
         return;
     }
 
     // Validar fecha
-    const fecha = new Date(this.medidorTanqueData.vigenciaCalibracion);
+    const fecha = new Date(this.medidorTanqueData.VigenciaCalibracion);
     const minDate = new Date('1753-01-01');
     const maxDate = new Date('9999-12-31');
 
@@ -185,35 +185,25 @@ export class AlmacenesComponent {
         return;
     }
 
-    // Crear objeto con el formato correcto
-    const medidorFormateado = {
-        ClaveTanque: this.medidorTanqueData.claveTanque,
-        SistemaMedicionTanque: this.medidorTanqueData.SistemaMedicionTanque,
-        DescripcionLocalizacion: this.medidorTanqueData.descripcionLocalizacion,
-        VigenciaCalibracion: fecha.toISOString().split('T')[0],
-        IncertidumbreMedicion: this.medidorTanqueData.incertidumbreMedicion
-    };
+    this.medidorTanqueData.VigenciaCalibracion = fecha.toISOString().split('T')[0];
 
-    console.log('Datos a enviar:', medidorFormateado); 
-
-    // this.loadDataService.saveMedidoresTankData([medidorFormateado], '').then(
-    //     response => {
-    //         console.log('Medidor de tanque registrado exitosamente', response);
-    //         this.toastr.success('Medidor de tanque registrado con éxito');
-    //         // Limpiar formulario
-    //         this.medidorTanqueData = {
-    //             claveTanque: '',
-    //             SistemaMedicionTanque: '',
-    //             descripcionLocalizacion: '',
-    //             vigenciaCalibracion: '',
-    //             incertidumbreMedicion: 0
-    //         };
-    //     },
-    //     error => {
-    //         console.error('Error al registrar medidor de tanque', error);
-    //         this.toastr.error('Error al registrar el medidor de tanque: ' + error.message);
-    //     }
-    // );
+    this.loadDataService.saveMedidoresTankData([this.medidorTanqueData], this.permisoSelected, this.razonSelected, 'token').then(
+        response => {
+            for (let res of response) {
+                if (res?.Result === 0 && res.IsCompleted) {
+                    this.toastr.warning('El medidor de tanque con esta clave y permiso ya existe.', '')
+                } else if (res?.Result != 0 && res.IsCompleted) {
+                    this.toastr.success('Medidor de tanque registrado con éxito');
+                    // Limpiar formulario
+                    this.clearObject(this.medidorTanqueData);
+                }
+            }
+        },
+        error => {
+            console.error('Error al registrar medidor de tanque', error);
+            this.toastr.error('Error al registrar el medidor de tanque: ' + error.message);
+        }
+    );
   }
 
   // Método para registrar medidor de dispensario

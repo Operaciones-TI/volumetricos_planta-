@@ -1,32 +1,32 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-const VM_HTTP_URL = 'https://localhost:5001/api';
+const VM_HTTP_URL = 'http://volumetrics.site/api';
 
 export interface RazonSocialData {
   PlantaName: string;
   RazonSocialName: string;
-  RfcContribuyente: string; 
+  RfcContribuyente: string;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RazonSocialService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   saveRazonSocialData(data: RazonSocialData): Promise<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      Accept: 'application/json',
     });
 
     return new Promise((resolve, reject) => {
-      this.http.post(`${VM_HTTP_URL}/RazonSocial`, data, { 
-        headers,
-        observe: 'response'
-      })
+      this.http
+        .post(`${VM_HTTP_URL}/RazonSocial`, data, {
+          headers,
+          observe: 'response',
+        })
         .subscribe({
           next: (response: any) => {
             if (response) {
@@ -39,7 +39,7 @@ export class RazonSocialService {
           error: (error) => {
             console.error('Error al guardar razón social', error);
             reject(error);
-          }
+          },
         });
     });
   }

@@ -81,7 +81,6 @@ export class MovimientosComponent implements OnInit {
   getPermisos(idRazonSocial: number) {
     this.permisoService.getPermisos(idRazonSocial)
     .then((permisos: Permiso[]) => {
-      console.log(permisos);
       this.permisos = permisos;
     })
     .catch(e => {
@@ -92,7 +91,6 @@ export class MovimientosComponent implements OnInit {
   async getRazonesSociales() {
     try {
       const data = await this.permisoService.getRazonSocialData();
-      console.log(data);
       this.razonesSociales = data;
     } catch (e) {
       console.log(e);
@@ -102,62 +100,11 @@ export class MovimientosComponent implements OnInit {
 
   // Métodos para manejar los formularios
   registrarMovimientoTanque() {
-    const MovimientoTanqueFormat = [{
-
-        ClaveTanque: this.tanqueData.ClaveTanque,
-        TipoMovimiento: this.tanqueData.TipoMovimiento,
-        VolumenInicialTanque: this.tanqueData.VolumenInicialTanque,
-        VolumenFinalTanque: this.tanqueData.VolumenFinalTanque,
-        Volumen: this.tanqueData.Volumen,
-        Temperatura: this.tanqueData.Temperatura,
-        PresionAbsoluta: this.tanqueData.PresionAbsoluta,
-        FechaHoraInicialEntrega: this.tanqueData.FechaHoraInicialEntrega,
-        FechaHoraFinalEntrega: this.tanqueData.FechaHoraFinalEntrega,
-        Cantidad: this.tanqueData.Cantidad,
-        PermisoReceptor: this.tanqueData.PermisoReceptor,
-        FechaHoraInicial: this.tanqueData.FechaHoraInicial,
-        VolumenFactura: this.tanqueData.VolumenFactura,
-        Folio: this.tanqueData.Folio,
-        PrecioCompra: this.tanqueData.PrecioCompra,
-        ImporteTotal: this.tanqueData.ImporteTotal,
-        UUID: this.tanqueData.UUID,
-        FechaEmisionCFDI: this.tanqueData.FechaEmisionCFDI,
-        ClaveVehiculo: this.tanqueData.ClaveVehiculo,
-        PermisoTransporte: this.tanqueData.PermisoTransporte,
-        Proveedor: this.tanqueData.Proveedor,
-        RfcProveedor: this.tanqueData.RfcProveedor,
-        PermisoAlmacenamientoDistribucion: this.tanqueData.PermisoAlmacenamientoDistribucion,
-        NombreTerminalDistribucion: this.tanqueData.NombreTerminalDistribucion,
-        Aclaracion: this.tanqueData.Aclaracion 
-    }];
-  
-    console.log('Array de movimientos:', MovimientoTanqueFormat);
+    console.log('Array de movimientos:', this.tanqueData);
   }
 
   registrarMovimientoDispensario() {
-    const MovimientoDispensarioFormat = [{
-
-        ClaveDispensario: this.dispensarioData.ClaveDispensario,
-        ClaveManguera: this.dispensarioData.ClaveManguera,
-        TipoRegistro: this.dispensarioData.TipoRegistro,
-        VolumenTotalizadorAcum: this.dispensarioData.VolumenTotalizadorAcum,
-        VolumenTotalizadorInsta: this.dispensarioData.VolumenTotalizadorInsta,
-        PrecioVentaTotalizadorInstantaneo: this.dispensarioData.PrecioVentaTotalizadorInstantaneo,
-        FechaHoraEntrega: this.dispensarioData.FechaHoraEntrega,
-        Permiso: this.dispensarioData.Permiso,
-        FechaVenta: this.dispensarioData.FechaVenta,
-        CantidadLitros: this.dispensarioData.CantidadLitros,
-        PrecioUnitario: this.dispensarioData.PrecioUnitario,
-        PrecioVentaTotalizadorInsta: this.dispensarioData.PrecioVentaTotalizadorInsta,
-        Importe: this.dispensarioData.Importe,
-        UUID: this.dispensarioData.UUID,
-        RfcCliente: this.dispensarioData.RfcCliente,
-        NombreCliente: this.dispensarioData.NombreCliente,
-        Aclaracion: this.dispensarioData.Aclaracion 
-    }];
-
-
-    console.log('Datos del movimiento de dispensario:', MovimientoDispensarioFormat);
+    console.log('Datos del movimiento de dispensario:', this.dispensarioData);
   }
 
 

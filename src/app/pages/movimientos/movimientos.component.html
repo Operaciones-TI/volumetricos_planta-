@@ -8,8 +8,8 @@
                 [(ngModel)]="razonSelected"
                 (change)="getPermisos(razonSelected)"
                 class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
-                <option value="0">Seleccione una razón social</option>
-                <option [value]="razon.Id" *ngFor="let razon of razonesSociales">
+                <option value="0" class="dark:bg-primary">Seleccione una razón social</option>
+                <option [value]="razon.Id" *ngFor="let razon of razonesSociales" class="dark:bg-primary">
                     {{razon.RazonSocialName}}
                 </option>
             </select>
@@ -20,8 +20,8 @@
                 name="permiso"
                 [(ngModel)]="permisoSelected"
                 class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
-                <option value="0">Seleccione un permiso</option>
-                <option [value]="permiso.Id" *ngFor="let permiso of permisos">
+                <option value="0" class="dark:bg-primary">Seleccione un permiso</option>
+                <option [value]="permiso.Id" *ngFor="let permiso of permisos" class="dark:bg-primary">
                     {{permiso.NumPermiso}}
                 </option>
             </select>
@@ -47,427 +47,439 @@
 
         <!-- Formulario de Tanques -->
         <div *ngIf="!isDispensarios">
-                        <div class="grid grid-cols-1 lg:grid-cols-1 gap-6 dark:text-white">
-                            <div>
-                                <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg">
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="ClaveTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Tanque</label>
-                                            <input required type="text" id="ClaveTanque" 
-                                                name="ClaveTanque"
-                                                [(ngModel)]="tanqueData.ClaveTanque"
-                                                placeholder="Ej: TQS-ALM-0005"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="TipoMovimiento" class="after:content-['*'] after:text-red-500 after:pl-1">Tipo Movimiento</label>
-                                            <select required type="text" id="TipoMovimiento" 
-                                                name="TipoMovimiento"
-                                                [(ngModel)]="tanqueData.TipoMovimiento"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                                <option value="entrega">Entrega</option>
-                                                <option value="recepcion">Recepción</option>
-                    
-                                            </select>
-                                        </div>
+            <div class="grid grid-cols-1 lg:grid-cols-1 gap-6 dark:text-white">
+                <div>
+                    <div class="bg-slate-300 dark:bg-slate-600 p-6 w-full rounded-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="ClaveTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Tanque</label>
+                                <input required type="text" id="ClaveTanque" 
+                                    name="ClaveTanque"
+                                    [(ngModel)]="tanqueData.ClaveTanque"
+                                    placeholder="Ej: TQS-ALM-0005"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="TipoMovimiento" class="after:content-['*'] after:text-red-500 after:pl-1">Tipo Movimiento</label>
+                                <select required type="text" id="TipoMovimiento" 
+                                    name="TipoMovimiento"
+                                    [(ngModel)]="tanqueData.TipoMovimiento"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                    <option value="entrega">Entrega</option>
+                                    <option value="recepcion">Recepción</option>
+        
+                                </select>
+                            </div>
+                
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="VolumenInicialTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Inicial Tanque</label>
+                                <input required type="number" id="VolumenInicialTanque" 
+                                    name="VolumenInicialTanque"
+                                    [(ngModel)]="tanqueData.VolumenInicialTanque"
+                                    placeholder="Ej: 1000"
+                                    min="0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+                
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="VolumenFinalTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Final Tanque</label>
+                                <input required type="number" id="VolumenFinalTanque" 
+                                    name="VolumenFinalTanque"
+                                    [(ngModel)]="tanqueData.VolumenFinalTanque"
+                                    placeholder="Ej: 1000"
+                                    min="0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+                
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="Volumen" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen</label>
+                                <input required type="number" id="Volumen" 
+                                    name="Volumen"
+                                    [(ngModel)]="tanqueData.Volumen"
+                                    placeholder="Ej: 1000"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+                
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="Temperatura" class="after:content-['*'] after:text-red-500 after:pl-1">Temperatura</label>
+                                <input required type="number" id="Temperatura" 
+                                    name="Temperatura"
+                                    [(ngModel)]="tanqueData.Temperatura"
+                                    placeholder="De -170 hasta 100"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+                
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="PresionAbsoluta" class="after:content-['*'] after:text-red-500 after:pl-1">Presión Absoluta</label>
+                                <input required type="number" id="PresionAbsoluta" 
+                                    name="PresionAbsoluta"
+                                    [(ngModel)]="tanqueData.PresionAbsoluta"
+                                    placeholder="De 0 hasta 200"
+                                    min="0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+                
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="FechaHoraInicialEntrega" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha Hora de Inicio</label>
+                                <input required type="datetime-local" id="FechaHoraInicialEntrega" 
+                                    name="FechaHoraInicialEntrega"
+                                    [(ngModel)]="tanqueData.FechaHoraInicialEntrega"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="FechaHoraFinalEntrega" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha y Hora Final</label>
+                                <input required type="datetime-local" id="FechaHoraFinalEntrega" 
+                                    name="FechaHoraFinalEntrega"
+                                    [(ngModel)]="tanqueData.FechaHoraFinalEntrega"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="Cantidad" class="after:content-['*'] after:text-red-500 after:pl-1">Cantidad</label>
+                                <input required type="number" id="Cantidad" 
+                                    name="Cantidad"
+                                    [(ngModel)]="tanqueData.Cantidad"
+                                    placeholder="Ej: 1000"
+                                    min="0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="PermisoReceptor" class="after:content-['*'] after:text-red-500 after:pl-1">Permiso Receptor</label>
+                                <input required type="text" id="PermisoReceptor" 
+                                    name="PermisoReceptor"
+                                    [(ngModel)]="tanqueData.PermisoReceptor"
+                                    placeholder="Ej: ALM-0001"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="FechaHoraInicial" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha y Hora Inicial</label>
+                                <input required type="datetime-local" id="FechaHoraInicial"
+                                    name="FechaHoraInicial"
+                                    [(ngModel)]="tanqueData.FechaHoraInicial"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="VolumenFactura" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Factura</label>
+                                <input required type="number" id="VolumenFactura" 
+                                    name="VolumenFactura"
+                                    [(ngModel)]="tanqueData.VolumenFactura"
+                                    placeholder="Ej: 1000"
+                                    min="0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
                             
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="VolumenInicialTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Inicial Tanque</label>
-                                            <input required type="number" id="VolumenInicialTanque" 
-                                                name="VolumenInicialTanque"
-                                                [(ngModel)]="tanqueData.VolumenInicialTanque"
-                                                placeholder="Ej: 1000"
-                                                min="0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="Folio" class="after:content-['*'] after:text-red-500 after:pl-1">Folio</label>
+                                <input required type="text" id="Folio" 
+                                    name="Folio"
+                                    [(ngModel)]="tanqueData.Folio"
+                                    placeholder="Ej: 0001"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
                             
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="VolumenFinalTanque" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Final Tanque</label>
-                                            <input required type="number" id="VolumenFinalTanque" 
-                                                name="VolumenFinalTanque"
-                                                [(ngModel)]="tanqueData.VolumenFinalTanque"
-                                                placeholder="Ej: 1000"
-                                                min="0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="PrecioCompra">Precio Compra</label>
+                                <input required type="number" id="PrecioCompra" 
+                                    name="PrecioCompra"
+                                    [(ngModel)]="tanqueData.PrecioCompra"
+                                    placeholder="Ej: 12.15"
+                                    min="0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
                             
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="Volumen" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen</label>
-                                            <input required type="number" id="Volumen" 
-                                                name="Volumen"
-                                                [(ngModel)]="tanqueData.Volumen"
-                                                placeholder="Ej: 1000"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                            
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="Temperatura" class="after:content-['*'] after:text-red-500 after:pl-1">Temperatura</label>
-                                            <input required type="number" id="Temperatura" 
-                                                name="Temperatura"
-                                                [(ngModel)]="tanqueData.Temperatura"
-                                                placeholder="De -170 hasta 100"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                            
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="PresionAbsoluta" class="after:content-['*'] after:text-red-500 after:pl-1">Presión Absoluta</label>
-                                            <input required type="number" id="PresionAbsoluta" 
-                                                name="PresionAbsoluta"
-                                                [(ngModel)]="tanqueData.PresionAbsoluta"
-                                                placeholder="De 0 hasta 200"
-                                                min="0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                            
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="FechaHoraInicialEntrega" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha Hora de Inicio</label>
-                                            <input required type="datetime-local" id="FechaHoraInicialEntrega" 
-                                                name="FechaHoraInicialEntrega"
-                                                [(ngModel)]="tanqueData.FechaHoraInicialEntrega"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="FechaHoraFinalEntrega" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha y Hora Final</label>
-                                            <input required type="datetime-local" id="FechaHoraFinalEntrega" 
-                                                name="FechaHoraFinalEntrega"
-                                                [(ngModel)]="tanqueData.FechaHoraFinalEntrega"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="Cantidad" class="after:content-['*'] after:text-red-500 after:pl-1">Cantidad</label>
-                                            <input required type="number" id="Cantidad" 
-                                                name="Cantidad"
-                                                [(ngModel)]="tanqueData.Cantidad"
-                                                placeholder="Ej: 1000"
-                                                min="0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="PermisoReceptor" class="after:content-['*'] after:text-red-500 after:pl-1">Permiso Receptor</label>
-                                            <input required type="text" id="PermisoReceptor" 
-                                                name="PermisoReceptor"
-                                                [(ngModel)]="tanqueData.PermisoReceptor"
-                                                placeholder="Ej: ALM-0001"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="FechaHoraInicial" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha y Hora Inicial</label>
-                                            <input required type="datetime-local" id="FechaHoraInicial"
-                                                name="FechaHoraInicial"
-                                                [(ngModel)]="tanqueData.FechaHoraInicial"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="VolumenFactura" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Factura</label>
-                                            <input required type="number" id="VolumenFactura" 
-                                                name="VolumenFactura"
-                                                [(ngModel)]="tanqueData.VolumenFactura"
-                                                placeholder="Ej: 1000"
-                                                min="0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                                        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="Folio" class="after:content-['*'] after:text-red-500 after:pl-1">Folio</label>
-                                            <input required type="text" id="Folio" 
-                                                name="Folio"
-                                                [(ngModel)]="tanqueData.Folio"
-                                                placeholder="Ej: 0001"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                                        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="PrecioCompra">Precio Compra</label>
-                                            <input required type="number" id="PrecioCompra" 
-                                                name="PrecioCompra"
-                                                [(ngModel)]="tanqueData.PrecioCompra"
-                                                placeholder="Ej: 12.15"
-                                                min="0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                                        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="ImporteTotal">Importe Total</label>
-                                            <input required type="number" id="ImporteTotal" 
-                                                name="ImporteTotal"
-                                                [(ngModel)]="tanqueData.ImporteTotal"
-                                                placeholder="Ej: 1000"
-                                                min="0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="UUID">UUID</label>
-                                            <input required type="text" id="UUID" 
-                                                name="UUID"
-                                                [(ngModel)]="tanqueData.UUID"
-                                                placeholder="Ej: okas-asd213faswdf35-213"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="FechaEmisionCFDI">Fecha de Emisión de CFDI</label>
-                                            <input required type="datetime-local" id="FechaEmisionCFDI" 
-                                                name="FechaEmisionCFDI"
-                                                [(ngModel)]="tanqueData.FechaEmisionCFDI"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="ClaveVehiculo">Clave Vehiculo</label>
-                                            <input required type="text" id="ClaveVehiculo" 
-                                                name="ClaveVehiculo"
-                                                [(ngModel)]="tanqueData.ClaveVehiculo"
-                                                placeholder="Ej: VEH-0001"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="PermisoTransporte">Permiso Transporte</label>
-                                            <input required type="text" id="PermisoTransporte" 
-                                                name="PermisoTransporte"
-                                                [(ngModel)]="tanqueData.PermisoTransporte"
-                                                placeholder="Ej: HFFE/8967"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="Proveedor">Proveedor</label>
-                                            <input required type="text" id="Proveedor" 
-                                                name="Proveedor"
-                                                [(ngModel)]="tanqueData.Proveedor"
-                                                placeholder="Ej: Pedro Martínez"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="RfcProveedor">RFC Proveedor</label>
-                                            <input required type="text" id="RfcProveedor" 
-                                                name="RfcProveedor"
-                                                [(ngModel)]="tanqueData.RfcProveedor"
-                                                placeholder="Ej: PAL7202161U0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="PermisoAlmacenamientoDistribucion">Permiso de Almacenamiento del Cliente</label>
-                                            <input required type="text" id="PermisoAlmacenamientoDistribucion" 
-                                                name="PermisoAlmacenamientoDistribucion"
-                                                [(ngModel)]="tanqueData.PermisoAlmacenamientoDistribucion"
-                                                placeholder="Ej: PERM/123"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="NombreTerminalDistribucion">Nombre de Terminal de Distribución</label>
-                                            <input required type="text" id="NombreTerminalDistribucion" 
-                                                name="NombreTerminalDistribucion"
-                                                [(ngModel)]="tanqueData.NombreTerminalDistribucion"
-                                                placeholder="Ej: Terminal 1"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="Aclaracion">Aclaración</label>
-                                            <input required type="text" id="Aclaracion" 
-                                                name="Aclaracion"
-                                                [(ngModel)]="tanqueData.Aclaracion"
-                                                placeholder="Ej: Gas"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                                    </div>
-                    
-                                    <div class="flex justify-center gap-4 mt-8">
-                                        <button (click)="registrarMovimientoTanque()" type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
-                                    </div>
-                                </div>
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="ImporteTotal">Importe Total</label>
+                                <input required type="number" id="ImporteTotal" 
+                                    name="ImporteTotal"
+                                    [(ngModel)]="tanqueData.ImporteTotal"
+                                    placeholder="Ej: 1000"
+                                    min="0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="UUID">UUID</label>
+                                <input required type="text" id="UUID" 
+                                    name="UUID"
+                                    [(ngModel)]="tanqueData.UUID"
+                                    placeholder="Ej: okas-asd213faswdf35-213"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="FechaEmisionCFDI">Fecha de Emisión de CFDI</label>
+                                <input required type="datetime-local" id="FechaEmisionCFDI" 
+                                    name="FechaEmisionCFDI"
+                                    [(ngModel)]="tanqueData.FechaEmisionCFDI"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="ClaveVehiculo">Clave Vehiculo</label>
+                                <input required type="text" id="ClaveVehiculo" 
+                                    name="ClaveVehiculo"
+                                    [(ngModel)]="tanqueData.ClaveVehiculo"
+                                    placeholder="Ej: VEH-0001"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="PermisoTransporte">Permiso Transporte</label>
+                                <input required type="text" id="PermisoTransporte" 
+                                    name="PermisoTransporte"
+                                    [(ngModel)]="tanqueData.PermisoTransporte"
+                                    placeholder="Ej: HFFE/8967"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="Proveedor">Proveedor</label>
+                                <input required type="text" id="Proveedor" 
+                                    name="Proveedor"
+                                    [(ngModel)]="tanqueData.Proveedor"
+                                    placeholder="Ej: Pedro Martínez"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="RfcProveedor">RFC Proveedor</label>
+                                <input required type="text" id="RfcProveedor" 
+                                    name="RfcProveedor"
+                                    [(ngModel)]="tanqueData.RfcProveedor"
+                                    placeholder="Ej: PAL7202161U0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="PermisoAlmacenamientoDistribucion">Permiso de Almacenamiento del Cliente</label>
+                                <input required type="text" id="PermisoAlmacenamientoDistribucion" 
+                                    name="PermisoAlmacenamientoDistribucion"
+                                    [(ngModel)]="tanqueData.PermisoAlmacenamientoDistribucion"
+                                    placeholder="Ej: PERM/123"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="NombreTerminalDistribucion">Nombre de Terminal de Distribución</label>
+                                <input required type="text" id="NombreTerminalDistribucion" 
+                                    name="NombreTerminalDistribucion"
+                                    [(ngModel)]="tanqueData.NombreTerminalDistribucion"
+                                    placeholder="Ej: Terminal 1"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="Aclaracion">Aclaración</label>
+                                <input required type="text" id="Aclaracion" 
+                                    name="Aclaracion"
+                                    [(ngModel)]="tanqueData.Aclaracion"
+                                    placeholder="Ej: Gas"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                             </div>
                         </div>
+        
+                        <div class="flex justify-center gap-4 mt-8">
+                            <button 
+                                (click)="registrarMovimientoTanque()" 
+                                type="submit" 
+                                class="bg-secondary text-white py-2 px-4 rounded-lg"
+                            >
+                                Registrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     
         <!-- Formulario de Dispensarios -->
         <div *ngIf="isDispensarios">
-                        <div class="grid grid-cols-1 lg:grid-cols-1 gap-6 dark:text-white">
-                            <div>
+            <div class="grid grid-cols-1 lg:grid-cols-1 gap-6 dark:text-white">
+                <div>
 
-                                <div class="bg-slate-300 dark:bg-slate-400 p-6 w-full rounded-lg">
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="ClaveDispensario" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Dispensario</label>
-                                            <input required type="text" id="ClaveDispensario" 
-                                                name="ClaveDispensario"
-                                                [(ngModel)]="dispensarioData.ClaveDispensario"
-                                                placeholder="Ej: DISP-0001"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                    
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="ClaveManguera" class="after:content-['*'] after:text-red-500 after:pl-1">Clave de Manguera</label>
-                                            <input required type="text" id="ClaveManguera" 
-                                                name="ClaveManguera"
-                                                [(ngModel)]="dispensarioData.ClaveManguera"
-                                                placeholder="Ej: DISP-0001-MGA-0001"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="TipoRegistro" class="after:content-['*'] after:text-red-500 after:pl-1">Tipo Registro</label>
-                                            <select required type="text" id="TipoRegistro" 
-                                                name="TipoRegistro"
-                                                [(ngModel)]="dispensarioData.TipoRegistro"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                                <option value="D">D</option>
-                                                <option value="E">E</option>
-                                                <option value="J">J</option>
-                                                <option value="A">A</option>
-                                                <option value="N">N</option>
-                                                <option value="C">C</option>
-                                            </select>
-                                        </div>
-                            
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="VolumenTotalizadorAcumulado" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Entregado Totalizador Acumulado</label>
-                                            <input required type="number" id="VolumenTotalizadorAcumulado" 
-                                                name="VolumenTotalizadorAcumulado"
-                                                [(ngModel)]="dispensarioData.VolumenTotalizadorAcum"
-                                                placeholder="Ej: 1000"
-                                                min="0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="VolumenTotalizadorInstantaneo" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Entregado Totalizador Instantaneo</label>
-                                            <input required type="number" id="VolumenTotalizadorInstantaneo" 
-                                                name="VolumenTotalizadorInstantaneo"
-                                                [(ngModel)]="dispensarioData.VolumenTotalizadorInsta"
-                                                placeholder="Ej: 1000"
-                                                min="0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="PrecioVentaTotalizadorInstantaneo" class="after:content-['*'] after:text-red-500 after:pl-1">Precio de Venta Totalizador Instantaneo</label>
-                                            <input required type="number" id="PrecioVentaTotalizadorInstantaneo" 
-                                                name="PrecioVentaTotalizadorInstantaneo"
-                                                [(ngModel)]="dispensarioData.PrecioVentaTotalizadorInstantaneo"
-                                                placeholder="Ej: 700"
-                                                min="0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                            
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="FechaHoraEntrega" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha y Hora de Entrega</label>
-                                            <input required type="datetime-local" id="FechaHoraEntrega" 
-                                                name="FechaHoraEntrega"
-                                                [(ngModel)]="dispensarioData.FechaHoraEntrega"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="Permiso" class="after:content-['*'] after:text-red-500 after:pl-1">Permiso</label>
-                                            <input required type="text" id="Permiso" 
-                                                name="Permiso"
-                                                [(ngModel)]="dispensarioData.Permiso"
-                                                placeholder="Ej: HTF/8012"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="FechaHoraVenta" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha y Hora de Venta</label>
-                                            <input required type="datetime-local" id="FechaHoraVenta" 
-                                                name="FechaHoraVenta"
-                                                [(ngModel)]="dispensarioData.FechaVenta"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="CantidadLitros" class="after:content-['*'] after:text-red-500 after:pl-1">Cantidad de Litros</label>
-                                            <input required type="number" id="CantidadLitros" 
-                                                name="CantidadLitros"
-                                                [(ngModel)]="dispensarioData.CantidadLitros"
-                                                placeholder="Ej: 300"
-                                                min="0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                                        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="PrecioUnitario" class="after:content-['*'] after:text-red-500 after:pl-1">Precio Unitario</label>
-                                            <input required type="number" id="PrecioUnitario" 
-                                                name="PrecioUnitario"
-                                                [(ngModel)]="dispensarioData.PrecioUnitario"
-                                                placeholder="Ej: 9.87"
-                                                min="0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="Importe">Importe</label>
-                                            <input required type="number" id="Importe" 
-                                                name="Importe"
-                                                [(ngModel)]="dispensarioData.Importe"
-                                                placeholder="Ej: 1600"
-                                                min="0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="UUID">UUID</label>
-                                            <input required type="text" id="UUID" 
-                                                name="UUID"
-                                                [(ngModel)]="dispensarioData.UUID"
-                                                placeholder="Ej: okas-asd213faswdf35-213"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="FechaEmisionCFDI">Fecha de Emisión de CFDI</label>
-                                            <input required type="datetime-local" id="FechaEmisionCFDI" 
-                                                name="FechaEmisionCFDI"
-                                                [(ngModel)]="dispensarioData.FechaEmisionCFDI"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="RfcCliente">RFC del Cliente</label>
-                                            <input required type="text" id="RfcCliente" 
-                                                name="RfcCliente"
-                                                [(ngModel)]="dispensarioData.RfcCliente"
-                                                placeholder="Ej: PAL7202161U0"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="NombreCliente">Nombre del Cliente</label>
-                                            <input required type="text" id="NombreCliente" 
-                                                name="NombreCliente"
-                                                [(ngModel)]="dispensarioData.NombreCliente"
-                                                placeholder="Ej: Pedro Martínez"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-        
-                                        <div class="flex flex-col w-full gap-4">
-                                            <label for="Aclaracion">Aclaración</label>
-                                            <input required type="text" id="Aclaracion" 
-                                                name="Aclaracion"
-                                                [(ngModel)]="dispensarioData.Aclaracion"
-                                                placeholder="Ej: Gas"
-                                                class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                        </div>
-                                        
-                                    </div>
-                    
-                                    <div class="flex justify-center gap-4 mt-8">
-                                        <button (click)="registrarMovimientoDispensario()" type="submit" class="bg-primary text-white py-2 px-4 rounded-md">Registrar</button>
-                                    </div>
-                                </div>
+                    <div class="bg-slate-300 dark:bg-slate-600 p-6 w-full rounded-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="ClaveDispensario" class="after:content-['*'] after:text-red-500 after:pl-1">Clave del Dispensario</label>
+                                <input required type="text" id="ClaveDispensario" 
+                                    name="ClaveDispensario"
+                                    [(ngModel)]="dispensarioData.ClaveDispensario"
+                                    placeholder="Ej: DISP-0001"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                             </div>
+        
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="ClaveManguera" class="after:content-['*'] after:text-red-500 after:pl-1">Clave de Manguera</label>
+                                <input required type="text" id="ClaveManguera" 
+                                    name="ClaveManguera"
+                                    [(ngModel)]="dispensarioData.ClaveManguera"
+                                    placeholder="Ej: DISP-0001-MGA-0001"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="TipoRegistro" class="after:content-['*'] after:text-red-500 after:pl-1">Tipo Registro</label>
+                                <select required type="text" id="TipoRegistro" 
+                                    name="TipoRegistro"
+                                    [(ngModel)]="dispensarioData.TipoRegistro"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="J">J</option>
+                                    <option value="A">A</option>
+                                    <option value="N">N</option>
+                                    <option value="C">C</option>
+                                </select>
+                            </div>
+                
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="VolumenTotalizadorAcumulado" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Entregado Totalizador Acumulado</label>
+                                <input required type="number" id="VolumenTotalizadorAcumulado" 
+                                    name="VolumenTotalizadorAcumulado"
+                                    [(ngModel)]="dispensarioData.VolumenTotalizadorAcum"
+                                    placeholder="Ej: 1000"
+                                    min="0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="VolumenTotalizadorInstantaneo" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Entregado Totalizador Instantaneo</label>
+                                <input required type="number" id="VolumenTotalizadorInstantaneo" 
+                                    name="VolumenTotalizadorInstantaneo"
+                                    [(ngModel)]="dispensarioData.VolumenTotalizadorInsta"
+                                    placeholder="Ej: 1000"
+                                    min="0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="PrecioVentaTotalizadorInstantaneo" class="after:content-['*'] after:text-red-500 after:pl-1">Precio de Venta Totalizador Instantaneo</label>
+                                <input required type="number" id="PrecioVentaTotalizadorInstantaneo" 
+                                    name="PrecioVentaTotalizadorInstantaneo"
+                                    [(ngModel)]="dispensarioData.PrecioVentaTotalizadorInstantaneo"
+                                    placeholder="Ej: 700"
+                                    min="0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+                
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="FechaHoraEntrega" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha y Hora de Entrega</label>
+                                <input required type="datetime-local" id="FechaHoraEntrega" 
+                                    name="FechaHoraEntrega"
+                                    [(ngModel)]="dispensarioData.FechaHoraEntrega"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="Permiso" class="after:content-['*'] after:text-red-500 after:pl-1">Permiso</label>
+                                <input required type="text" id="Permiso" 
+                                    name="Permiso"
+                                    [(ngModel)]="dispensarioData.Permiso"
+                                    placeholder="Ej: HTF/8012"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="FechaHoraVenta" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha y Hora de Venta</label>
+                                <input required type="datetime-local" id="FechaHoraVenta" 
+                                    name="FechaHoraVenta"
+                                    [(ngModel)]="dispensarioData.FechaVenta"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="CantidadLitros" class="after:content-['*'] after:text-red-500 after:pl-1">Cantidad de Litros</label>
+                                <input required type="number" id="CantidadLitros" 
+                                    name="CantidadLitros"
+                                    [(ngModel)]="dispensarioData.CantidadLitros"
+                                    placeholder="Ej: 300"
+                                    min="0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+                            
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="PrecioUnitario" class="after:content-['*'] after:text-red-500 after:pl-1">Precio Unitario</label>
+                                <input required type="number" id="PrecioUnitario" 
+                                    name="PrecioUnitario"
+                                    [(ngModel)]="dispensarioData.PrecioUnitario"
+                                    placeholder="Ej: 9.87"
+                                    min="0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="Importe">Importe</label>
+                                <input required type="number" id="Importe" 
+                                    name="Importe"
+                                    [(ngModel)]="dispensarioData.Importe"
+                                    placeholder="Ej: 1600"
+                                    min="0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="UUID">UUID</label>
+                                <input required type="text" id="UUID" 
+                                    name="UUID"
+                                    [(ngModel)]="dispensarioData.UUID"
+                                    placeholder="Ej: okas-asd213faswdf35-213"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="FechaEmisionCFDI">Fecha de Emisión de CFDI</label>
+                                <input required type="datetime-local" id="FechaEmisionCFDI" 
+                                    name="FechaEmisionCFDI"
+                                    [(ngModel)]="dispensarioData.FechaEmisionCFDI"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="RfcCliente">RFC del Cliente</label>
+                                <input required type="text" id="RfcCliente" 
+                                    name="RfcCliente"
+                                    [(ngModel)]="dispensarioData.RfcCliente"
+                                    placeholder="Ej: PAL7202161U0"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="NombreCliente">Nombre del Cliente</label>
+                                <input required type="text" id="NombreCliente" 
+                                    name="NombreCliente"
+                                    [(ngModel)]="dispensarioData.NombreCliente"
+                                    placeholder="Ej: Pedro Martínez"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+
+                            <div class="flex flex-col w-full gap-4">
+                                <label for="Aclaracion">Aclaración</label>
+                                <input required type="text" id="Aclaracion" 
+                                    name="Aclaracion"
+                                    [(ngModel)]="dispensarioData.Aclaracion"
+                                    placeholder="Ej: Gas"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                            </div>
+                            
                         </div>
+        
+                        <div class="flex justify-center gap-4 mt-8">
+                            <button 
+                                (click)="registrarMovimientoDispensario()" 
+                                type="submit" 
+                                class="bg-secondary text-white py-2 px-4 rounded-lg"
+                            >
+                                Registrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

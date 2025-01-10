@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Tanque } from '../interfaces/Tanque.interface';
-const VM_HTTP_URL = 'http://volumetrics.site/api';
+const VM_HTTP_URL = 'https://localhost:5001/api';
 
 @Injectable({
   providedIn: 'root',

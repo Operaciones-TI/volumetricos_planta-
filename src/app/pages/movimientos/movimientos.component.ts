@@ -4,6 +4,7 @@ import { PermisoService } from 'src/app/services/permiso.service';
 import { IRazonSocial } from 'src/app/interfaces/RazonSocial.interface';
 import { IPermisos, Permiso } from 'src/app/interfaces/Permiso.interface';
 import { MovimientoTanque, MovimientoDispensario } from 'src/app/interfaces/Movimientos.interface';
+import { LoadDataService } from 'src/app/services/load-data.service';
 
 @Component({
   selector: 'app-movimientos',
@@ -70,7 +71,8 @@ export class MovimientosComponent implements OnInit {
 
   constructor(
     private permisoService: PermisoService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private loadDataService: LoadDataService
   ) { }
 
   async ngOnInit() {
@@ -98,9 +100,94 @@ export class MovimientosComponent implements OnInit {
     }
   }
 
+  formatDateWithTimezoneOffset(date: Date): string {
+    const pad = (num: number): string => (num < 10 ? '0' : '') + num;
+
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1);
+    const day = pad(date.getDate());
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+    const seconds = pad(date.getSeconds());
+
+    const timezoneOffset = -date.getTimezoneOffset();
+    const sign = timezoneOffset >= 0 ? '+' : '-';
+    const offsetHours = pad(Math.floor(Math.abs(timezoneOffset) / 60));
+    const offsetMinutes = pad(Math.abs(timezoneOffset) % 60);
+
+    const dateRes = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${sign}${offsetHours}:${offsetMinutes}`;
+
+    return date ? dateRes : '';
+  }
+
+  validateEntregaTanque(): boolean {
+    if (
+      !this.tanqueData.ClaveTanque ||
+      !this.tanqueData.TipoMovimiento ||
+      !this.tanqueData.VolumenInicialTanque ||
+      !this.tanqueData.VolumenFinalTanque ||
+      !this.tanqueData.Volumen ||
+      !this.tanqueData.Temperatura ||
+      !this.tanqueData.PresionAbsoluta ||
+      !this.tanqueData.FechaHoraInicialEntrega ||
+      !this.tanqueData.FechaHoraFinalEntrega ||
+      !this.tanqueData.Cantidad ||
+      !this.tanqueData.PermisoReceptor ||
+      !this.tanqueData.FechaHoraInicial ||
+      !this.tanqueData.VolumenFactura ||
+      !this.tanqueData.Folio ||
+      !this.tanqueData.PrecioCompra ||
+      !this.tanqueData.ImporteTotal ||
+      !this.tanqueData.UUID ||
+      !this.tanqueData.FechaEmisionCFDI ||
+      !this.tanqueData.ClaveVehiculo ||
+      !this.tanqueData.PermisoTransporte ||
+      !this.tanqueData.Proveedor ||
+      !this.tanqueData.RfcProveedor ||
+      !this.tanqueData.PermisoAlmacenamientoDistribucion ||
+      !this.tanqueData.NombreTerminalDistribucion ||
+      !this.tanqueData.Aclaracion
+    ) {
+      return false;
+    }
+    return true;
+  }
+
   // Métodos para manejar los formularios
   registrarMovimientoTanque() {
-    console.log('Array de movimientos:', this.tanqueData);
+    if (!this.validateEntregaTanque()){
+      this.toastr.error('Por favor complete todos los campos', 'Campos Requeridos');
+      return;
+    }
+    let dataToSend: MovimientoTanque = {
+      ClaveTanque: this.tanqueData.ClaveTanque,
+      TipoMovimiento: this.tanqueData.TipoMovimiento,
+      VolumenInicialTanque: this.tanqueData.VolumenInicialTanque,
+      VolumenFinalTanque: this.tanqueData.VolumenFinalTanque,
+      Volumen: this.tanqueData.Volumen,
+      Temperatura: this.tanqueData.Temperatura,
+      PresionAbsoluta: this.tanqueData.PresionAbsoluta,
+      FechaHoraInicialEntrega: this.formatDateWithTimezoneOffset(new Date(this.tanqueData.FechaHoraInicialEntrega)),
+      FechaHoraFinalEntrega: this.formatDateWithTimezoneOffset(new Date(this.tanqueData.FechaHoraFinalEntrega)),
+      Cantidad: this.tanqueData.Cantidad,
+      PermisoReceptor: this.tanqueData.PermisoReceptor,
+      FechaHoraInicial: this.formatDateWithTimezoneOffset(new Date(this.tanqueData.FechaHoraInicial)),
+      VolumenFactura: this.tanqueData.VolumenFactura,
+      Folio: this.tanqueData.Folio,
+      PrecioCompra: this.tanqueData.PrecioCompra,
+      ImporteTotal: this.tanqueData.ImporteTotal,
+      UUID: this.tanqueData.UUID,
+      FechaEmisionCFDI: this.formatDateWithTimezoneOffset(new Date(this.tanqueData.FechaEmisionCFDI)),
+      ClaveVehiculo: this.tanqueData.ClaveVehiculo,
+      PermisoTransporte: this.tanqueData.PermisoTransporte,
+      Proveedor: this.tanqueData.Proveedor,
+      RfcProveedor: this.tanqueData.RfcProveedor,
+      PermisoAlmacenamientoDistribucion: this.tanqueData.PermisoAlmacenamientoDistribucion,
+      NombreTerminalDistribucion: this.tanqueData.NombreTerminalDistribucion,
+      Aclaracion: this.tanqueData.Aclaracion
+    };
+
+    console.log('Array de movimientos:', dataToSend);
   }
 
   registrarMovimientoDispensario() {

@@ -66,8 +66,8 @@
                                     name="TipoMovimiento"
                                     [(ngModel)]="tanqueData.TipoMovimiento"
                                     class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                    <option value="entrega">Entrega</option>
-                                    <option value="recepcion">Recepción</option>
+                                    <option value="entrega" class="dark:bg-primary">Entrega</option>
+                                    <option value="recepcion" class="dark:bg-primary">Recepción</option>
         
                                 </select>
                             </div>
@@ -124,6 +124,7 @@
                                 <label for="FechaHoraInicialEntrega" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha Hora de Inicio</label>
                                 <input required type="datetime-local" id="FechaHoraInicialEntrega" 
                                     name="FechaHoraInicialEntrega"
+                                    
                                     [(ngModel)]="tanqueData.FechaHoraInicialEntrega"
                                     class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                             </div>

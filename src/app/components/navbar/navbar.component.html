@@ -46,7 +46,7 @@
         <img [src]="getUserProfilePic()" alt="user-profile">
       </button>
 
-      <div *ngIf="userOptions" class="absolute portrait:hidden top-20 right-0 w-[150%] bg-slate-300 h-auto py-4 rounded-lg">
+      <div [@dropdownAnimation]="userOptions ? 'open' : 'closed'" class="absolute portrait:hidden top-20 right-0 w-[150%] bg-slate-300 h-auto py-4 rounded-lg">
         <ul class="text-center w-full h-full flex flex-col items-center justify-center divide-y px-4">
           <li class="py-2 w-full">
             <p class="font-bold">{{ userName }}</p>

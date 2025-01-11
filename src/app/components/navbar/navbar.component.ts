@@ -15,12 +15,19 @@ import { Identity } from 'src/app/interfaces/Identity.interface';
       transition('enter => exit', animate('0.8s ease-in-out')),
       transition('exit => enter', animate('0.8s ease-in-out'))
     ]),
+    trigger('dropdownAnimation', [
+      state('open', style({ opacity: 1, transform: 'translateY(0)', pointerEvents: 'auto' })),
+      state('closed', style({ opacity: 0, transform: 'translateY(-10%)', pointerEvents: 'none' })),
+      transition('open => closed', animate('0.3s ease-in-out')),
+      transition('closed => open', animate('0.3s ease-in-out'))
+    ]),
   ]
 })
 
 export class NavbarComponent implements OnInit {
   isMenuOpen: boolean = false;
   animationState: string = 'enter';
+  dorpdwonAnimation: string = 'closed';
   isDropdownOpen = false;
   userOptions: boolean = false;
   userName: string = '';
@@ -43,6 +50,7 @@ export class NavbarComponent implements OnInit {
 
   showUserOptions() {
     this.userOptions = !this.userOptions;
+    this.dorpdwonAnimation = this.dorpdwonAnimation === 'open' ? 'closed' : 'open';
   }
 
   userLogout() {

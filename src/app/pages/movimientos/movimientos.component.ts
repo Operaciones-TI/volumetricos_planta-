@@ -25,7 +25,7 @@ export class MovimientosComponent implements OnInit {
     TipoMovimiento: '',
     VolumenInicialTanque: 0,
     VolumenFinalTanque: 0,
-    Volumen: 0,
+    VolumenEntregado: 0,
     Temperatura: 0,
     PresionAbsoluta: 0,
     FechaHoraInicialEntrega: new Date(),
@@ -38,7 +38,7 @@ export class MovimientosComponent implements OnInit {
     PrecioCompra: 0,
     ImporteTotal: 0,
     UUID: '',
-    FechaEmisionCFDI: new Date(),
+    FechaYHoraTransaccion: new Date(),
     ClaveVehiculo: '',
     PermisoTransporte: '',
     Proveedor: '',
@@ -126,7 +126,7 @@ export class MovimientosComponent implements OnInit {
       !this.tanqueData.TipoMovimiento ||
       !this.tanqueData.VolumenInicialTanque ||
       !this.tanqueData.VolumenFinalTanque ||
-      !this.tanqueData.Volumen ||
+      !this.tanqueData.VolumenEntregado ||
       !this.tanqueData.Temperatura ||
       !this.tanqueData.PresionAbsoluta ||
       !this.tanqueData.FechaHoraInicialEntrega ||
@@ -139,7 +139,7 @@ export class MovimientosComponent implements OnInit {
       !this.tanqueData.PrecioCompra ||
       !this.tanqueData.ImporteTotal ||
       !this.tanqueData.UUID ||
-      !this.tanqueData.FechaEmisionCFDI ||
+      !this.tanqueData.FechaYHoraTransaccion ||
       !this.tanqueData.ClaveVehiculo ||
       !this.tanqueData.PermisoTransporte ||
       !this.tanqueData.Proveedor ||
@@ -153,18 +153,43 @@ export class MovimientosComponent implements OnInit {
     return true;
   }
 
+  clearObject<T extends object>(obj: T): T {
+    const keys = Object.keys(obj) as Array<keyof T>;
+    for (const key of keys) {
+      if (typeof obj[key] === 'string') {
+        obj[key] = '' as any;
+      } else if (typeof obj[key] === 'number') {
+        obj[key] = 0 as any;
+      }
+    }
+    return obj;
+  }
+
+  validateRazonPermiso(): boolean {
+    if (this.razonSelected === 0 || this.permisoSelected === 0) {
+      return false;
+    }
+    return true;
+  }
+
   // Métodos para manejar los formularios
   registrarMovimientoTanque() {
     if (!this.validateEntregaTanque()){
       this.toastr.error('Por favor complete todos los campos', 'Campos Requeridos');
       return;
     }
+
+    if (!this.validateRazonPermiso()){
+      this.toastr.error('Por favor seleccione una razón social y un permiso', 'Campos Requeridos');
+      return;
+    }
+
     let dataToSend: MovimientoTanque = {
       ClaveTanque: this.tanqueData.ClaveTanque,
       TipoMovimiento: this.tanqueData.TipoMovimiento,
       VolumenInicialTanque: this.tanqueData.VolumenInicialTanque,
       VolumenFinalTanque: this.tanqueData.VolumenFinalTanque,
-      Volumen: this.tanqueData.Volumen,
+      VolumenEntregado: this.tanqueData.VolumenEntregado,
       Temperatura: this.tanqueData.Temperatura,
       PresionAbsoluta: this.tanqueData.PresionAbsoluta,
       FechaHoraInicialEntrega: this.formatDateWithTimezoneOffset(new Date(this.tanqueData.FechaHoraInicialEntrega)),
@@ -177,7 +202,7 @@ export class MovimientosComponent implements OnInit {
       PrecioCompra: this.tanqueData.PrecioCompra,
       ImporteTotal: this.tanqueData.ImporteTotal,
       UUID: this.tanqueData.UUID,
-      FechaEmisionCFDI: this.formatDateWithTimezoneOffset(new Date(this.tanqueData.FechaEmisionCFDI)),
+      FechaYHoraTransaccion: this.formatDateWithTimezoneOffset(new Date(this.tanqueData.FechaYHoraTransaccion)),
       ClaveVehiculo: this.tanqueData.ClaveVehiculo,
       PermisoTransporte: this.tanqueData.PermisoTransporte,
       Proveedor: this.tanqueData.Proveedor,
@@ -187,7 +212,24 @@ export class MovimientosComponent implements OnInit {
       Aclaracion: this.tanqueData.Aclaracion
     };
 
-    console.log('Array de movimientos:', dataToSend);
+    console.log('Array de movimientos:', [dataToSend]);
+
+    this.loadDataService.saveArriveTankData([dataToSend], this.permisoSelected, this.razonSelected, 'token')
+    .then((response) => {
+      for(let res of response) {
+        if(res?.Result === 0 && res.IsCompleted) {
+          this.toastr.warning('El tanque con esta clave no existe.', 'Error');
+        } else if(res?.Result != 0 && res.IsCompleted) {
+          this.toastr.success('Movimiento de tanque registrado correctamente', 'Éxito');
+          // Limpiar formulario
+          this.clearObject(this.tanqueData);
+        }
+      }
+    })
+    .catch(e => {
+      console.log(e);
+      this.toastr.error('Hubo un error al guardar los datos', 'Error');
+    });
   }
 
   registrarMovimientoDispensario() {

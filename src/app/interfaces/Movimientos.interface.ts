@@ -3,7 +3,7 @@ export interface MovimientoTanque {
     TipoMovimiento: string;
     VolumenInicialTanque: number;
     VolumenFinalTanque: number;
-    Volumen: number;
+    VolumenEntregado: number;
     Temperatura: number;
     PresionAbsoluta: number;
     FechaHoraInicialEntrega: Date | string;
@@ -16,7 +16,7 @@ export interface MovimientoTanque {
     PrecioCompra: number;
     ImporteTotal: number;
     UUID: string;
-    FechaEmisionCFDI: Date | string;
+    FechaYHoraTransaccion: Date | string;
     ClaveVehiculo: string;
     PermisoTransporte: string;
     Proveedor: string;

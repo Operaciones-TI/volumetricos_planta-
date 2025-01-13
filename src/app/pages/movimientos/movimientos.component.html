@@ -96,7 +96,7 @@
                                 <label for="Volumen" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen</label>
                                 <input required type="number" id="Volumen" 
                                     name="Volumen"
-                                    [(ngModel)]="tanqueData.Volumen"
+                                    [(ngModel)]="tanqueData.VolumenEntregado"
                                     placeholder="Ej: 1000"
                                     class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                             </div>
@@ -216,7 +216,7 @@
                                 <label for="FechaEmisionCFDI">Fecha de Emisión de CFDI</label>
                                 <input required type="datetime-local" id="FechaEmisionCFDI" 
                                     name="FechaEmisionCFDI"
-                                    [(ngModel)]="tanqueData.FechaEmisionCFDI"
+                                    [(ngModel)]="tanqueData.FechaYHoraTransaccion"
                                     class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                             </div>
         

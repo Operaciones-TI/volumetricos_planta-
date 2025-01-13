@@ -15,7 +15,7 @@ export interface MovimientoTanque {
     Folio: string;
     PrecioCompra: number;
     ImporteTotal: number;
-    UUID: string;
+    Uuid: string;
     FechaYHoraTransaccion: Date | string;
     ClaveVehiculo: string;
     PermisoTransporte: string;
@@ -29,20 +29,19 @@ export interface MovimientoTanque {
 export interface MovimientoDispensario {
     ClaveDispensario: string;
     ClaveManguera: string;
-    TipoRegistro: string;
-    VolumenTotalizadorAcum: number;
-    VolumenTotalizadorInsta: number;
-    PrecioVentaTotalizadorInstantaneo: number;
+    TipoDeRegistro: "D" | "E" | "J" | "A" | "N" | "C";
+    VolumenEntregadoTotalizadorAcum: number;
+    VolumenEntregadoTotalizadorInsta: number;
+    PrecioVentaTotalizadorInsta: number;
     FechaHoraEntrega: Date | string;
     Permiso: string;
     FechaVenta: Date | string;
     CantidadLitros: number;
     PrecioUnitario: number;
-    PrecioVentaTotalizadorInsta: number;
     Importe: number;
-    UUID: string;
-    FechaEmisionCFDI: Date | string;
-    RfcCliente: string;
-    NombreCliente: string;
+    Uuid: string;
+    FechaYHoraTransaccion: Date | string;
+    RfcClienteOProveedor: string;
+    NombreClienteOProveedor: string;
     Aclaracion: string;
 }

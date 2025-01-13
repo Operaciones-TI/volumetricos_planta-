@@ -1,4 +1,4 @@
-<div class="w-full 2xl:w-4/5 mx-auto p-4">
+<div class="w-full 2xl:w-4/5 mx-auto py-4 px-8">
     <h1 class="text-dark dark:text-white 2xl:text-5xl">Movimientos</h1>
     <section class="my-20 grid grid-cols-1 lg:grid-cols-2 gap-6 dark:text-white">
         <div>
@@ -62,13 +62,15 @@
         
                             <div class="flex flex-col w-full gap-4">
                                 <label for="TipoMovimiento" class="after:content-['*'] after:text-red-500 after:pl-1">Tipo Movimiento</label>
-                                <select required type="text" id="TipoMovimiento" 
+                                <select 
+                                    required type="text" 
+                                    id="TipoMovimiento" 
                                     name="TipoMovimiento"
                                     [(ngModel)]="tanqueData.TipoMovimiento"
-                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500 hover:cursor-pointer"
+                                >
                                     <option value="entrega" class="dark:bg-primary">Entrega</option>
                                     <option value="recepcion" class="dark:bg-primary">Recepción</option>
-        
                                 </select>
                             </div>
                 
@@ -207,7 +209,7 @@
                                 <label for="UUID">UUID</label>
                                 <input required type="text" id="UUID" 
                                     name="UUID"
-                                    [(ngModel)]="tanqueData.UUID"
+                                    [(ngModel)]="tanqueData.Uuid"
                                     placeholder="Ej: okas-asd213faswdf35-213"
                                     class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                             </div>
@@ -327,14 +329,14 @@
                                 <label for="TipoRegistro" class="after:content-['*'] after:text-red-500 after:pl-1">Tipo Registro</label>
                                 <select required type="text" id="TipoRegistro" 
                                     name="TipoRegistro"
-                                    [(ngModel)]="dispensarioData.TipoRegistro"
-                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
-                                    <option value="D">D</option>
-                                    <option value="E">E</option>
-                                    <option value="J">J</option>
-                                    <option value="A">A</option>
-                                    <option value="N">N</option>
-                                    <option value="C">C</option>
+                                    [(ngModel)]="dispensarioData.TipoDeRegistro"
+                                    class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500 dark:*:bg-primary hover:cursor-pointer">
+                                    <option value="D">Ventas</option>
+                                    <option value="E">Entregas por prestación de servicios</option>
+                                    <option value="J">Jarreos PROFECO</option>
+                                    <option value="A">Auto jarreos</option>
+                                    <option value="N">Consignacion</option>
+                                    <option value="C">Autoconsumo</option>
                                 </select>
                             </div>
                 
@@ -342,7 +344,7 @@
                                 <label for="VolumenTotalizadorAcumulado" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Entregado Totalizador Acumulado</label>
                                 <input required type="number" id="VolumenTotalizadorAcumulado" 
                                     name="VolumenTotalizadorAcumulado"
-                                    [(ngModel)]="dispensarioData.VolumenTotalizadorAcum"
+                                    [(ngModel)]="dispensarioData.VolumenEntregadoTotalizadorAcum"
                                     placeholder="Ej: 1000"
                                     min="0"
                                     class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
@@ -352,7 +354,7 @@
                                 <label for="VolumenTotalizadorInstantaneo" class="after:content-['*'] after:text-red-500 after:pl-1">Volumen Entregado Totalizador Instantaneo</label>
                                 <input required type="number" id="VolumenTotalizadorInstantaneo" 
                                     name="VolumenTotalizadorInstantaneo"
-                                    [(ngModel)]="dispensarioData.VolumenTotalizadorInsta"
+                                    [(ngModel)]="dispensarioData.VolumenEntregadoTotalizadorInsta"
                                     placeholder="Ej: 1000"
                                     min="0"
                                     class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
@@ -362,7 +364,7 @@
                                 <label for="PrecioVentaTotalizadorInstantaneo" class="after:content-['*'] after:text-red-500 after:pl-1">Precio de Venta Totalizador Instantaneo</label>
                                 <input required type="number" id="PrecioVentaTotalizadorInstantaneo" 
                                     name="PrecioVentaTotalizadorInstantaneo"
-                                    [(ngModel)]="dispensarioData.PrecioVentaTotalizadorInstantaneo"
+                                    [(ngModel)]="dispensarioData.PrecioVentaTotalizadorInsta"
                                     placeholder="Ej: 700"
                                     min="0"
                                     class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
@@ -427,7 +429,7 @@
                                 <label for="UUID">UUID</label>
                                 <input required type="text" id="UUID" 
                                     name="UUID"
-                                    [(ngModel)]="dispensarioData.UUID"
+                                    [(ngModel)]="dispensarioData.Uuid"
                                     placeholder="Ej: okas-asd213faswdf35-213"
                                     class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                             </div>
@@ -436,7 +438,7 @@
                                 <label for="FechaEmisionCFDI">Fecha de Emisión de CFDI</label>
                                 <input required type="datetime-local" id="FechaEmisionCFDI" 
                                     name="FechaEmisionCFDI"
-                                    [(ngModel)]="dispensarioData.FechaEmisionCFDI"
+                                    [(ngModel)]="dispensarioData.FechaYHoraTransaccion"
                                     class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                             </div>
 
@@ -444,7 +446,7 @@
                                 <label for="RfcCliente">RFC del Cliente</label>
                                 <input required type="text" id="RfcCliente" 
                                     name="RfcCliente"
-                                    [(ngModel)]="dispensarioData.RfcCliente"
+                                    [(ngModel)]="dispensarioData.RfcClienteOProveedor"
                                     placeholder="Ej: PAL7202161U0"
                                     class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                             </div>
@@ -453,7 +455,7 @@
                                 <label for="NombreCliente">Nombre del Cliente</label>
                                 <input required type="text" id="NombreCliente" 
                                     name="NombreCliente"
-                                    [(ngModel)]="dispensarioData.NombreCliente"
+                                    [(ngModel)]="dispensarioData.NombreClienteOProveedor"
                                     placeholder="Ej: Pedro Martínez"
                                     class="outline-none border-2 px-4 py-2 bg-transparent dark:placeholder:text-slate-500">
                             </div>

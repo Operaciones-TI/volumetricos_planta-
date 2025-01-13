@@ -37,7 +37,7 @@ export class MovimientosComponent implements OnInit {
     Folio: '',
     PrecioCompra: 0,
     ImporteTotal: 0,
-    UUID: '',
+    Uuid: '',
     FechaYHoraTransaccion: new Date(),
     ClaveVehiculo: '',
     PermisoTransporte: '',
@@ -51,10 +51,9 @@ export class MovimientosComponent implements OnInit {
   dispensarioData: MovimientoDispensario = {
     ClaveDispensario: '',
     ClaveManguera: '',
-    TipoRegistro: '',
-    VolumenTotalizadorAcum: 0,
-    VolumenTotalizadorInsta: 0,
-    PrecioVentaTotalizadorInstantaneo: 0,
+    TipoDeRegistro: 'D',
+    VolumenEntregadoTotalizadorAcum: 0,
+    VolumenEntregadoTotalizadorInsta: 0,
     FechaHoraEntrega: new Date(),
     Permiso: '',
     FechaVenta: new Date(),
@@ -62,10 +61,10 @@ export class MovimientosComponent implements OnInit {
     PrecioUnitario: 0,
     PrecioVentaTotalizadorInsta: 0,
     Importe: 0,
-    UUID: '',
-    FechaEmisionCFDI: new Date(),
-    RfcCliente: '',
-    NombreCliente: '',
+    Uuid: '',
+    FechaYHoraTransaccion: new Date(),
+    RfcClienteOProveedor: '',
+    NombreClienteOProveedor: '',
     Aclaracion: ''
   };
 
@@ -138,7 +137,7 @@ export class MovimientosComponent implements OnInit {
       !this.tanqueData.Folio ||
       !this.tanqueData.PrecioCompra ||
       !this.tanqueData.ImporteTotal ||
-      !this.tanqueData.UUID ||
+      !this.tanqueData.Uuid ||
       !this.tanqueData.FechaYHoraTransaccion ||
       !this.tanqueData.ClaveVehiculo ||
       !this.tanqueData.PermisoTransporte ||
@@ -147,6 +146,31 @@ export class MovimientosComponent implements OnInit {
       !this.tanqueData.PermisoAlmacenamientoDistribucion ||
       !this.tanqueData.NombreTerminalDistribucion ||
       !this.tanqueData.Aclaracion
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  validateEntregaDispensario(): boolean {
+    if (
+      !this.dispensarioData.ClaveDispensario ||
+      !this.dispensarioData.ClaveManguera ||
+      !this.dispensarioData.TipoDeRegistro ||
+      !this.dispensarioData.VolumenEntregadoTotalizadorAcum ||
+      !this.dispensarioData.VolumenEntregadoTotalizadorInsta ||
+      !this.dispensarioData.FechaHoraEntrega ||
+      !this.dispensarioData.Permiso ||
+      !this.dispensarioData.FechaVenta ||
+      !this.dispensarioData.CantidadLitros ||
+      !this.dispensarioData.PrecioUnitario ||
+      !this.dispensarioData.PrecioVentaTotalizadorInsta ||
+      !this.dispensarioData.Importe ||
+      !this.dispensarioData.Uuid ||
+      !this.dispensarioData.FechaYHoraTransaccion ||
+      !this.dispensarioData.RfcClienteOProveedor ||
+      !this.dispensarioData.NombreClienteOProveedor ||
+      !this.dispensarioData.Aclaracion
     ) {
       return false;
     }
@@ -172,7 +196,7 @@ export class MovimientosComponent implements OnInit {
     return true;
   }
 
-  // Métodos para manejar los formularios
+  // * movimientos de tanques
   registrarMovimientoTanque() {
     if (!this.validateEntregaTanque()){
       this.toastr.error('Por favor complete todos los campos', 'Campos Requeridos');
@@ -201,7 +225,7 @@ export class MovimientosComponent implements OnInit {
       Folio: this.tanqueData.Folio,
       PrecioCompra: this.tanqueData.PrecioCompra,
       ImporteTotal: this.tanqueData.ImporteTotal,
-      UUID: this.tanqueData.UUID,
+      Uuid: this.tanqueData.Uuid,
       FechaYHoraTransaccion: this.formatDateWithTimezoneOffset(new Date(this.tanqueData.FechaYHoraTransaccion)),
       ClaveVehiculo: this.tanqueData.ClaveVehiculo,
       PermisoTransporte: this.tanqueData.PermisoTransporte,
@@ -232,9 +256,55 @@ export class MovimientosComponent implements OnInit {
     });
   }
 
+  // * movimientos de dispensario
   registrarMovimientoDispensario() {
-    console.log('Datos del movimiento de dispensario:', this.dispensarioData);
+    if (!this.validateEntregaDispensario()){
+      this.toastr.error('Por favor complete todos los campos', 'Campos Requeridos');
+      return;
+    }
+
+    if (!this.validateRazonPermiso()){
+      this.toastr.error('Por favor seleccione una razón social y un permiso', 'Campos Requeridos');
+      return;
+    }
+
+    let dataToSend: MovimientoDispensario = {
+      TipoDeRegistro: this.dispensarioData.TipoDeRegistro,
+      ClaveDispensario: this.dispensarioData.ClaveDispensario,
+      ClaveManguera: this.dispensarioData.ClaveManguera,
+      VolumenEntregadoTotalizadorAcum: this.dispensarioData.VolumenEntregadoTotalizadorAcum,
+      VolumenEntregadoTotalizadorInsta: this.dispensarioData.VolumenEntregadoTotalizadorInsta,
+      PrecioVentaTotalizadorInsta: this.dispensarioData.PrecioVentaTotalizadorInsta,
+      FechaHoraEntrega: this.formatDateWithTimezoneOffset(new Date(this.dispensarioData.FechaHoraEntrega)),
+      Permiso: this.dispensarioData.Permiso,
+      FechaVenta: this.formatDateWithTimezoneOffset(new Date(this.dispensarioData.FechaVenta)),
+      CantidadLitros: this.dispensarioData.CantidadLitros,
+      PrecioUnitario: this.dispensarioData.PrecioUnitario,
+      Importe: this.dispensarioData.Importe,
+      Uuid: this.dispensarioData.Uuid,
+      FechaYHoraTransaccion: this.formatDateWithTimezoneOffset(new Date(this.dispensarioData.FechaYHoraTransaccion)),
+      RfcClienteOProveedor: this.dispensarioData.RfcClienteOProveedor,
+      NombreClienteOProveedor: this.dispensarioData.NombreClienteOProveedor,
+      Aclaracion: this.dispensarioData.Aclaracion
+
+    };
+
+    console.log('Datos del movimiento de dispensario:', [dataToSend]);
+    this.loadDataService.saveArriveDispData([dataToSend], this.permisoSelected, this.razonSelected, 'token')
+    .then((response) => {
+      for(let res of response) {
+        if(res?.Result === 0 && res.IsCompleted) {
+          this.toastr.warning('El dispensario con esta clave no existe.', 'Error');
+        } else if(res?.Result != 0 && res.IsCompleted) {
+          this.toastr.success('Movimiento de dispensario registrado correctamente', 'Éxito');
+          // Limpiar formulario
+          this.clearObject(this.dispensarioData);
+        }
+      }
+    })
+    .catch(e => {
+      this.toastr.error('Hubo un error al guardar los datos', 'Error');
+      console.log(e);
+    });
   }
-
-
 }

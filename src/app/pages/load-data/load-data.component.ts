@@ -356,7 +356,7 @@ export class LoadDataComponent implements OnInit {
         'Permiso',
         'FechaVenta',
         'CantidadLitros',
-        'PrecioVentaTotalizadorInsta',
+        'PrecioUnitario',
         'Importe',
         'Uuid',
         'FechaYHoraTransaccion',

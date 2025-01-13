@@ -251,10 +251,10 @@ export class LoadDataService {
     idPermiso: number,
     idRazonSocial: number,
     token: string
-  ): Promise<number> {
+  ): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<number>(
+        .post<any[]>(
           `${VM_HTTP_URL}/EntregaDispensarios?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
           data,
           {

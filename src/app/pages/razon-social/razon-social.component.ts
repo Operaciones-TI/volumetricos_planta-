@@ -3,6 +3,7 @@ import { Permiso } from 'src/app/interfaces/Permiso.interface';
 import { PermisoService } from 'src/app/services/permiso.service';
 import { ToastrService } from 'ngx-toastr';
 import { IRazonSocial } from 'src/app/interfaces/RazonSocial.interface';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-razon-social',
   templateUrl: './razon-social.component.html',
@@ -23,7 +24,8 @@ export class RazonSocialComponent implements OnInit {
 
   constructor(
     private permisoService: PermisoService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -31,8 +33,9 @@ export class RazonSocialComponent implements OnInit {
   }
 
   getRazonesSociales() {
+    const token = this.authService.ObtenerToken();
     this.razonesLoading = true;
-    this.permisoService.getRazonSocialData()
+    this.permisoService.getRazonSocialData(token ? token : '')
     .then(data => {
       this.razonesSociales = data;
       this.data.IdRazonSocial = this.razonesSociales[0].Id;
@@ -66,8 +69,9 @@ export class RazonSocialComponent implements OnInit {
       this.toastr.warning('Por favor, complete todos los campos', 'Campos Requeridos');
       return;
     }
+    const token = this.authService.ObtenerToken();
 
-    this.permisoService.savePermisoData(this.data, 'token').then(data => {
+    this.permisoService.savePermisoData(this.data, token ? token : '').then(data => {
       this.toastr.success('Permiso guardado exitosamente', 'Éxito');
       this.clearForm();
     }).catch(error => {

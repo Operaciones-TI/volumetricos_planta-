@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RazonSocialService, RazonSocialData } from 'src/app/services/razon-social.service';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-razon-planta',
@@ -16,7 +17,8 @@ export class RazonPlantaComponent implements OnInit {
 
   constructor(
     private razonSocialService: RazonSocialService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -28,8 +30,8 @@ export class RazonPlantaComponent implements OnInit {
         this.toastr.warning('Por favor, complete todos los campos', 'Campos Requeridos');
         return;
       }
-
-      const response = await this.razonSocialService.saveRazonSocialData(this.plantaData);
+      const token = this.authService.ObtenerToken();
+      const response = await this.razonSocialService.saveRazonSocialData(this.plantaData, token ? token : '');
       
       if (response) {
         this.plantaData = {

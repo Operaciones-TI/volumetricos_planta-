@@ -4,7 +4,7 @@
         <div>
             <label for="razonSocial" class="after:content-['*'] after:text-red-500 after:pl-1">Razón social</label>
             <select 
-                name="razonSocial"
+                id="razonSocial"
                 [(ngModel)]="razonSelected"
                 (change)="getPermisos(razonSelected)"
                 class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
@@ -17,7 +17,7 @@
         <div>
             <label for="permiso">Permiso</label>
             <select     
-                name="permiso"
+                id="permiso"
                 [(ngModel)]="permisoSelected"
                 class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
                 <option value="0" class="dark:bg-primary">Seleccione un permiso</option>
@@ -25,6 +25,14 @@
                     {{permiso.NumPermiso}}
                 </option>
             </select>
+        </div>
+        <div>
+            <label for="fechaMovimiento">Fecha del movimiento</label>
+            <input 
+                type="date"  
+                id="fechaMovimiento"
+                [(ngModel)]="fechaMovimiento"
+                class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 bg-transparent">
         </div>
     </section>
     <div class="w-full mx-auto p-4">
@@ -388,7 +396,7 @@
                             </div>
 
                             <div class="flex flex-col w-full gap-4">
-                                <label for="FechaHoraVenta" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha y Hora de Venta</label>
+                                <label for="FechaHoraVenta" class="after:content-['*'] after:text-red-500 after:pl-1">Fecha de Venta</label>
                                 <input required type="datetime-local" id="FechaHoraVenta" 
                                     name="FechaHoraVenta"
                                     [(ngModel)]="dispensarioData.FechaVenta"

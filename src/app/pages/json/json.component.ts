@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { JsonService } from './../../services/json.service';
 import { PermisoService } from 'src/app/services/permiso.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, } from '@angular/material/core';
@@ -73,7 +74,8 @@ export class JsonComponent implements OnInit {
 
   constructor(
     private jsonService: JsonService,
-    private permisoService: PermisoService
+    private permisoService: PermisoService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -84,7 +86,8 @@ export class JsonComponent implements OnInit {
   }
 
   getPermisos(idRazonSocial: number) {
-    this.permisoService.getPermisos(idRazonSocial)
+    const token = this.authService.ObtenerToken();
+    this.permisoService.getPermisos(idRazonSocial, token ? token : '')
     .then((permisos: Permiso[]) => {
       console.log(permisos);
       this.permisos = permisos;
@@ -96,7 +99,8 @@ export class JsonComponent implements OnInit {
 
   async getRazonesSociales() {
     try {
-      const data = await this.permisoService.getRazonSocialData();
+      const token = this.authService.ObtenerToken();
+      const data = await this.permisoService.getRazonSocialData(token ? token : '');
       console.log(data);
       this.razonesSociales = data;
     } catch (e) {

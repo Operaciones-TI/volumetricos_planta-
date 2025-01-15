@@ -9,6 +9,7 @@ import { MedidorTanque } from 'src/app/interfaces/MedidorTanque.interface';
 import { MangueraDispensario } from 'src/app/interfaces/MangueraDispensario.interface';
 import { IPermisos, Permiso } from 'src/app/interfaces/Permiso.interface';
 import { PermisoService } from 'src/app/services/permiso.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 import { Router } from '@angular/router';
 import * as JSZip from 'jszip';
@@ -36,7 +37,8 @@ export class LoadDataComponent implements OnInit {
     private toastr: ToastrService,
     private loadDataService: LoadDataService,
     private router: Router,
-    private permisoService: PermisoService
+    private permisoService: PermisoService,
+    private authService: AuthService
   ) { }
 
   async ngOnInit() {
@@ -63,7 +65,8 @@ export class LoadDataComponent implements OnInit {
   }
 
   getPermisos(idRazonSocial: number) {
-    this.permisoService.getPermisos(idRazonSocial)
+    const token = this.authService.ObtenerToken();
+    this.permisoService.getPermisos(idRazonSocial, token ? token : '')
     .then((permisos: Permiso[]) => {
       this.permisos = permisos;
     })
@@ -74,7 +77,8 @@ export class LoadDataComponent implements OnInit {
 
   async getRazonesSociales() {
     try {
-      const data = await this.permisoService.getRazonSocialData();
+      const token = this.authService.ObtenerToken();
+      const data = await this.permisoService.getRazonSocialData(token ? token : '');
       this.razonesSociales = data;
     } catch (e) {
       console.log(e);
@@ -278,7 +282,14 @@ export class LoadDataComponent implements OnInit {
       this.excelAlmacenes = JSON.stringify(obj);
       inputElement.value = '';
 
-      this.loadDataService.saveAlmacenesData(obj, this.permisoSelected, this.razonSelected, 'token').then(response => {
+      let token = this.authService.ObtenerToken();
+
+      this.loadDataService.saveAlmacenesData(
+        obj, 
+        this.permisoSelected, 
+        this.razonSelected, 
+        token ? token : ''
+      ).then(response => {
         this.toastr.success('Almacenes guardados correctamente', '', {
             timeOut: 3000,
             progressBar: true,
@@ -456,8 +467,15 @@ export class LoadDataComponent implements OnInit {
         cierre: movCierre
       };
 
+      let token = this.authService.ObtenerToken();
+
       this.excelMovimientos = JSON.stringify(movimientos);
-      this.loadDataService.saveMovimientosData(movimientos, this.permisoSelected, this.razonSelected, 'token').then(response => {
+      this.loadDataService.saveMovimientosData(
+        movimientos, 
+        this.permisoSelected, 
+        this.razonSelected, 
+        token ? token : ''
+      ).then(response => {
         this.toastr.success('Movimientos guardados correctamente', '', {
           timeOut: 3000,
           progressBar: true,

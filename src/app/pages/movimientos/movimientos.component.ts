@@ -3,21 +3,26 @@ import { ToastrService } from 'ngx-toastr';
 import { PermisoService } from 'src/app/services/permiso.service';
 import { IRazonSocial } from 'src/app/interfaces/RazonSocial.interface';
 import { IPermisos, Permiso } from 'src/app/interfaces/Permiso.interface';
-import { MovimientoTanque, MovimientoDispensario } from 'src/app/interfaces/Movimientos.interface';
+import {
+  MovimientoTanque,
+  MovimientoDispensario,
+} from 'src/app/interfaces/Movimientos.interface';
 import { LoadDataService } from 'src/app/services/load-data.service';
+import { clearObject } from 'src/app/utils/movimientos';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-movimientos',
   templateUrl: './movimientos.component.html',
-  styleUrls: ['./movimientos.component.scss']
+  styleUrls: ['./movimientos.component.scss'],
 })
 export class MovimientosComponent implements OnInit {
-  
   isDispensarios: boolean = false;
   razonesSociales: IRazonSocial[] = [];
   permisos: Permiso[] = [];
   razonSelected: number = 0;
   permisoSelected: number = 0;
+  fechaMovimiento = '';
 
   // Objetos para los formularios
   tanqueData: MovimientoTanque = {
@@ -45,7 +50,7 @@ export class MovimientosComponent implements OnInit {
     RfcProveedor: '',
     PermisoAlmacenamientoDistribucion: '',
     NombreTerminalDistribucion: '',
-    Aclaracion: ''
+    Aclaracion: '',
   };
 
   dispensarioData: MovimientoDispensario = {
@@ -65,33 +70,39 @@ export class MovimientosComponent implements OnInit {
     FechaYHoraTransaccion: new Date(),
     RfcClienteOProveedor: '',
     NombreClienteOProveedor: '',
-    Aclaracion: ''
+    Aclaracion: '',
   };
 
   constructor(
     private permisoService: PermisoService,
     private toastr: ToastrService,
-    private loadDataService: LoadDataService
-  ) { }
+    private loadDataService: LoadDataService,
+    private authService: AuthService
+  ) {}
 
   async ngOnInit() {
     await this.getRazonesSociales();
-    await this.getPermisos(this.razonSelected);
+    // console.log("token: ", this.authService.ObtenerToken());
   }
 
   getPermisos(idRazonSocial: number) {
-    this.permisoService.getPermisos(idRazonSocial)
-    .then((permisos: Permiso[]) => {
-      this.permisos = permisos;
-    })
-    .catch(e => {
-      console.log(e);
-    });
+    const token = this.authService.ObtenerToken();
+    this.permisoService
+      .getPermisos(idRazonSocial, token ? token : '')
+      .then((permisos: Permiso[]) => {
+        this.permisos = permisos;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
   async getRazonesSociales() {
     try {
-      const data = await this.permisoService.getRazonSocialData();
+      const token = this.authService.ObtenerToken();
+      const data = await this.permisoService.getRazonSocialData(
+        token ? token : ''
+      );
       this.razonesSociales = data;
     } catch (e) {
       console.log(e);
@@ -177,18 +188,6 @@ export class MovimientosComponent implements OnInit {
     return true;
   }
 
-  clearObject<T extends object>(obj: T): T {
-    const keys = Object.keys(obj) as Array<keyof T>;
-    for (const key of keys) {
-      if (typeof obj[key] === 'string') {
-        obj[key] = '' as any;
-      } else if (typeof obj[key] === 'number') {
-        obj[key] = 0 as any;
-      }
-    }
-    return obj;
-  }
-
   validateRazonPermiso(): boolean {
     if (this.razonSelected === 0 || this.permisoSelected === 0) {
       return false;
@@ -198,13 +197,19 @@ export class MovimientosComponent implements OnInit {
 
   // * movimientos de tanques
   registrarMovimientoTanque() {
-    if (!this.validateEntregaTanque()){
-      this.toastr.error('Por favor complete todos los campos', 'Campos Requeridos');
+    if (!this.validateEntregaTanque()) {
+      this.toastr.error(
+        'Por favor complete todos los campos',
+        'Campos Requeridos'
+      );
       return;
     }
 
-    if (!this.validateRazonPermiso()){
-      this.toastr.error('Por favor seleccione una razón social y un permiso', 'Campos Requeridos');
+    if (!this.validateRazonPermiso()) {
+      this.toastr.error(
+        'Por favor seleccione una razón social, permiso y fecha de movimiento',
+        'Campos Requeridos'
+      );
       return;
     }
 
@@ -216,95 +221,142 @@ export class MovimientosComponent implements OnInit {
       VolumenEntregado: this.tanqueData.VolumenEntregado,
       Temperatura: this.tanqueData.Temperatura,
       PresionAbsoluta: this.tanqueData.PresionAbsoluta,
-      FechaHoraInicialEntrega: this.formatDateWithTimezoneOffset(new Date(this.tanqueData.FechaHoraInicialEntrega)),
-      FechaHoraFinalEntrega: this.formatDateWithTimezoneOffset(new Date(this.tanqueData.FechaHoraFinalEntrega)),
+      FechaHoraInicialEntrega: this.formatDateWithTimezoneOffset(
+        new Date(this.tanqueData.FechaHoraInicialEntrega)
+      ),
+      FechaHoraFinalEntrega: this.formatDateWithTimezoneOffset(
+        new Date(this.tanqueData.FechaHoraFinalEntrega)
+      ),
       Cantidad: this.tanqueData.Cantidad,
       PermisoReceptor: this.tanqueData.PermisoReceptor,
-      FechaHoraInicial: this.formatDateWithTimezoneOffset(new Date(this.tanqueData.FechaHoraInicial)),
+      FechaHoraInicial: this.formatDateWithTimezoneOffset(
+        new Date(this.tanqueData.FechaHoraInicial)
+      ),
       VolumenFactura: this.tanqueData.VolumenFactura,
       Folio: this.tanqueData.Folio,
       PrecioCompra: this.tanqueData.PrecioCompra,
       ImporteTotal: this.tanqueData.ImporteTotal,
       Uuid: this.tanqueData.Uuid,
-      FechaYHoraTransaccion: this.formatDateWithTimezoneOffset(new Date(this.tanqueData.FechaYHoraTransaccion)),
+      FechaYHoraTransaccion: this.formatDateWithTimezoneOffset(
+        new Date(this.tanqueData.FechaYHoraTransaccion)
+      ),
       ClaveVehiculo: this.tanqueData.ClaveVehiculo,
       PermisoTransporte: this.tanqueData.PermisoTransporte,
       Proveedor: this.tanqueData.Proveedor,
       RfcProveedor: this.tanqueData.RfcProveedor,
-      PermisoAlmacenamientoDistribucion: this.tanqueData.PermisoAlmacenamientoDistribucion,
+      PermisoAlmacenamientoDistribucion:
+        this.tanqueData.PermisoAlmacenamientoDistribucion,
       NombreTerminalDistribucion: this.tanqueData.NombreTerminalDistribucion,
-      Aclaracion: this.tanqueData.Aclaracion
+      Aclaracion: this.tanqueData.Aclaracion,
     };
+    let token = this.authService.ObtenerToken();
 
-    console.log('Array de movimientos:', [dataToSend]);
-
-    this.loadDataService.saveArriveTankData([dataToSend], this.permisoSelected, this.razonSelected, 'token')
-    .then((response) => {
-      for(let res of response) {
-        if(res?.Result === 0 && res.IsCompleted) {
-          this.toastr.warning('El tanque con esta clave no existe.', 'Error');
-        } else if(res?.Result != 0 && res.IsCompleted) {
-          this.toastr.success('Movimiento de tanque registrado correctamente', 'Éxito');
-          // Limpiar formulario
-          this.clearObject(this.tanqueData);
+    this.loadDataService
+      .saveArriveTankData(
+        [dataToSend],
+        this.permisoSelected,
+        this.razonSelected,
+        token ? token : '',
+        this.fechaMovimiento
+      )
+      .then((response) => {
+        for (let res of response) {
+          if (res?.Result === 0 && res.IsCompleted) {
+            this.toastr.warning('El tanque con esta clave no existe.', 'Error');
+          } else if (res?.Result != 0 && res.IsCompleted) {
+            this.toastr.success(
+              'Movimiento de tanque registrado correctamente',
+              'Éxito'
+            );
+            // Limpiar formulario
+            clearObject(this.tanqueData);
+          }
         }
-      }
-    })
-    .catch(e => {
-      console.log(e);
-      this.toastr.error('Hubo un error al guardar los datos', 'Error');
-    });
+      })
+      .catch((e) => {
+        console.log(e);
+        this.toastr.error('Hubo un error al guardar los datos', 'Error');
+      });
   }
 
   // * movimientos de dispensario
   registrarMovimientoDispensario() {
-    if (!this.validateEntregaDispensario()){
-      this.toastr.error('Por favor complete todos los campos', 'Campos Requeridos');
+    if (!this.validateEntregaDispensario()) {
+      this.toastr.error(
+        'Por favor complete todos los campos',
+        'Campos Requeridos'
+      );
       return;
     }
 
-    if (!this.validateRazonPermiso()){
-      this.toastr.error('Por favor seleccione una razón social y un permiso', 'Campos Requeridos');
+    if (!this.validateRazonPermiso()) {
+      this.toastr.error(
+        'Por favor seleccione una razón social, un permiso y fecha de movimiento',
+        'Campos Requeridos'
+      );
       return;
     }
 
+    console.log(this.dispensarioData.FechaVenta);
     let dataToSend: MovimientoDispensario = {
       TipoDeRegistro: this.dispensarioData.TipoDeRegistro,
       ClaveDispensario: this.dispensarioData.ClaveDispensario,
       ClaveManguera: this.dispensarioData.ClaveManguera,
-      VolumenEntregadoTotalizadorAcum: this.dispensarioData.VolumenEntregadoTotalizadorAcum,
-      VolumenEntregadoTotalizadorInsta: this.dispensarioData.VolumenEntregadoTotalizadorInsta,
-      PrecioVentaTotalizadorInsta: this.dispensarioData.PrecioVentaTotalizadorInsta,
-      FechaHoraEntrega: this.formatDateWithTimezoneOffset(new Date(this.dispensarioData.FechaHoraEntrega)),
+      VolumenEntregadoTotalizadorAcum:
+        this.dispensarioData.VolumenEntregadoTotalizadorAcum,
+      VolumenEntregadoTotalizadorInsta:
+        this.dispensarioData.VolumenEntregadoTotalizadorInsta,
+      PrecioVentaTotalizadorInsta:
+        this.dispensarioData.PrecioVentaTotalizadorInsta,
+      FechaHoraEntrega: this.formatDateWithTimezoneOffset(
+        new Date(this.dispensarioData.FechaHoraEntrega)
+      ),
       Permiso: this.dispensarioData.Permiso,
-      FechaVenta: this.formatDateWithTimezoneOffset(new Date(this.dispensarioData.FechaVenta)),
+      FechaVenta: this.formatDateWithTimezoneOffset(
+        new Date(this.dispensarioData.FechaVenta)
+      ),
       CantidadLitros: this.dispensarioData.CantidadLitros,
       PrecioUnitario: this.dispensarioData.PrecioUnitario,
       Importe: this.dispensarioData.Importe,
       Uuid: this.dispensarioData.Uuid,
-      FechaYHoraTransaccion: this.formatDateWithTimezoneOffset(new Date(this.dispensarioData.FechaYHoraTransaccion)),
+      FechaYHoraTransaccion: this.formatDateWithTimezoneOffset(
+        new Date(this.dispensarioData.FechaYHoraTransaccion)
+      ),
       RfcClienteOProveedor: this.dispensarioData.RfcClienteOProveedor,
       NombreClienteOProveedor: this.dispensarioData.NombreClienteOProveedor,
-      Aclaracion: this.dispensarioData.Aclaracion
-
+      Aclaracion: this.dispensarioData.Aclaracion,
     };
 
+    let token = this.authService.ObtenerToken();
     console.log('Datos del movimiento de dispensario:', [dataToSend]);
-    this.loadDataService.saveArriveDispData([dataToSend], this.permisoSelected, this.razonSelected, 'token')
-    .then((response) => {
-      for(let res of response) {
-        if(res?.Result === 0 && res.IsCompleted) {
-          this.toastr.warning('El dispensario con esta clave no existe.', 'Error');
-        } else if(res?.Result != 0 && res.IsCompleted) {
-          this.toastr.success('Movimiento de dispensario registrado correctamente', 'Éxito');
-          // Limpiar formulario
-          this.clearObject(this.dispensarioData);
+    this.loadDataService
+      .saveArriveDispData(
+        [dataToSend],
+        this.permisoSelected,
+        this.razonSelected,
+        token ? token : ''
+        // this.fechaMovimiento
+      )
+      .then((response) => {
+        for (let res of response) {
+          if (res?.Result === 0 && res.IsCompleted) {
+            this.toastr.warning(
+              'El dispensario con esta clave no existe.',
+              'Error'
+            );
+          } else if (res?.Result != 0 && res.IsCompleted) {
+            this.toastr.success(
+              'Movimiento de dispensario registrado correctamente',
+              'Éxito'
+            );
+            // Limpiar formulario
+            clearObject(this.dispensarioData);
+          }
         }
-      }
-    })
-    .catch(e => {
-      this.toastr.error('Hubo un error al guardar los datos', 'Error');
-      console.log(e);
-    });
+      })
+      .catch((e) => {
+        this.toastr.error('Hubo un error al guardar los datos', 'Error');
+        console.log(e);
+      });
   }
 }

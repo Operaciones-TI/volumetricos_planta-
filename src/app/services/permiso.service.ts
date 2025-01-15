@@ -11,13 +11,11 @@ const VM_HTTP_URL = 'http://volumetrics.site/api';
 export class PermisoService {
   constructor(private http: HttpClient) {}
 
-  savePermisoData(data: any, token: string): Promise<any> {
+  savePermisoData(data: any, token: string = ""): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http
-        .post(`${VM_HTTP_URL}/Permiso`, data, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+        .post(`${VM_HTTP_URL}/Permiso`, data, 
+          { headers: { Authorization: `Bearer ${token}` }
         })
         .subscribe({
           next: (response: any) => {
@@ -30,13 +28,11 @@ export class PermisoService {
     });
   }
 
-  getRazonSocialData(): Promise<IRazonSocial[]> {
+  getRazonSocialData(token: string = ""): Promise<IRazonSocial[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .get<IRazonSocial[]>(`${VM_HTTP_URL}/RazonSocial`, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+        .get<IRazonSocial[]>(`${VM_HTTP_URL}/RazonSocial`, 
+          { headers: { Authorization: `Bearer ${token}` }
         })
         .subscribe({
           next: (response: IRazonSocial[]) => {
@@ -50,10 +46,12 @@ export class PermisoService {
     });
   }
 
-  getPermisos(IdRazonSocial: number): Promise<Permiso[]> {
+  getPermisos(IdRazonSocial: number, token = ""): Promise<Permiso[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .get<Permiso[]>(`${VM_HTTP_URL}/Permiso?idRazonSocial=${IdRazonSocial}`)
+        .get<Permiso[]>(`${VM_HTTP_URL}/Permiso?idRazonSocial=${IdRazonSocial}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
         .subscribe({
           next: (response: Permiso[]) => {
             resolve(response);

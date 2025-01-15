@@ -15,10 +15,9 @@ export interface RazonSocialData {
 export class RazonSocialService {
   constructor(private http: HttpClient) {}
 
-  saveRazonSocialData(data: RazonSocialData): Promise<any> {
+  saveRazonSocialData(data: RazonSocialData, token: string = ""): Promise<any> {
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
     });
 
     return new Promise((resolve, reject) => {

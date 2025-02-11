@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-const VM_HTTP_URL = 'http://volumetrics.site/api';
+import {
+  AlmacenesResponse,
+  IApiResponse,
+} from '../interfaces/ApiResponse.interface';
+import { Global } from '../shared/global';
+
+const VM_HTTP_URL = Global.url_api;
+// const emptyRes: IApiResponse [] = [];
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoadDataService {
   constructor(private http: HttpClient) {}
+
+  almacenesResponse: AlmacenesResponse = {} as AlmacenesResponse;
 
   // * Principals methods
 
@@ -15,46 +24,68 @@ export class LoadDataService {
     idPermiso: number,
     idRazonSocial: number,
     token: string
-  ): Promise<boolean> {
+  ): Promise<AlmacenesResponse> {
     return new Promise((resolve, reject) => {
-      console.log('permiso: ', idPermiso, 'razon: ', idRazonSocial);
+      // console.log('permiso: ', idPermiso, 'razon: ', idRazonSocial);
       try {
-        data.tanques.length > 0
-          ? this.saveTanksData(data.tanques, idPermiso, idRazonSocial, token)
-          : null;
-        data.dispensarios.length > 0
-          ? this.saveDispensariosData(
-              data.dispensarios,
-              idPermiso,
-              idRazonSocial,
-              token
-            )
-          : null;
-        data.medidoresTanques.length > 0
-          ? this.saveMedidoresTankData(
-              data.medidoresTanques,
-              idPermiso,
-              idRazonSocial,
-              token
-            )
-          : null;
-        data.medidoresDispensarios.length > 0
-          ? this.saveDispensariosMedidoresData(
-              data.medidoresDispensarios,
-              idPermiso,
-              idRazonSocial,
-              token
-            )
-          : null;
-        data.manguerasDispensario.length > 0
-          ? this.saveManguerasDispensariosData(
-              data.manguerasDispensario,
-              idPermiso,
-              idRazonSocial,
-              token
-            )
-          : null;
-        resolve(true);
+        if (!data) {
+          throw new Error('Data is undefined or null');
+        }
+
+        // this.almacenesResponse = {} as AlmacenesResponse;
+
+        // let tanques: any[] = [];
+        const promTanques = this.saveTanksData(data.tanques, idPermiso, idRazonSocial, token);
+        const promDispensarios = this.saveDispensariosData(data.dispensarios, idPermiso, idRazonSocial, token);
+        const promMedidTanques = this.saveMedidoresTankData(data.medidoresTanques, idPermiso, idRazonSocial, token);
+        const promMedidDispe = this.saveDispensariosMedidoresData(data.medidoresDispensarios, idPermiso, idRazonSocial, token);
+        const promMangDisp = this.saveManguerasDispensariosData(data.manguerasDispensario, idPermiso, idRazonSocial, token);
+
+        Promise.all([promTanques, promDispensarios, promMedidTanques, promMedidDispe, promMangDisp])
+          .then((results) => {
+            this.almacenesResponse.tanques = results[0];
+            this.almacenesResponse.dispensarios = results[1];
+            this.almacenesResponse.medidoresTanques = results[2];
+            this.almacenesResponse.medidoresDispensarios = results[3];
+            this.almacenesResponse.manguerasDispensario = results[4];
+            resolve(this.almacenesResponse);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+
+        // if (data.tanques && data.tanques.length > 0) {
+        //   this.saveTanksData(data.tanques, idPermiso, idRazonSocial, token).then(res => {
+        //     this.almacenesResponse.tanques = res;
+        //   });
+        // }
+
+        // if (data.dispensarios && data.dispensarios.length > 0) {
+        //   this.saveDispensariosData(data.dispensarios, idPermiso, idRazonSocial, token).then(res => {
+        //     this.almacenesResponse.dispensarios = res;
+        //   });
+        // }
+
+        // if (data.medidoresTanques && data.medidoresTanques.length > 0) {
+        //   this.saveMedidoresTankData(data.medidoresTanques, idPermiso, idRazonSocial, token).then(res => {
+        //     this.almacenesResponse.medidoresTanques = res;
+        //   });
+        // }
+
+        // if (data.medidoresDispensarios && data.medidoresDispensarios.length > 0) {
+        //   this.saveDispensariosMedidoresData(data.medidoresDispensarios, idPermiso, idRazonSocial, token).then(res => {
+        //     this.almacenesResponse.medidoresDispensarios = res;
+        //   });
+        // }
+
+        // if (data.manguerasDispensario && data.manguerasDispensario.length > 0) {
+        //   this.saveManguerasDispensariosData(data.manguerasDispensario, idPermiso, idRazonSocial, token).then(res => {
+        //     this.almacenesResponse.manguerasDispensario = res;
+        //   });
+        // }
+
+        // console.log('almacenes despues de promesas: ', this.almacenesResponse);
+        // resolve(this.almacenesResponse);
       } catch (e) {
         reject(e);
       }
@@ -98,12 +129,12 @@ export class LoadDataService {
     data: any,
     idPermiso: number,
     idRazonSocial: number,
-    token: string = ""
-  ): Promise<any[]> {
+    token: string = ''
+  ): Promise<IApiResponse[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<any[]>(
-          `${VM_HTTP_URL}/Tanque?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
+        .post<IApiResponse[]>(
+          `${VM_HTTP_URL}Tanque?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
           data,
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -123,12 +154,12 @@ export class LoadDataService {
     data: any,
     idPermiso: number,
     idRazonSocial: number,
-    token: string = ""
-  ): Promise<any[]> {
+    token: string = ''
+  ): Promise<IApiResponse[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<any[]>(
-          `${VM_HTTP_URL}/Dispensarios?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
+        .post<IApiResponse[]>(
+          `${VM_HTTP_URL}Dispensarios?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
           data,
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -149,12 +180,12 @@ export class LoadDataService {
     data: any,
     idPermiso: number,
     idRazonSocial: number,
-    token: string = ""
-  ): Promise<any[]> {
+    token: string = ''
+  ): Promise<IApiResponse[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<any[]>(
-          `${VM_HTTP_URL}/EntregaDispensarios/Medidores?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
+        .post<IApiResponse[]>(
+          `${VM_HTTP_URL}EntregaDispensarios/Medidores?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
           data,
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -174,12 +205,12 @@ export class LoadDataService {
     data: any,
     idPermiso: number,
     idRazonSocial: number,
-    token: string = ""
-  ): Promise<any[]> {
+    token: string = ''
+  ): Promise<IApiResponse[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<any[]>(
-          `${VM_HTTP_URL}/EntregaDispensarios/Mangueras?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
+        .post<IApiResponse[]>(
+          `${VM_HTTP_URL}EntregaDispensarios/Mangueras?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
           data,
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -199,13 +230,14 @@ export class LoadDataService {
     data: any,
     idPermiso: number,
     idRazonSocial: number,
-    token: string = "",
+    token: string = '',
     fechaMovimiento?: string
-  ): Promise<any[]> {
+  ): Promise<IApiResponse[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<any[]>(
-          `${VM_HTTP_URL}/EntregaTanque/Medidores?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}` + (fechaMovimiento ? `&fechaMovimiento=${fechaMovimiento}` : ''),
+        .post<IApiResponse[]>(
+          `${VM_HTTP_URL}EntregaTanque/Medidores?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}` +
+            (fechaMovimiento ? `&fechaMovimiento=${fechaMovimiento}` : ''),
           data,
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -226,13 +258,14 @@ export class LoadDataService {
     data: any,
     idPermiso: number,
     idRazonSocial: number,
-    token: string = "",
+    token: string = '',
     fechaMovimiento?: string
-  ): Promise<any[]> {
+  ): Promise<IApiResponse[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<any[]>(
-          `${VM_HTTP_URL}/EntregaTanque/Entrega?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}` + (fechaMovimiento ? `&fechaMovimiento=${fechaMovimiento}` : ''),
+        .post<IApiResponse[]>(
+          `${VM_HTTP_URL}EntregaTanque/Entrega?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}` +
+            (fechaMovimiento ? `&fechaMovimiento=${fechaMovimiento}` : ''),
           data,
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -252,13 +285,14 @@ export class LoadDataService {
     data: any,
     idPermiso: number,
     idRazonSocial: number,
-    token: string = "",
+    token: string = '',
     fechaMovimiento?: string
-  ): Promise<any[]> {
+  ): Promise<IApiResponse[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<any[]>(
-          `${VM_HTTP_URL}/EntregaDispensarios?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}` + (fechaMovimiento ? `&fechaMovimiento=${fechaMovimiento}` : ''),
+        .post<IApiResponse[]>(
+          `${VM_HTTP_URL}EntregaDispensarios?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}` +
+            (fechaMovimiento ? `&fechaMovimiento=${fechaMovimiento}` : ''),
           data,
           { headers: { Authorization: `Bearer ${token}` } }
         )

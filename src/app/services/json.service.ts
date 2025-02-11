@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Global } from './global';
+import { Global } from '../shared/global';
 
-const VM_HTTP_URL = 'http://volumetrics.site/api/';
+const VM_HTTP_URL = Global.url_api;
 
 // CABECERAS NECESARIAS PARA HACER LOS HTTP REQUEST A EL CONTROLADOR DEL APPI
 const VM_HTTP_OPTIONS = {
@@ -45,7 +45,7 @@ export class JsonService {
     console.log('Consultando Json Mensual!!');
     return this.httpClient.get(
       this.url +
-        '/mensual' +
+        'mensual' +
         '?iFecha=' +
         iFecha +
         '&fFecha=' +
@@ -60,7 +60,7 @@ export class JsonService {
 
   ObtenerJSONNombre(iFecha: string, fFecha: string): Observable<any> {
     return this.httpClient.get(
-      this.url + '/nombre' + '?iFecha=' + iFecha + '&fFecha=' + fFecha,
+      this.url + 'nombre' + '?iFecha=' + iFecha + '&fFecha=' + fFecha,
       VM_HTTP_OPTIONS
     );
   }
@@ -73,7 +73,7 @@ export class JsonService {
   ) {
     // Opciones por defecto estan marcadas con un *
     const url =
-      this.url + '/descargar' + '?iFecha=' + iFecha + '&fFecha=' + fFecha;
+      this.url + 'descargar' + '?iFecha=' + iFecha + '&fFecha=' + fFecha;
     const response = await fetch(url, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin

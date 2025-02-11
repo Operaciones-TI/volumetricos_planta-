@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IRazonSocial } from '../interfaces/RazonSocial.interface';
 import { Permiso } from '../interfaces/Permiso.interface';
+import { Global } from '../shared/global';
 
-const VM_HTTP_URL = 'http://volumetrics.site/api';
+const VM_HTTP_URL = Global.url_api;
 
 @Injectable({
   providedIn: 'root',
@@ -11,11 +12,11 @@ const VM_HTTP_URL = 'http://volumetrics.site/api';
 export class PermisoService {
   constructor(private http: HttpClient) {}
 
-  savePermisoData(data: any, token: string = ""): Promise<any> {
+  savePermisoData(data: any, token: string = ''): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http
-        .post(`${VM_HTTP_URL}/Permiso`, data, 
-          { headers: { Authorization: `Bearer ${token}` }
+        .post(`${VM_HTTP_URL}Permiso`, data, {
+          headers: { Authorization: `Bearer ${token}` },
         })
         .subscribe({
           next: (response: any) => {
@@ -28,11 +29,11 @@ export class PermisoService {
     });
   }
 
-  getRazonSocialData(token: string = ""): Promise<IRazonSocial[]> {
+  getRazonSocialData(token: string = ''): Promise<IRazonSocial[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .get<IRazonSocial[]>(`${VM_HTTP_URL}/RazonSocial`, 
-          { headers: { Authorization: `Bearer ${token}` }
+        .get<IRazonSocial[]>(`${VM_HTTP_URL}RazonSocial`, {
+          headers: { Authorization: `Bearer ${token}` },
         })
         .subscribe({
           next: (response: IRazonSocial[]) => {
@@ -46,10 +47,11 @@ export class PermisoService {
     });
   }
 
-  getPermisos(IdRazonSocial: number, token = ""): Promise<Permiso[]> {
+  getPermisos(IdRazonSocial: number, token = ''): Promise<Permiso[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .get<Permiso[]>(`${VM_HTTP_URL}/Permiso?idRazonSocial=${IdRazonSocial}`,
+        .get<Permiso[]>(
+          `${VM_HTTP_URL}Permiso?idRazonSocial=${IdRazonSocial}`,
           { headers: { Authorization: `Bearer ${token}` } }
         )
         .subscribe({

@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Global } from './global';
+import { Global } from '../shared/global';
 
-const VM_HTTP_URL = 'http://volumetrics.site/api/';
+const VM_HTTP_URL = Global.url_api;
 
 @Injectable()
 export class AuthService {

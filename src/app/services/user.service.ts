@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Global } from './global';
+import { Global } from '../shared/global';
 
-const VM_HTTP_URL = 'http://volumetrics.site/api/';
+const VM_HTTP_URL = Global.url_api;
 
 // CABECERAS NECESARIAS PARA HACER LOS HTTP REQUEST A EL CONTROLADOR DEL APPI
 const VM_HTTP_OPTIONS = {

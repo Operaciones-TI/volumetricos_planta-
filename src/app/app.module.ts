@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
+import { RouterModule } from "@angular/router";
+import { CommonModule } from '@angular/common';
 // import { NgIdleModule } from '@ng-idle/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,6 +29,9 @@ import { MovimientosComponent } from './pages/movimientos/movimientos.component'
 import { AuthService } from 'src/app/services/auth.service';
 import { UsuarioService } from './services/user.service';
 
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+
 
 
 @NgModule({
@@ -42,9 +47,13 @@ import { UsuarioService } from './services/user.service';
     ListaUsuariosComponent,
     EditarUsuariosComponent,
     RegistrarUsuariosComponent,
-    NuevoPasswordUsuarioComponent
+    NuevoPasswordUsuarioComponent,
+    MainLayoutComponent,
+    NavbarComponent
   ],
   imports: [
+    CommonModule,
+    FormsModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

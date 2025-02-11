@@ -290,6 +290,35 @@ export class LoadDataComponent implements OnInit {
         this.razonSelected, 
         token ? token : ''
       ).then(response => {
+        if (response) {
+          // const { tanques, dispensarios, medidoresTanques, medidoresDispensarios, manguerasDispensario } = response;
+          const res = Object.keys(response)
+          console.log('keys: ',res)
+          for (let item of res){
+            let resItem = item.charAt(0).toUpperCase() + item.slice(1);
+            console.log(resItem)
+            console.log(`key ${item}: `, (response as any)[item]);
+            let failed = (response as any)[item].filter((r: any) => r.Result === 0);
+            let succesfull = (response as any)[item].filter((r: any) => r.Result > 0);
+            console.log('failed: ', failed);
+            console.log('succesfull: ', succesfull);
+            if (succesfull.length > 0) {
+              this.toastr.success(`${succesfull.length} ${resItem} guardados correctamente`, `${resItem}`,  {
+                timeOut: 5000,
+                progressBar: true, 
+                disableTimeOut: true
+              });
+            }
+            if (failed.length > 0) {
+              this.toastr.warning(`${failed.length} ${resItem} ya extistian en la base de datos con el mismo permiso`, `${resItem}`, {
+                timeOut: 5000,
+                progressBar: true,
+                disableTimeOut: true
+              });
+            }
+          }
+        }
+        console.log('res from service: ', response);
         this.toastr.success('Almacenes guardados correctamente', '', {
             timeOut: 3000,
             progressBar: true,
@@ -297,11 +326,12 @@ export class LoadDataComponent implements OnInit {
         this.almacenesSaved = true;
         this.saving = false;
       }).catch(e => {
-        this.toastr.error('Algo fallo al guardar los almacenes', '', {
+        this.toastr.error('Algo fallo en el servidor al guardar los almacenes', '', {
           timeOut: 3000,
           progressBar: true,
         });
         this.saving = false;
+        console.log(e)
       });
     };
 

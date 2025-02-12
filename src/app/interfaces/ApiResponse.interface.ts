@@ -18,3 +18,8 @@ export interface AlmacenesResponse {
   medidoresDispensarios: IApiResponse[];
   manguerasDispensario: IApiResponse[];
 }
+
+export interface MovimientosResponse {
+  movimientosTanques: IApiResponse[];
+  movimientosDispensarios: IApiResponse[];
+}

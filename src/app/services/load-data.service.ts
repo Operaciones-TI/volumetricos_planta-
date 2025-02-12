@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {
   AlmacenesResponse,
   IApiResponse,
+  MovimientosResponse,
 } from '../interfaces/ApiResponse.interface';
 import { Global } from '../shared/global';
 
@@ -16,6 +17,7 @@ export class LoadDataService {
   constructor(private http: HttpClient) {}
 
   almacenesResponse: AlmacenesResponse = {} as AlmacenesResponse;
+  movimientosResponse: MovimientosResponse = {} as MovimientosResponse;
 
   // * Principals methods
 
@@ -97,26 +99,40 @@ export class LoadDataService {
     idPermiso: number,
     idRazonSocial: number,
     token: string
-  ): Promise<boolean> {
+  ): Promise<MovimientosResponse> {
     return new Promise((resolve, reject) => {
       try {
-        data.tanques.length > 0
-          ? this.saveArriveTankData(
-              data.tanques,
-              idPermiso,
-              idRazonSocial,
-              token
-            )
-          : null;
-        data.dispensarios.length > 0
-          ? this.saveArriveDispData(
-              data.dispensarios,
-              idPermiso,
-              idRazonSocial,
-              token
-            )
-          : null;
-        resolve(true);
+        const promArriveTanks = this.saveArriveTankData(data.tanques, idPermiso, idRazonSocial, token);
+        const promArriveDisp = this.saveArriveDispData(data.dispensarios, idPermiso, idRazonSocial, token);
+
+        Promise.all([promArriveTanks, promArriveDisp])
+          .then((results) => {
+            this.movimientosResponse.movimientosTanques = results[0];
+            this.movimientosResponse.movimientosDispensarios = results[1];
+
+            resolve(this.movimientosResponse)
+          })
+          .catch((error) => {
+            reject(error);
+          });
+
+        // data.tanques.length > 0
+        //   ? this.saveArriveTankData(
+        //       data.tanques,
+        //       idPermiso,
+        //       idRazonSocial,
+        //       token
+        //     )
+        //   : null;
+        // data.dispensarios.length > 0
+        //   ? this.saveArriveDispData(
+        //       data.dispensarios,
+        //       idPermiso,
+        //       idRazonSocial,
+        //       token
+        //     )
+        //   : null;
+        // resolve(true);
       } catch (e) {
         reject(e);
       }

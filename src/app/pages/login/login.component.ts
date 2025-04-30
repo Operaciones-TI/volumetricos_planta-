@@ -4,6 +4,7 @@ import { AppComponent } from 'src/app/app.component';
 // import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from 'src/app/services/auth.service';
+import { Global } from './../../services/global';
 // import { QRCodeComponent } from './code-modal/code-modal.component';
 
 @Component({

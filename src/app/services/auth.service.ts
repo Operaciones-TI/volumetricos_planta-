@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Global } from '../shared/global';
-
-const VM_HTTP_URL = Global.url_api;
+import { Global } from './global';
 
 @Injectable()
 export class AuthService {
@@ -16,8 +14,7 @@ export class AuthService {
   }
 
   constructor(private httpClient: HttpClient) {
-    // this.url = `${Global.url}auth`
-    this.url = `${VM_HTTP_URL}auth`;
+    this.url = `${Global.url}/auth`
   }
 
   ObtenerIdentity() {

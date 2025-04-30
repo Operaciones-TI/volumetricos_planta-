@@ -256,8 +256,8 @@ export class MovimientosComponent implements OnInit {
         [dataToSend],
         this.permisoSelected,
         this.razonSelected,
-        token ? token : '',
-        this.fechaMovimiento
+        // token ? token : '',
+        // this.fechaMovimiento
       )
       .then((response) => {
         for (let res of response) {

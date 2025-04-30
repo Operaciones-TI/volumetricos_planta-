@@ -113,7 +113,7 @@ export class JsonComponent implements OnInit {
     this.loading = true;
     if (this.checkDay) {
       console.log('Json Diario!! ');
-      this.jsonService.ObtenerJSONDiario(this.dateInit, this.dateEnd).subscribe({
+      this.jsonService.ObtenerJSONDiario(this.dateInit, this.dateEnd, this.razonSelected, this.permisoSelected).subscribe({
         next: (r) => {
           this.placeDetail = r;
           this.loading = false;

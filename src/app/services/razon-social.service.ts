@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Global } from '../shared/global';
-
-const VM_HTTP_URL = Global.url_api;
+import { Global } from './global';
+const VM_HTTP_URL = Global.url;
 
 export interface RazonSocialData {
   PlantaName: string;
@@ -16,14 +15,14 @@ export interface RazonSocialData {
 export class RazonSocialService {
   constructor(private http: HttpClient) {}
 
-  saveRazonSocialData(data: RazonSocialData, token: string = ''): Promise<any> {
+  saveRazonSocialData(data: RazonSocialData, token: string = ""): Promise<any> {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     });
 
     return new Promise((resolve, reject) => {
       this.http
-        .post(`${VM_HTTP_URL}RazonSocial`, data, {
+        .post(`${VM_HTTP_URL}/RazonSocial`, data, {
           headers,
           observe: 'response',
         })

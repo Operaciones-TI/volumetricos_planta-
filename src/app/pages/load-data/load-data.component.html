@@ -37,6 +37,14 @@
       <h2 class="text-dark dark:text-white 2xl:text-3xl">Movimientos</h2>
       <input type="file" id="movimientosFile" multiple="false" accept=".xlsx, .xls"
         class="outline-none bg-transparent dark:text-white">
+      <!-- <label for="tiposMovimiento" class="after:content-['*'] after:text-red-500 after:pl-1">Tipo</label>
+      <select name="tiposMovimiento" id="" [(ngModel)]="tipoSelected"
+        class="outline-none w-full rounded-lg border-2 border-dark dark:border-light px-4 py-2 hover:cursor-pointer bg-transparent">
+        <option value="" class="dark:bg-primary">Seleccione...</option>
+        <option *ngFor="let tipo of tiposMovimientos" value="{{tipo.value}}" class="dark:bg-primary">
+          {{tipo.label}}
+        </option>
+      </select> -->
     </div>
 
     <!-- <section class="flex flex-col min-h-40 justify-center border-2 border-dark dark:border-light py-4 px-6 rounded-lg w-full gap-6">

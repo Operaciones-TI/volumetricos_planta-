@@ -14,6 +14,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import * as JSZip from 'jszip';
 import { IRazonSocial } from 'src/app/interfaces/RazonSocial.interface';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-load-data',
@@ -29,9 +30,15 @@ export class LoadDataComponent implements OnInit {
   movimientosSaved: boolean = false;
   razonSelected: number = 0;
   permisoSelected: number = 0;
-  
+  tipoSelected: string = '';
+
   razonesSociales: IRazonSocial[] = [];
   permisos: Permiso[] = [];
+  tiposMovimientos  = [
+    { value: 'almacen', label: 'Almacen' },
+    { value: 'distribucion', label: 'Distribución' },
+    { value: 'expendio', label: 'Expendio' }
+  ];
 
   constructor(
     private toastr: ToastrService,
@@ -69,6 +76,7 @@ export class LoadDataComponent implements OnInit {
     this.permisoService.getPermisos(idRazonSocial, token ? token : '')
     .then((permisos: Permiso[]) => {
       this.permisos = permisos;
+      console.log(this.permisos);
     })
     .catch(e => {
       console.log(e);
@@ -166,7 +174,7 @@ export class LoadDataComponent implements OnInit {
       });
     });
   }
-  
+
   async formatMedidoresTanques(oldKeys: any): Promise<MedidorTanque> {
     return new Promise((resolve, reject) => {
       resolve({
@@ -205,7 +213,7 @@ export class LoadDataComponent implements OnInit {
     reader.onload = async (e: ProgressEvent<FileReader>) => {
       const data = new Uint8Array(e.target?.result as ArrayBuffer);
       const workbook = XLSX.read(data, { type: 'array' });
-      
+
       const firstSheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[firstSheetName];
 
@@ -218,14 +226,14 @@ export class LoadDataComponent implements OnInit {
       let medidoresDispensarios = [];
       let manguerasDispensario = [];
 
-      // if row.A of this.excelData is equals to "Tanque" then add the next rows, but the next rows nust not have "Tanque" in A, until 
+      // if row.A of this.excelData is equals to "Tanque" then add the next rows, but the next rows nust not have "Tanque" in A, until
       // the next row has "Dispensario" in A
       for (let i = 0; i < this.excelData.length - 1; i++) {
         if(["Tanques", "Dispensarios", "Medidores de tanques", "Medidores de Dispensarios", "Mangueras Dispensario"].includes(this.excelData[i].A)) {
           headsCells.push(i);
         }
       }
-      
+
       tanques = this.excelData.slice(headsCells[0] + 2, headsCells[1]);
       dispensarios = this.excelData.slice(headsCells[1] + 2, headsCells[2]);
       medidoresTanques = this.excelData.slice(headsCells[2] + 2, headsCells[3]);
@@ -285,40 +293,11 @@ export class LoadDataComponent implements OnInit {
       let token = this.authService.ObtenerToken();
 
       this.loadDataService.saveAlmacenesData(
-        obj, 
-        this.permisoSelected, 
-        this.razonSelected, 
+        obj,
+        this.permisoSelected,
+        this.razonSelected,
         token ? token : ''
       ).then(response => {
-        if (response) {
-          // const { tanques, dispensarios, medidoresTanques, medidoresDispensarios, manguerasDispensario } = response;
-          const res = Object.keys(response)
-          console.log('keys: ',res)
-          for (let item of res){
-            let resItem = item.charAt(0).toUpperCase() + item.slice(1);
-            console.log(resItem)
-            console.log(`key ${item}: `, (response as any)[item]);
-            let failed = (response as any)[item].filter((r: any) => r.Result === 0);
-            let succesfull = (response as any)[item].filter((r: any) => r.Result > 0);
-            console.log('failed: ', failed);
-            console.log('succesfull: ', succesfull);
-            if (succesfull.length > 0) {
-              this.toastr.success(`${succesfull.length} ${resItem} guardados correctamente`, `${resItem}`,  {
-                timeOut: 5000,
-                progressBar: true, 
-                disableTimeOut: true
-              });
-            }
-            if (failed.length > 0) {
-              this.toastr.warning(`${failed.length} ${resItem} ya extistian en la base de datos con el mismo permiso`, `${resItem}`, {
-                timeOut: 5000,
-                progressBar: true,
-                disableTimeOut: true
-              });
-            }
-          }
-        }
-        console.log('res from service: ', response);
         this.toastr.success('Almacenes guardados correctamente', '', {
             timeOut: 3000,
             progressBar: true,
@@ -326,12 +305,11 @@ export class LoadDataComponent implements OnInit {
         this.almacenesSaved = true;
         this.saving = false;
       }).catch(e => {
-        this.toastr.error('Algo fallo en el servidor al guardar los almacenes', '', {
+        this.toastr.error('Algo fallo al guardar los almacenes', '', {
           timeOut: 3000,
           progressBar: true,
         });
         this.saving = false;
-        console.log(e)
       });
     };
 
@@ -358,180 +336,197 @@ export class LoadDataComponent implements OnInit {
       const data = new Uint8Array(e.target?.result as ArrayBuffer);
       const workbook = XLSX.read(data, { type: 'array' });
 
-      let tanqueHeads = [
-        'ClaveTanque',
-        'TipoMovimiento',
-        'VolumenInicialTanque',
-        'VolumenFinalTanque',
-        'VolumenEntregado',
-        'Temperatura',
-        'PresionAbsoluta',
-        'FechaHoraInicialEntrega',
-        'FechaHoraFinalEntrega',
-        'Cantidad',
-        'PermisoReceptor',
-        'FechaHoraInicial',
-        'VolumenDocumentado',
-        'Folio',
+      let almacenHeads = [
+        'RfcClienteOProveedor',
+        'NombreClienteOProveedor',
+        'PermisoProveedor',
+        'CfdiUuid',
+        'TipoCfdi',
         'PrecioCompra',
-        'Valor',
-        'Uuid',
+        'Contraprestacion',
+        'TarifaAlmacenamiento',
+        'CargoCapacidadAlmacenamiento',
+        'CargoUsoAlmacenamiento',
+        'CargoVolumetricoAlmacenamiento',
+        'Descuento',
         'FechaYHoraTransaccion',
-        'ClaveVehiculo',
-        'PermisoTransporte',
-        'NombreClienteOProveedor',
-        'RfcClienteOProveedor',
-        'PermisoAlmacenamientoDistribucion',
-        'NombreTerminalDistribucion',
-        'Aclaracion',
+        'Producto',
+        'Subproducto',
+        'VolumenDocumentado',
+        'UnidadMedida',
+        'TipoOperacion',
+        'DiaOperacion',
+        'MesOperacion',
+        'AñoOperacion',
       ];
 
-      let dispensHeads = [
-        'ClaveDispensario',
-        'ClaveManguera',
-        'TipoDeRegistro',
-        'VolumenEntregadoTotalizadorAcum',
-        'VolumenEntregadoTotalizadorInsta',
-        'PrecioVentaTotalizadorInstantaneo',
-        'FechaHoraEntrega',
-        'Permiso',
-        'FechaVenta',
-        'CantidadLitros',
-        'PrecioUnitario',
-        'Importe',
-        'Uuid',
-        'FechaYHoraTransaccion',
+      let distribucionHeads = [
         'RfcClienteOProveedor',
         'NombreClienteOProveedor',
-        'Aclaracion',
+        'PermisoProveedor',
+        'CfdiUuid',
+        'TipoCfdi',
+        'PrecioVentaCompraCnt',
+        'FechaYHoraTransaccion',
+        'Producto',
+        'Subproducto',
+        'VolumenDocumentado',
+        'UnidadMedida',
+        'TipoOperacion',
+        'DiaOperacion',
+        'MesOperacion',
+        'AñoOperacion',
       ];
 
-      let cierreHeads = [
-        'PermisoPlanta',
-        'FechaInicio',
-        'VolumenInicial',
-        'FechaCierre',
-        'VolumenFinal',
-        'VolumenSalida',
-        'VolumenEntrada',
+      let expendioHeads = [
+        'RfcClienteOProveedor',
+        'NombreClienteOProveedor',
+        'PermisoProveedor',
+        'CfdiUuid',
+        'TipoCfdi',
+        'PrecioCompra',
+        'PrecioVentaPublico',
+        'PrecioVenta',
+        'FechaYHoraTransaccion',
+        'Producto',
+        'Subproducto',
+        'VolumenDocumentado',
+        'UnidadMedida',
+        'TipoOperacion',
+        'DiaOperacion',
+        'MesOperacion',
+        'AñoOperacion',
       ];
 
+      let permiso = this.permisos.find(p => p.Id === Number(this.permisoSelected))?.NumPermiso?.split("/") ?? [];
+      let tipoPermiso = permiso?.[2] || "";
+      let CurrentHeader =
+        ["ALM", "LPA"].includes(tipoPermiso) ? almacenHeads :
+        tipoPermiso === "DIST" ? distribucionHeads :
+        tipoPermiso === "EXP" ? expendioHeads : [];
 
       // Add mising keys to data from excel
       const addMissigKeysTanques = (excelData: any) => {
-        const newObj = Object.fromEntries(tanqueHeads.map((key, i) => [key, null]));
+        const newObj = Object.fromEntries(CurrentHeader.map((key, i) => [key, null]));
         return Object.assign(newObj, excelData);
-      }
-      
-      const addMissigKeysDisp = (excelData: any) => {
-        const newObj = Object.fromEntries(dispensHeads.map((key, i) => [key, null]));
-        return Object.assign(newObj, excelData);
-      }
+      };
 
-      const addMissigKeysCierre = (excelData: any) => {
-        const newObj = Object.fromEntries(cierreHeads.map((key, i) => [key, null]));
-        return Object.assign(newObj, excelData);
-      }
+      const normalizeData = (row: any): any => {
+        // 1️⃣ Normalizar FechaYHoraTransaccion
+        if (row.FechaYHoraTransaccion) {
+          if (row.FechaYHoraTransaccion instanceof Date) {
+            row.FechaYHoraTransaccion = row.FechaYHoraTransaccion.toISOString();
+          }
+          else if (typeof row.FechaYHoraTransaccion === 'number') {
+            const excelEpoch = new Date(1899, 11, 30);
+            const fechaReal = new Date(excelEpoch.getTime() + row.FechaYHoraTransaccion * 86400000);
+            row.FechaYHoraTransaccion = fechaReal.toISOString().split('T')[0] + 'T00:00:00';
+          }
+          else if (typeof row.FechaYHoraTransaccion === 'string') {
+            const fechaStr = row.FechaYHoraTransaccion.trim();
+            const match = fechaStr.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+            if (match) {
+              const [_, d, m, y] = match;
+              row.FechaYHoraTransaccion = `${y}-${m}-${d}T00:00:00`;
+            }
+            else if (/^\d{4}-\d{2}-\d{2}$/.test(fechaStr)) {
+              row.FechaYHoraTransaccion = `${fechaStr}T00:00:00`;
+            }
+            else {
+              const parsed = new Date(fechaStr);
+              row.FechaYHoraTransaccion = isNaN(parsed.getTime()) ? null : parsed.toISOString();
+            }
+          }
+        } else {
+          row.FechaYHoraTransaccion = null;
+        }
 
-      let CurrentHeader = tanqueHeads;
-      let movTanques: any[] = [];
-      let movDisp: any[] = [];
-      let movCierre: any[] = [];
+        // 2️⃣ Convertir valores numéricos
+        const numericKeys = [
+          'PrecioCompra',
+          'PrecioVentaCompraCnt',
+          'PrecioVenta',
+          'PrecioVentaPublico',
+          'VolumenDocumentado',
+          'TarifaAlmacenamiento',
+          'CargoCapacidadAlmacenamiento',
+          'CargoUsoAlmacenamiento',
+          'CargoVolumetricoAlmacenamiento',
+          'Descuento',
+          'Contraprestacion'
+        ];
+        numericKeys.forEach(key => {
+          if (row[key] != null && row[key] !== '') {
+            const n = parseFloat(row[key]);
+            row[key] = isNaN(n) ? null : n;
+          } else {
+            row[key] = null;
+          }
+        });
 
+        // 3️⃣ Asegurar campos de texto como string
+        const stringKeys = [
+          'RfcClienteOProveedor',
+          'NombreClienteOProveedor',
+          'PermisoProveedor',
+          'CfdiUuid',
+          'TipoCfdi',
+          'Producto',
+          'Subproducto',
+          'UnidadMedida',
+          'TipoOperacion'
+        ];
+        stringKeys.forEach(key => {
+          if (row[key] != null) {
+            row[key] = String(row[key]).trim();
+          } else {
+            row[key] = null;
+          }
+        });
+
+        return row;
+      };
+
+      let movimientosRecepcion: any[] = [];
+      let movimientosEntrega: any[] = [];
       for(let s = 0; s < workbook.SheetNames.length; s++) {
         let data: any[];
         let worksheet = workbook.Sheets[workbook.SheetNames[s]];
-        if(workbook.SheetNames[s].includes('Movimientos tanques')) {
-          CurrentHeader = tanqueHeads;
+        if(workbook.SheetNames[s].includes('Nacionales')) {
           data = XLSX.utils.sheet_to_json(worksheet, {
             header: CurrentHeader,
           });
-          data.splice(0,2)
-          data = data.map(d => addMissigKeysTanques(d));
+          console.log(data);
+          data.splice(0,1)
+          data = data.map(d => normalizeData(addMissigKeysTanques(d)));
+          console.log(data);
           data.map(d => {
-            if (typeof d.FechaEmisionCfdi === "number") {
-              d.FechaEmisionCfdi = this.excelNumberToDate(d.FechaEmisionCfdi)
+            if (d.TipoOperacion === "Recepcion") {
+              movimientosRecepcion.push(d);
+            } else if (d.TipoOperacion === "Entrega") {
+              movimientosEntrega.push(d);
             }
           });
-          movTanques = data;
-        } else if(workbook.SheetNames[s].includes('Movimientos Dispensarios')) {
-          CurrentHeader = dispensHeads;
-          data = XLSX.utils.sheet_to_json(worksheet, {
-            header: CurrentHeader,
-          });
-          data.splice(0,2)
-          data = data.map(d => addMissigKeysDisp(d));
-          data.map(d => {
-            if(typeof d.FechaVenta === "number") {
-              d.FechaVenta = this.excelNumberToDate(d.FechaVenta)
-            }
-
-            if (typeof d.FechaEmisionCfdi === "number") {
-              d.FechaEmisionCfdi = this.excelNumberToDate(d.FechaEmisionCfdi)
-            }
-          });
-          movDisp = data;
-        } else if (workbook.SheetNames[s].includes('Cierre Mensual')) {
-          CurrentHeader = cierreHeads;
-          data = XLSX.utils.sheet_to_json(worksheet, {
-            header: CurrentHeader,
-          });
-          data.shift();
-          data = data.map(d => addMissigKeysCierre(d));
-          data.map(d => {
-            if (typeof d.FechaInicio === "number") {
-              d.FechaInicio = this.excelNumberToDate(d.FechaInicio)
-            }
-
-            if (typeof d.FechaCierre === "number") {
-              d.FechaCierre = this.excelNumberToDate(d.FechaCierre)
-            }
-          });
-          movCierre = data;
         }
       }
-
       const movimientos ={
-        tanques: movTanques,
-        dispensarios: movDisp,
-        cierre: movCierre
+        recepciones: movimientosRecepcion,
+        entregas: movimientosEntrega
       };
-
-      let token = this.authService.ObtenerToken();
+      console.log(movimientos);
 
       this.excelMovimientos = JSON.stringify(movimientos);
       this.loadDataService.saveMovimientosData(
-        movimientos, 
-        this.permisoSelected, 
-        this.razonSelected, 
-        token ? token : ''
+        movimientos,
+        tipoPermiso,
+        this.permisoSelected,
+        this.razonSelected
       ).then(response => {
-        // const { tanques, dispensarios, medidoresTanques, medidoresDispensarios, manguerasDispensario } = response;
-        const res = Object.keys(response)
-        console.log('keys: ',res)
-        for (let item of res){
-          let resItem = item.charAt(0).toUpperCase() + item.slice(1);
-          console.log(resItem)
-          console.log(`key ${item}: `, (response as any)[item]);
-          let failed = (response as any)[item].filter((r: any) => r.Result === 0);
-          let succesfull = (response as any)[item].filter((r: any) => r.Result > 0);
-          console.log('failed: ', failed);
-          console.log('succesfull: ', succesfull);
-          if (succesfull.length > 0) {
-            this.toastr.success(`${succesfull.length} ${resItem} guardados correctamente`, `${resItem}`,  {
-              timeOut: 5000,
-              progressBar: true, 
-              disableTimeOut: true
-            });
-          }
-          if (failed.length > 0) {
-            this.toastr.warning(`${failed.length} ${resItem} ya extistian en la base de datos con el mismo permiso`, `${resItem}`, {
-              timeOut: 5000,
-              progressBar: true,
-              disableTimeOut: true
-            });
-          }
-        }
+        this.toastr.success('Movimientos guardados correctamente', '', {
+          timeOut: 3000,
+          progressBar: true,
+        });
+        this.saving = false;
       }).catch((e) => {
         console.log(e);
         this.toastr.error('Algo fallo al guardar los movimientos', '', {
@@ -540,10 +535,8 @@ export class LoadDataComponent implements OnInit {
         });
         this.saving = false;
       });
-      
       inputElement.value = '';
     };
-
     reader.readAsArrayBuffer(file);
   }
 }

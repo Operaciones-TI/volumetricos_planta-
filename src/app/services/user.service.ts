@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Global } from '../shared/global';
-
-const VM_HTTP_URL = Global.url_api;
+import { Global } from './global';
 
 // CABECERAS NECESARIAS PARA HACER LOS HTTP REQUEST A EL CONTROLADOR DEL APPI
 const VM_HTTP_OPTIONS = {
@@ -17,8 +15,7 @@ export class UsuarioService {
   private url: string;
 
   constructor(private httpClient: HttpClient) {
-    // this.url = `${Global.url}usuario`
-    this.url = `${VM_HTTP_URL}usuario`;
+    this.url = `${Global.url}usuario`
   }
 
   ObtenerLecturasUsuarios(): Observable<any> {

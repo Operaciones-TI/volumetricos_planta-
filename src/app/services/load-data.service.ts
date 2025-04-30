@@ -1,138 +1,99 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {
-  AlmacenesResponse,
-  IApiResponse,
-  MovimientosResponse,
-} from '../interfaces/ApiResponse.interface';
-import { Global } from '../shared/global';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Global } from './global';
+const VM_HTTP_URL = Global.url;
 
-const VM_HTTP_URL = Global.url_api;
-// const emptyRes: IApiResponse [] = [];
+// CABECERAS NECESARIAS PARA HACER LOS HTTP REQUEST A EL CONTROLADOR DEL APPI
+const VM_HTTP_OPTIONS = {
+  headers: new HttpHeaders({
+    Authorization: 'bearer ' + localStorage.getItem('token'),
+  }),
+};
 
+const VM_HTTP_HEADERS = {
+  headers: new HttpHeaders()
+    .set('Authorization', 'bearer ' + localStorage.getItem('token'))
+    .set('Content-Type', 'application/json'),
+};
 @Injectable({
   providedIn: 'root',
 })
 export class LoadDataService {
-  constructor(private http: HttpClient) {}
+  private url: string;
 
-  almacenesResponse: AlmacenesResponse = {} as AlmacenesResponse;
-  movimientosResponse: MovimientosResponse = {} as MovimientosResponse;
+  constructor(private http: HttpClient) {
+    this.url = `${Global.url}/complemento`
+  }
 
   // * Principals methods
 
-  saveAlmacenesData(
-    data: any,
-    idPermiso: number,
-    idRazonSocial: number,
-    token: string
-  ): Promise<AlmacenesResponse> {
+  private chunkArray<T>(array: T[], size: number): T[][] {
+    const result: T[][] = [];
+    for (let i = 0; i < array.length; i += size) {
+      result.push(array.slice(i, i + size));
+    }
+    return result;
+  }
+
+  saveAlmacenesData(data: any, idPermiso: number, idRazonSocial: number, token: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      // console.log('permiso: ', idPermiso, 'razon: ', idRazonSocial);
+      console.log('permiso: ', idPermiso, 'razon: ', idRazonSocial);
       try {
-        if (!data) {
-          throw new Error('Data is undefined or null');
-        }
-
-        // this.almacenesResponse = {} as AlmacenesResponse;
-
-        // let tanques: any[] = [];
-        const promTanques = this.saveTanksData(data.tanques, idPermiso, idRazonSocial, token);
-        const promDispensarios = this.saveDispensariosData(data.dispensarios, idPermiso, idRazonSocial, token);
-        const promMedidTanques = this.saveMedidoresTankData(data.medidoresTanques, idPermiso, idRazonSocial, token);
-        const promMedidDispe = this.saveDispensariosMedidoresData(data.medidoresDispensarios, idPermiso, idRazonSocial, token);
-        const promMangDisp = this.saveManguerasDispensariosData(data.manguerasDispensario, idPermiso, idRazonSocial, token);
-
-        Promise.all([promTanques, promDispensarios, promMedidTanques, promMedidDispe, promMangDisp])
-          .then((results) => {
-            this.almacenesResponse.tanques = results[0];
-            this.almacenesResponse.dispensarios = results[1];
-            this.almacenesResponse.medidoresTanques = results[2];
-            this.almacenesResponse.medidoresDispensarios = results[3];
-            this.almacenesResponse.manguerasDispensario = results[4];
-            resolve(this.almacenesResponse);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-
-        // if (data.tanques && data.tanques.length > 0) {
-        //   this.saveTanksData(data.tanques, idPermiso, idRazonSocial, token).then(res => {
-        //     this.almacenesResponse.tanques = res;
-        //   });
-        // }
-
-        // if (data.dispensarios && data.dispensarios.length > 0) {
-        //   this.saveDispensariosData(data.dispensarios, idPermiso, idRazonSocial, token).then(res => {
-        //     this.almacenesResponse.dispensarios = res;
-        //   });
-        // }
-
-        // if (data.medidoresTanques && data.medidoresTanques.length > 0) {
-        //   this.saveMedidoresTankData(data.medidoresTanques, idPermiso, idRazonSocial, token).then(res => {
-        //     this.almacenesResponse.medidoresTanques = res;
-        //   });
-        // }
-
-        // if (data.medidoresDispensarios && data.medidoresDispensarios.length > 0) {
-        //   this.saveDispensariosMedidoresData(data.medidoresDispensarios, idPermiso, idRazonSocial, token).then(res => {
-        //     this.almacenesResponse.medidoresDispensarios = res;
-        //   });
-        // }
-
-        // if (data.manguerasDispensario && data.manguerasDispensario.length > 0) {
-        //   this.saveManguerasDispensariosData(data.manguerasDispensario, idPermiso, idRazonSocial, token).then(res => {
-        //     this.almacenesResponse.manguerasDispensario = res;
-        //   });
-        // }
-
-        // console.log('almacenes despues de promesas: ', this.almacenesResponse);
-        // resolve(this.almacenesResponse);
+        data.tanques.length > 0
+          ? this.saveTanksData(data.tanques, idPermiso, idRazonSocial, token)
+          : null;
+        data.dispensarios.length > 0
+          ? this.saveDispensariosData(
+              data.dispensarios,
+              idPermiso,
+              idRazonSocial,
+              token
+            )
+          : null;
+        data.medidoresTanques.length > 0
+          ? this.saveMedidoresTankData(
+              data.medidoresTanques,
+              idPermiso,
+              idRazonSocial,
+              token
+            )
+          : null;
+        data.medidoresDispensarios.length > 0
+          ? this.saveDispensariosMedidoresData(
+              data.medidoresDispensarios,
+              idPermiso,
+              idRazonSocial,
+              token
+            )
+          : null;
+        data.manguerasDispensario.length > 0
+          ? this.saveManguerasDispensariosData(
+              data.manguerasDispensario,
+              idPermiso,
+              idRazonSocial,
+              token
+            )
+          : null;
+        resolve(true);
       } catch (e) {
         reject(e);
       }
     });
   }
 
-  saveMovimientosData(
-    data: any,
-    idPermiso: number,
-    idRazonSocial: number,
-    token: string
-  ): Promise<MovimientosResponse> {
+  saveMovimientosData(data: any, tipoPermiso: string,  idPermiso: number, idRazonSocial: number): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
-        const promArriveTanks = this.saveArriveTankData(data.tanques, idPermiso, idRazonSocial, token);
-        const promArriveDisp = this.saveArriveDispData(data.dispensarios, idPermiso, idRazonSocial, token);
-
-        Promise.all([promArriveTanks, promArriveDisp])
-          .then((results) => {
-            this.movimientosResponse.movimientosTanques = results[0];
-            this.movimientosResponse.movimientosDispensarios = results[1];
-
-            resolve(this.movimientosResponse)
-          })
-          .catch((error) => {
-            reject(error);
-          });
-
-        // data.tanques.length > 0
-        //   ? this.saveArriveTankData(
-        //       data.tanques,
-        //       idPermiso,
-        //       idRazonSocial,
-        //       token
-        //     )
-        //   : null;
-        // data.dispensarios.length > 0
-        //   ? this.saveArriveDispData(
-        //       data.dispensarios,
-        //       idPermiso,
-        //       idRazonSocial,
-        //       token
-        //     )
-        //   : null;
-        // resolve(true);
+        data.recepciones.length > 0 && ["ALM", "LPA", "DIST"].includes(tipoPermiso)
+          ? this.saveReceptionTankData(data.recepciones, idPermiso, idRazonSocial) : null;
+        data.entregas.length > 0 && ["ALM", "LPA", "DIST"].includes(tipoPermiso)
+          ? this.saveDeliveryTankData(data.entregas, idPermiso, idRazonSocial) : null;
+          data.recepciones.length > 0 && tipoPermiso === "EXP"
+          ? this.saveReceptionDispData(data.recepciones, idPermiso, idRazonSocial) : null;
+        data.entregas.length > 0 && tipoPermiso === "EXP"
+          ? this.saveDeliveryDispData(data.entregas, idPermiso, idRazonSocial) : null;
+        resolve(true);
       } catch (e) {
         reject(e);
       }
@@ -141,18 +102,13 @@ export class LoadDataService {
 
   // Secondary methods
 
-  saveTanksData(
-    data: any,
-    idPermiso: number,
-    idRazonSocial: number,
-    token: string = ''
-  ): Promise<IApiResponse[]> {
+  saveTanksData(data: any, idPermiso: number, idRazonSocial: number, token: string = ""): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<IApiResponse[]>(
-          `${VM_HTTP_URL}Tanque?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
+        .post<any[]>(
+          `${VM_HTTP_URL}/Tanque?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
           data,
-          { headers: { Authorization: `Bearer ${token}` } }
+          VM_HTTP_OPTIONS
         )
         .subscribe(
           (response) => {
@@ -166,18 +122,13 @@ export class LoadDataService {
     });
   }
 
-  saveDispensariosData(
-    data: any,
-    idPermiso: number,
-    idRazonSocial: number,
-    token: string = ''
-  ): Promise<IApiResponse[]> {
+  saveDispensariosData(data: any, idPermiso: number, idRazonSocial: number, token: string = ""): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<IApiResponse[]>(
-          `${VM_HTTP_URL}Dispensarios?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
+        .post<any[]>(
+          `${VM_HTTP_URL}/Dispensarios?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
           data,
-          { headers: { Authorization: `Bearer ${token}` } }
+          VM_HTTP_OPTIONS
         )
         .subscribe(
           (response) => {
@@ -192,18 +143,13 @@ export class LoadDataService {
     });
   }
 
-  saveDispensariosMedidoresData(
-    data: any,
-    idPermiso: number,
-    idRazonSocial: number,
-    token: string = ''
-  ): Promise<IApiResponse[]> {
+  saveDispensariosMedidoresData(data: any, idPermiso: number, idRazonSocial: number, token: string = ""): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<IApiResponse[]>(
-          `${VM_HTTP_URL}EntregaDispensarios/Medidores?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
+        .post<any[]>(
+          `${VM_HTTP_URL}/EntregaDispensarios/Medidores?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
           data,
-          { headers: { Authorization: `Bearer ${token}` } }
+          VM_HTTP_OPTIONS
         )
         .subscribe(
           (response) => {
@@ -217,18 +163,13 @@ export class LoadDataService {
     });
   }
 
-  saveManguerasDispensariosData(
-    data: any,
-    idPermiso: number,
-    idRazonSocial: number,
-    token: string = ''
-  ): Promise<IApiResponse[]> {
+  saveManguerasDispensariosData(data: any, idPermiso: number, idRazonSocial: number, token: string = ""): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<IApiResponse[]>(
-          `${VM_HTTP_URL}EntregaDispensarios/Mangueras?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
+        .post<any[]>(
+          `${VM_HTTP_URL}/EntregaDispensarios/Mangueras?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
           data,
-          { headers: { Authorization: `Bearer ${token}` } }
+          VM_HTTP_OPTIONS
         )
         .subscribe(
           (response) => {
@@ -242,20 +183,13 @@ export class LoadDataService {
     });
   }
 
-  saveMedidoresTankData(
-    data: any,
-    idPermiso: number,
-    idRazonSocial: number,
-    token: string = '',
-    fechaMovimiento?: string
-  ): Promise<IApiResponse[]> {
+  saveMedidoresTankData(data: any, idPermiso: number, idRazonSocial: number, token: string = "", fechaMovimiento?: string): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<IApiResponse[]>(
-          `${VM_HTTP_URL}EntregaTanque/Medidores?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}` +
-            (fechaMovimiento ? `&fechaMovimiento=${fechaMovimiento}` : ''),
+        .post<any[]>(
+          `${VM_HTTP_URL}/EntregaTanque/Medidores?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}` + (fechaMovimiento ? `&fechaMovimiento=${fechaMovimiento}` : ''),
           data,
-          { headers: { Authorization: `Bearer ${token}` } }
+          VM_HTTP_OPTIONS
         )
         .subscribe(
           (response) => {
@@ -270,20 +204,13 @@ export class LoadDataService {
   }
 
   // Entregas
-  saveArriveTankData(
-    data: any,
-    idPermiso: number,
-    idRazonSocial: number,
-    token: string = '',
-    fechaMovimiento?: string
-  ): Promise<IApiResponse[]> {
+  saveArriveTankData(data: any, idPermiso: number, idRazonSocial: number): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<IApiResponse[]>(
-          `${VM_HTTP_URL}EntregaTanque/Entrega?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}` +
-            (fechaMovimiento ? `&fechaMovimiento=${fechaMovimiento}` : ''),
+        .post<any[]>(
+          `${this.url}/EntregaTanque/Entrega?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
           data,
-          { headers: { Authorization: `Bearer ${token}` } }
+          VM_HTTP_OPTIONS
         )
         .subscribe(
           (response) => {
@@ -297,24 +224,107 @@ export class LoadDataService {
     });
   }
 
-  saveArriveDispData(
-    data: any,
-    idPermiso: number,
-    idRazonSocial: number,
-    token: string = '',
-    fechaMovimiento?: string
-  ): Promise<IApiResponse[]> {
+  saveArriveDispData(data: any, idPermiso: number, idRazonSocial: number, token: string = "", fechaMovimiento?: string): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.http
-        .post<IApiResponse[]>(
-          `${VM_HTTP_URL}EntregaDispensarios?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}` +
-            (fechaMovimiento ? `&fechaMovimiento=${fechaMovimiento}` : ''),
+        .post<any[]>(
+          `${VM_HTTP_URL}/EntregaDispensarios?idPermiso=${idPermiso}&idRazonSocial=${idRazonSocial}`,
           data,
-          { headers: { Authorization: `Bearer ${token}` } }
+          VM_HTTP_OPTIONS
         )
         .subscribe(
           (response) => {
             console.log('Arrive dispensarios saved successfully', response);
+            resolve(response);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+    });
+  }
+
+  saveReceptionTankData(data: any, idPermiso: number, idRazonSocial: number): Promise<any[]> {
+    const batchSize = 500; // Lotes de 500 registros
+    const batches = this.chunkArray(data, batchSize);
+
+    // Mapeamos cada batch a una petición HTTP
+    const requests = batches.map(batch =>
+      this.http.post<any[]>(
+        `${this.url}/RegistrarRecepcionTanque?permiso=${idPermiso}&razonSocial=${idRazonSocial}`,
+        batch,
+        VM_HTTP_OPTIONS
+      ).toPromise()
+    );
+
+    // Esperamos que todas las peticiones se completen antes de resolver
+    return Promise.all(requests)
+      .then(responses => {
+        console.log('Todos los lotes se han enviado correctamente', responses);
+        return responses;
+      })
+      .catch(error => {
+        console.error('Error al enviar los lotes', error);
+        throw error; // Propagamos el error para manejarlo fuera
+      });
+  }
+
+  saveDeliveryTankData(data: any, idPermiso: number, idRazonSocial: number): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .post<any[]>(
+          `${this.url}/RegistrarEntregaTanque?permiso=${idPermiso}&razonSocial=${idRazonSocial}`,
+          data,
+          VM_HTTP_OPTIONS
+        )
+        .subscribe(
+          (response) => {
+            console.log('Arrive tanks saved successfully', response);
+            resolve(response);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+    });
+  }
+
+  saveReceptionDispData(data: any, idPermiso: number, idRazonSocial: number): Promise<any[]> {
+    const batchSize = 500; // Lotes de 500 registros
+    const batches = this.chunkArray(data, batchSize);
+
+    // Mapeamos cada batch a una petición HTTP
+    const requests = batches.map(batch =>
+      this.http.post<any[]>(
+        `${this.url}/RegistrarRecepcionDispensario?permiso=${idPermiso}&razonSocial=${idRazonSocial}`,
+        batch,
+        VM_HTTP_OPTIONS
+      ).toPromise()
+    );
+
+    // Esperamos que todas las peticiones se completen antes de resolver
+    return Promise.all(requests)
+      .then(responses => {
+        console.log('Todos los lotes se han enviado correctamente', responses);
+        return responses;
+      })
+      .catch(error => {
+        console.error('Error al enviar los lotes', error);
+        throw error; // Propagamos el error para manejarlo fuera
+      });
+  }
+
+  saveDeliveryDispData(data: any, idPermiso: number, idRazonSocial: number): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .post<any[]>(
+          `${this.url}/RegistrarEntregaDispensario?permiso=${idPermiso}&razonSocial=${idRazonSocial}`,
+          data,
+          VM_HTTP_OPTIONS
+        )
+        .subscribe(
+          (response) => {
+            console.log('Arrive tanks saved successfully', response);
             resolve(response);
           },
           (error) => {
